@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Historique local des QCM (propre a chaque machine)
+.quiz_history.json
+
+# Fichiers generes par les exercices
+users.csv
+
+# Editeurs / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

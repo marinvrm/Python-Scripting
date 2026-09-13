@@ -1,0 +1,1203 @@
+{
+  "lesson": "Lesson 1",
+  "title": "Les bases de Python",
+  "questions": [
+    {
+      "id": "l1-type-01",
+      "topic": "Types et conversions",
+      "difficulty": 1,
+      "question": "Le typage en Python est dit dynamique. Qu'est-ce que cela implique ?",
+      "options": [
+        "Une variable peut changer de type au cours de l'exécution",
+        "Il faut déclarer le type de chaque variable avant de l'utiliser",
+        "Le type est vérifié à la compilation",
+        "Une variable garde définitivement le type de sa première affectation"
+      ],
+      "answer": 0,
+      "explanation": "x = 5 puis x = \"cinq\" est parfaitement valide : le type suit la valeur, pas la variable."
+    },
+    {
+      "id": "l1-type-02",
+      "topic": "Types et conversions",
+      "difficulty": 1,
+      "question": "Qu'affiche ce code ?",
+      "code": "age: int = 25\nage = \"vingt-cinq\"\nprint(type(age))",
+      "options": [
+        "<class 'str'>",
+        "<class 'int'>",
+        "Une TypeError, car age est annoté int",
+        "Rien, le programme s'arrête"
+      ],
+      "answer": 0,
+      "explanation": "Les type hints sont des indications pour le lecteur et les outils d'analyse. Python ne les fait pas respecter à l'exécution."
+    },
+    {
+      "id": "l1-type-03",
+      "topic": "Types et conversions",
+      "difficulty": 1,
+      "question": "Que renvoie int(3.7) ?",
+      "options": ["3", "4", "3.7", "Une ValueError"],
+      "answer": 0,
+      "explanation": "int() tronque la partie décimale, il n'arrondit pas. Pour arrondir : round(3.7) donne 4."
+    },
+    {
+      "id": "l1-type-04",
+      "topic": "Types et conversions",
+      "difficulty": 2,
+      "question": "Que renvoie int(\"1010\", 2) ?",
+      "options": ["10", "1010", "2", "Une ValueError"],
+      "answer": 0,
+      "explanation": "Le second argument est la base de lecture. \"1010\" lu en binaire vaut 10 en décimal."
+    },
+    {
+      "id": "l1-type-05",
+      "topic": "Types et conversions",
+      "difficulty": 2,
+      "question": "Quelle erreur lève int(\"abc\") ?",
+      "options": [
+        "ValueError",
+        "TypeError",
+        "SyntaxError",
+        "Aucune, elle renvoie None"
+      ],
+      "answer": 0,
+      "explanation": "Le type str est convertible en int, mais cette valeur-là ne représente pas un nombre : c'est une ValueError."
+    },
+    {
+      "id": "l1-type-06",
+      "topic": "Types et conversions",
+      "difficulty": 2,
+      "question": "Quelle erreur lève int([1, 2]) ?",
+      "options": [
+        "TypeError",
+        "ValueError",
+        "IndexError",
+        "Aucune, elle renvoie 2"
+      ],
+      "answer": 0,
+      "explanation": "Une liste n'est pas un type convertible en entier : c'est le type qui est incompatible, donc TypeError."
+    },
+    {
+      "id": "l1-type-07",
+      "topic": "Types et conversions",
+      "difficulty": 2,
+      "question": "Parmi ces expressions, lesquelles valent False ? (plusieurs réponses)",
+      "options": [
+        "bool(0)",
+        "bool([])",
+        "bool(\"\")",
+        "bool(\"False\")"
+      ],
+      "answer": [0, 1, 2],
+      "explanation": "Sont faux : 0, les collections vides et la chaîne vide. Toute chaîne non vide, y compris \"False\", est vraie."
+    },
+    {
+      "id": "l1-ope-01",
+      "topic": "Opérateurs",
+      "difficulty": 1,
+      "question": "Que vaut 10 // 3 ?",
+      "options": ["3", "3.333...", "1", "4"],
+      "answer": 0,
+      "explanation": "// est la division entière (division plancher). 10 / 3 donnerait 3.3333333333333335."
+    },
+    {
+      "id": "l1-ope-02",
+      "topic": "Opérateurs",
+      "difficulty": 1,
+      "question": "Que vaut 10 % 3 ?",
+      "options": ["1", "3", "0", "3.33"],
+      "answer": 0,
+      "explanation": "% est le modulo : le reste de la division entière. Très utilisé pour tester la parité avec n % 2 == 0."
+    },
+    {
+      "id": "l1-ope-03",
+      "topic": "Opérateurs",
+      "difficulty": 2,
+      "question": "Quel est le type du résultat de 10 / 2 ?",
+      "options": ["float", "int", "cela dépend des opérandes", "Decimal"],
+      "answer": 0,
+      "explanation": "L'opérateur / renvoie toujours un float, même quand la division tombe juste : 10 / 2 vaut 5.0."
+    },
+    {
+      "id": "l1-ope-04",
+      "topic": "Opérateurs",
+      "difficulty": 3,
+      "question": "Que vaut -7 // 2 ?",
+      "options": ["-4", "-3", "-3.5", "3"],
+      "answer": 0,
+      "explanation": "// arrondit vers le bas (vers moins l'infini), pas vers zéro. -3.5 devient donc -4."
+    },
+    {
+      "id": "l1-ope-05",
+      "topic": "Opérateurs",
+      "difficulty": 1,
+      "question": "Que vaut 2 ** 3 ?",
+      "options": ["8", "6", "9", "5"],
+      "answer": 0,
+      "explanation": "** est l'exponentiation : 2 puissance 3."
+    },
+    {
+      "id": "l1-ope-06",
+      "topic": "Opérateurs",
+      "difficulty": 1,
+      "question": "À quoi équivaut x += y ?",
+      "options": [
+        "x = x + y",
+        "x = y",
+        "y = x + y",
+        "x = x * y"
+      ],
+      "answer": 0,
+      "explanation": "Les opérateurs d'affectation combinée (+=, -=, *=, //=, %=, **=) appliquent l'opération puis réaffectent."
+    },
+    {
+      "id": "l1-cond-01",
+      "topic": "Conditions",
+      "difficulty": 1,
+      "question": "Quel mot-clé Python correspond au \"else if\" des autres langages ?",
+      "options": ["elif", "elseif", "else if", "elsif"],
+      "answer": 0,
+      "explanation": "L'enchaînement est if / elif / else, et le bloc est délimité par l'indentation."
+    },
+    {
+      "id": "l1-cond-02",
+      "topic": "Conditions",
+      "difficulty": 2,
+      "question": "L'écriture if 0 < a < 10: est-elle valide en Python ?",
+      "options": [
+        "Oui, les comparaisons peuvent être chaînées",
+        "Non, il faut écrire if 0 < a and a < 10",
+        "Oui, mais elle teste seulement 0 < a",
+        "Non, c'est une SyntaxError"
+      ],
+      "answer": 0,
+      "explanation": "Python autorise le chaînage des comparaisons, qui équivaut à 0 < a and a < 10."
+    },
+    {
+      "id": "l1-cond-03",
+      "topic": "Conditions",
+      "difficulty": 2,
+      "question": "Qu'affiche ce code ?",
+      "code": "a = [1, 2, 3]\nb = [1, 2, 3]\nc = a\n\nprint(a == b, a is b, a is c)",
+      "options": [
+        "True False True",
+        "True True True",
+        "False False True",
+        "True False False"
+      ],
+      "answer": 0,
+      "explanation": "== compare les contenus, is compare les identités en mémoire. a et b ont le même contenu mais sont deux objets distincts."
+    },
+    {
+      "id": "l1-cond-04",
+      "topic": "Conditions",
+      "difficulty": 1,
+      "question": "Quelle est la syntaxe correcte d'une condition sur une seule ligne ?",
+      "options": [
+        "resultat = \"pair\" if a % 2 == 0 else \"impair\"",
+        "resultat = if a % 2 == 0 then \"pair\" else \"impair\"",
+        "resultat = a % 2 == 0 ? \"pair\" : \"impair\"",
+        "resultat = \"pair\" when a % 2 == 0 else \"impair\""
+      ],
+      "answer": 0,
+      "explanation": "L'expression conditionnelle s'écrit valeur_si_vrai if condition else valeur_si_faux. Python n'a pas d'opérateur ternaire ? :."
+    },
+    {
+      "id": "l1-cond-05",
+      "topic": "Conditions",
+      "difficulty": 1,
+      "question": "Que vaut l'expression \"and\" in \"le chat and le chien\" ?",
+      "options": [
+        "True, in cherche une sous-chaîne",
+        "False, in ne fonctionne que sur les listes",
+        "True, mais seulement si \"and\" est un mot isolé",
+        "Une TypeError"
+      ],
+      "answer": 0,
+      "explanation": "Sur une chaîne, in teste la présence d'une sous-chaîne, sans notion de mot entier."
+    },
+    {
+      "id": "l1-boucle-01",
+      "topic": "Boucles",
+      "difficulty": 1,
+      "question": "Combien d'itérations fait for i in range(5) et quelle est la première valeur de i ?",
+      "options": [
+        "5 itérations, i commence à 0",
+        "5 itérations, i commence à 1",
+        "4 itérations, i commence à 1",
+        "6 itérations, i commence à 0"
+      ],
+      "answer": 0,
+      "explanation": "Avec un seul argument, range part de 0 et s'arrête avant la borne : 0, 1, 2, 3, 4."
+    },
+    {
+      "id": "l1-boucle-02",
+      "topic": "Boucles",
+      "difficulty": 2,
+      "question": "Quelles valeurs parcourt for i in range(5, 10, 2) ?",
+      "options": [
+        "5, 7, 9",
+        "5, 7, 9, 11",
+        "5, 6, 7, 8, 9, 10",
+        "2, 5, 10"
+      ],
+      "answer": 0,
+      "explanation": "range(début, fin_exclue, pas). La borne 10 n'est jamais atteinte."
+    },
+    {
+      "id": "l1-boucle-03",
+      "topic": "Boucles",
+      "difficulty": 1,
+      "question": "Quelle est la différence entre break et continue ?",
+      "options": [
+        "break sort de la boucle, continue passe à l'itération suivante",
+        "break passe à l'itération suivante, continue sort de la boucle",
+        "Les deux sortent de la boucle, mais break exécute le else",
+        "continue n'existe que dans les boucles while"
+      ],
+      "answer": 0,
+      "explanation": "break interrompt la boucle immédiatement, continue saute la fin du corps et enchaîne sur l'itération suivante."
+    },
+    {
+      "id": "l1-boucle-04",
+      "topic": "Boucles",
+      "difficulty": 3,
+      "question": "Qu'affiche ce code ?",
+      "code": "for i in range(10):\n    if i == 5:\n        break\nelse:\n    print(\"fin\")",
+      "options": [
+        "Rien",
+        "fin",
+        "0 1 2 3 4",
+        "Une SyntaxError : else ne se met pas sur un for"
+      ],
+      "answer": 0,
+      "explanation": "Le bloc else d'une boucle ne s'exécute que si la boucle se termine sans break. Ici le break l'empêche."
+    },
+    {
+      "id": "l1-boucle-05",
+      "topic": "Boucles",
+      "difficulty": 2,
+      "question": "Que produit for lettre in \"abc\" ?",
+      "options": [
+        "Trois itérations, une par caractère",
+        "Une seule itération avec la chaîne complète",
+        "Une TypeError, une chaîne n'est pas itérable",
+        "Trois itérations, sur les index 0, 1 et 2"
+      ],
+      "answer": 0,
+      "explanation": "Une chaîne est un itérable de caractères. Pour obtenir en plus l'index, on utilise enumerate()."
+    },
+    {
+      "id": "l1-liste-01",
+      "topic": "Listes",
+      "difficulty": 1,
+      "question": "Comment obtient-on le nombre d'éléments d'une liste ?",
+      "options": [
+        "len(ma_liste)",
+        "ma_liste.length",
+        "ma_liste.size()",
+        "count(ma_liste)"
+      ],
+      "answer": 0,
+      "explanation": "len() fonctionne aussi sur les chaînes, les dictionnaires, les tuples et les sets."
+    },
+    {
+      "id": "l1-liste-02",
+      "topic": "Listes",
+      "difficulty": 1,
+      "question": "Une liste Python peut-elle contenir des éléments de types différents ?",
+      "options": [
+        "Oui, par exemple [0, \"test\", 1.5, True]",
+        "Non, tous les éléments doivent avoir le même type",
+        "Oui, mais seulement des types numériques",
+        "Oui, mais il faut la déclarer avec list[any]"
+      ],
+      "answer": 0,
+      "explanation": "Une liste est hétérogène : elle stocke des références vers des objets quelconques."
+    },
+    {
+      "id": "l1-liste-03",
+      "topic": "Listes",
+      "difficulty": 1,
+      "question": "Quelle est la différence entre sorted(nombres) et nombres.sort() ?",
+      "options": [
+        "sorted() renvoie une nouvelle liste, .sort() trie sur place et renvoie None",
+        "sorted() trie sur place, .sort() renvoie une nouvelle liste",
+        "Les deux renvoient une nouvelle liste triée",
+        "Les deux trient sur place"
+      ],
+      "answer": 0,
+      "explanation": "Piège classique : x = nombres.sort() met None dans x, car .sort() ne retourne rien."
+    },
+    {
+      "id": "l1-liste-04",
+      "topic": "Listes",
+      "difficulty": 1,
+      "question": "Comment trier une liste par ordre décroissant ?",
+      "options": [
+        "nombres.sort(reverse=True)",
+        "nombres.sort(desc=True)",
+        "nombres.sort(-1)",
+        "nombres.reverse(sort=True)"
+      ],
+      "answer": 0,
+      "explanation": ".reverse() se contente d'inverser l'ordre actuel, sans trier."
+    },
+    {
+      "id": "l1-liste-05",
+      "topic": "Listes",
+      "difficulty": 2,
+      "question": "Quelle est la différence entre .append() et .extend() ?",
+      "options": [
+        "append ajoute un seul élément, extend ajoute chaque élément d'un itérable",
+        "append ajoute au début, extend ajoute à la fin",
+        "Aucune, ce sont deux noms pour la même méthode",
+        "append renvoie la nouvelle liste, extend modifie sur place"
+      ],
+      "answer": 0,
+      "explanation": "nombres.append([1, 2]) ajoute la liste comme un seul élément (une sous-liste), alors que .extend([1, 2]) ajoute 1 puis 2."
+    },
+    {
+      "id": "l1-liste-06",
+      "topic": "Listes",
+      "difficulty": 2,
+      "question": "Qu'affiche ce code ?",
+      "code": "lst = [1, 2, 3]\nlst.append([4, 5])\nprint(len(lst))",
+      "options": ["4", "5", "3", "2"],
+      "answer": 0,
+      "explanation": "La liste [4, 5] devient un unique élément : lst vaut [1, 2, 3, [4, 5]]."
+    },
+    {
+      "id": "l1-liste-07",
+      "topic": "Listes",
+      "difficulty": 2,
+      "question": "Que fait .pop(2) sur une liste ?",
+      "options": [
+        "Supprime l'élément d'index 2 et le renvoie",
+        "Supprime la valeur 2 et renvoie True",
+        "Supprime les 2 derniers éléments",
+        "Renvoie l'élément d'index 2 sans le supprimer"
+      ],
+      "answer": 0,
+      "explanation": "Sans argument, .pop() retire et renvoie le dernier élément. Si l'index n'existe pas : IndexError."
+    },
+    {
+      "id": "l1-liste-08",
+      "topic": "Listes",
+      "difficulty": 2,
+      "question": "Que se passe-t-il si on appelle fruits.remove(\"kiwi\") alors que \"kiwi\" n'est pas dans la liste ?",
+      "options": [
+        "Une ValueError est levée",
+        "Rien, la liste reste inchangée",
+        "Une IndexError est levée",
+        "La méthode renvoie False"
+      ],
+      "answer": 0,
+      "explanation": ".remove() supprime la première occurrence de la valeur, et lève ValueError si elle est absente."
+    },
+    {
+      "id": "l1-liste-09",
+      "topic": "Listes",
+      "difficulty": 2,
+      "question": "Que renvoie .index(valeur) et que se passe-t-il si la valeur est absente ?",
+      "options": [
+        "Le premier index de la valeur, ValueError si absente",
+        "Tous les index de la valeur, une liste vide si absente",
+        "Le premier index de la valeur, -1 si absente",
+        "Le nombre d'occurrences, 0 si absente"
+      ],
+      "answer": 0,
+      "explanation": "C'est .count(valeur) qui renvoie le nombre d'occurrences, et 0 si la valeur est absente."
+    },
+    {
+      "id": "l1-liste-10",
+      "topic": "Listes",
+      "difficulty": 2,
+      "question": "Qu'affiche ce code ?",
+      "code": "personne = ['Homer', 'Simpson']\nprenom, nom = personne\nprint(nom)",
+      "options": [
+        "Simpson",
+        "Homer",
+        "['Homer', 'Simpson']",
+        "Une erreur : on ne peut unpacker qu'un tuple"
+      ],
+      "answer": 0,
+      "explanation": "L'unpacking répartit les éléments dans l'ordre. Il faut autant de variables que d'éléments, sinon ValueError."
+    },
+    {
+      "id": "l1-liste-11",
+      "topic": "Listes",
+      "difficulty": 2,
+      "question": "Que vaut [x ** 2 for x in range(10) if x % 2 != 0] ?",
+      "options": [
+        "[1, 9, 25, 49, 81]",
+        "[0, 4, 16, 36, 64]",
+        "[1, 3, 5, 7, 9]",
+        "[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]"
+      ],
+      "answer": 0,
+      "explanation": "La condition filtre les impairs (1, 3, 5, 7, 9), l'expression les met au carré."
+    },
+    {
+      "id": "l1-liste-12",
+      "topic": "Listes",
+      "difficulty": 1,
+      "question": "Que renvoie enumerate(fruits) à chaque itération ?",
+      "options": [
+        "Un couple (index, valeur)",
+        "Seulement la valeur",
+        "Seulement l'index",
+        "Un couple (valeur, index)"
+      ],
+      "answer": 0,
+      "explanation": "for index, fruit in enumerate(fruits) remplace avantageusement for i in range(len(fruits))."
+    },
+    {
+      "id": "l1-liste-13",
+      "topic": "Listes",
+      "difficulty": 2,
+      "question": "Que fait zip() lorsque les listes passées n'ont pas la même longueur ?",
+      "options": [
+        "Il s'arrête à la plus courte",
+        "Il complète la plus courte avec None",
+        "Il lève une ValueError",
+        "Il continue jusqu'à la plus longue"
+      ],
+      "answer": 0,
+      "explanation": "Les éléments en trop de la liste la plus longue sont simplement ignorés."
+    },
+    {
+      "id": "l1-slice-01",
+      "topic": "Slicing",
+      "difficulty": 1,
+      "question": "Que vaut nombres[1:4] pour nombres = [0, 1, 2, 3, 4, 5] ?",
+      "options": [
+        "[1, 2, 3]",
+        "[1, 2, 3, 4]",
+        "[0, 1, 2, 3]",
+        "[2, 3, 4]"
+      ],
+      "answer": 0,
+      "explanation": "La syntaxe est [début:fin_exclue:pas] : l'index de fin n'est jamais inclus."
+    },
+    {
+      "id": "l1-slice-02",
+      "topic": "Slicing",
+      "difficulty": 1,
+      "question": "Que fait nombres[::-1] ?",
+      "options": [
+        "Renvoie une copie inversée de la liste",
+        "Supprime le dernier élément",
+        "Inverse la liste sur place",
+        "Renvoie le dernier élément"
+      ],
+      "answer": 0,
+      "explanation": "Un pas négatif parcourt la liste à l'envers. La liste d'origine n'est pas modifiée."
+    },
+    {
+      "id": "l1-slice-03",
+      "topic": "Slicing",
+      "difficulty": 3,
+      "question": "Que vaut nombres[::-2] pour nombres = [0, 1, 2, 3, 4, 5] ?",
+      "options": [
+        "[5, 3, 1]",
+        "[0, 2, 4]",
+        "[4, 2, 0]",
+        "[5, 4, 3, 2, 1, 0]"
+      ],
+      "answer": 0,
+      "explanation": "On part de la fin et on saute un élément sur deux : 5, puis 3, puis 1."
+    },
+    {
+      "id": "l1-slice-04",
+      "topic": "Slicing",
+      "difficulty": 2,
+      "question": "Qu'affiche ce code ?",
+      "code": "nombres = [0, 1, 2, 3, 4, 5]\nnombres[1:4] = []\nprint(nombres)",
+      "options": [
+        "[0, 4, 5]",
+        "[0, 1, 2, 3, 4, 5]",
+        "[]",
+        "[1, 2, 3]"
+      ],
+      "answer": 0,
+      "explanation": "Affecter une liste vide à une tranche supprime les éléments de cette tranche."
+    },
+    {
+      "id": "l1-slice-05",
+      "topic": "Slicing",
+      "difficulty": 2,
+      "question": "Que produit copie = nombres[:] ?",
+      "options": [
+        "Une copie superficielle de la liste",
+        "Une simple référence vers la même liste",
+        "Une copie profonde de tous les éléments imbriqués",
+        "Une liste vide"
+      ],
+      "answer": 0,
+      "explanation": "Le slicing crée une nouvelle liste : modifier copie ne modifie pas nombres. En revanche les sous-listes, elles, restent partagées."
+    },
+    {
+      "id": "l1-str-01",
+      "topic": "Chaînes de caractères",
+      "difficulty": 1,
+      "question": "Que fait \"a,b,c\".split(\",\") ?",
+      "options": [
+        "Renvoie la liste ['a', 'b', 'c']",
+        "Renvoie la chaîne 'a b c'",
+        "Renvoie le tuple ('a', 'b', 'c')",
+        "Renvoie ['a,b,c']"
+      ],
+      "answer": 0,
+      "explanation": "split() découpe une chaîne selon un séparateur et renvoie une liste de chaînes."
+    },
+    {
+      "id": "l1-str-02",
+      "topic": "Chaînes de caractères",
+      "difficulty": 2,
+      "question": "Quel est le séparateur par défaut de split(), sans argument ?",
+      "options": [
+        "N'importe quelle suite d'espaces blancs (espaces, tabulations, retours à la ligne)",
+        "L'espace simple uniquement",
+        "La virgule",
+        "Le retour à la ligne uniquement"
+      ],
+      "answer": 0,
+      "explanation": "Par défaut, split() gère aussi \\t et \\n, et ignore les espaces en trop au début et à la fin."
+    },
+    {
+      "id": "l1-str-03",
+      "topic": "Chaînes de caractères",
+      "difficulty": 3,
+      "question": "Combien d'éléments contient le résultat de ce code ?",
+      "code": "log = \"2026-09-08 ERROR Service indisponible en production\"\nchamps = log.split(\" \", maxsplit=2)",
+      "options": ["3", "6", "2", "5"],
+      "answer": 0,
+      "explanation": "maxsplit limite le nombre de découpages : après 2 découpages, tout le reste tient dans le dernier élément."
+    },
+    {
+      "id": "l1-str-04",
+      "topic": "Chaînes de caractères",
+      "difficulty": 2,
+      "question": "Que fait \"-\".join(mots) ?",
+      "options": [
+        "Assemble les éléments de mots en une chaîne séparée par des tirets",
+        "Découpe la chaîne mots sur les tirets",
+        "Ajoute un tiret à la fin de chaque mot",
+        "Remplace les espaces de mots par des tirets"
+      ],
+      "answer": 0,
+      "explanation": "join() est l'opération inverse de split(). Le séparateur est la chaîne sur laquelle on appelle la méthode."
+    },
+    {
+      "id": "l1-str-05",
+      "topic": "Chaînes de caractères",
+      "difficulty": 2,
+      "question": "Qu'affiche ce code ?",
+      "code": "mot = \"hello\"\nmot.replace(\"l\", \"x\")\nprint(mot)",
+      "options": [
+        "hello",
+        "hexxo",
+        "None",
+        "hexo"
+      ],
+      "answer": 0,
+      "explanation": "Les chaînes sont immuables : replace() renvoie une nouvelle chaîne. Il faut écrire mot = mot.replace(\"l\", \"x\")."
+    },
+    {
+      "id": "l1-str-06",
+      "topic": "Chaînes de caractères",
+      "difficulty": 2,
+      "question": "À quoi sert .strip() lorsqu'on lit un fichier ligne par ligne ?",
+      "options": [
+        "À retirer les espaces et le retour à la ligne en début et fin de chaîne",
+        "À découper la ligne en colonnes",
+        "À convertir la ligne en minuscules",
+        "À supprimer tous les espaces de la chaîne"
+      ],
+      "answer": 0,
+      "explanation": "Chaque ligne lue se termine par \\n. Pour supprimer tous les espaces, y compris au milieu, il faudrait replace(\" \", \"\")."
+    },
+    {
+      "id": "l1-dict-01",
+      "topic": "Dictionnaires",
+      "difficulty": 1,
+      "question": "Comment ajoute-t-on la clé \"ville\" au dictionnaire personne ?",
+      "options": [
+        "personne[\"ville\"] = \"Paris\"",
+        "personne.add(\"ville\", \"Paris\")",
+        "personne.append(\"ville\", \"Paris\")",
+        "personne.insert(\"ville\", \"Paris\")"
+      ],
+      "answer": 0,
+      "explanation": "La même syntaxe sert à modifier une clé existante et à en créer une nouvelle."
+    },
+    {
+      "id": "l1-dict-02",
+      "topic": "Dictionnaires",
+      "difficulty": 1,
+      "question": "Quelle méthode permet de boucler sur les couples clé / valeur d'un dictionnaire ?",
+      "options": [
+        ".items()",
+        ".keys()",
+        ".values()",
+        ".pairs()"
+      ],
+      "answer": 0,
+      "explanation": "for cle, valeur in personne.items(). .keys() ne donne que les clés, .values() que les valeurs."
+    },
+    {
+      "id": "l1-dict-03",
+      "topic": "Dictionnaires",
+      "difficulty": 2,
+      "question": "Que vaut {x: x**2 for x in range(5)} ?",
+      "options": [
+        "{0: 0, 1: 1, 2: 4, 3: 9, 4: 16}",
+        "[0, 1, 4, 9, 16]",
+        "{0, 1, 4, 9, 16}",
+        "{0: 0, 1: 1, 2: 4, 3: 9, 4: 16, 5: 25}"
+      ],
+      "answer": 0,
+      "explanation": "C'est une compréhension de dictionnaire : la clé est avant les deux-points, la valeur après."
+    },
+    {
+      "id": "l1-dict-04",
+      "topic": "Dictionnaires",
+      "difficulty": 2,
+      "question": "Que renvoie compteur.get(\"mot\", 0) si la clé \"mot\" n'existe pas ?",
+      "options": [
+        "0",
+        "None",
+        "Une KeyError",
+        "Une chaîne vide"
+      ],
+      "answer": 0,
+      "explanation": "Le second argument est la valeur par défaut. C'est ce qui permet d'écrire compteur[mot] = compteur.get(mot, 0) + 1 sans if."
+    },
+    {
+      "id": "l1-dict-05",
+      "topic": "Dictionnaires",
+      "difficulty": 3,
+      "question": "Que fait resultat.setdefault(valeur, []).append(cle) ?",
+      "options": [
+        "Crée une liste vide si la clé est absente, puis ajoute cle à cette liste",
+        "Remplace systématiquement la valeur par une liste contenant cle",
+        "Ajoute cle uniquement si la clé existe déjà",
+        "Lève une KeyError si la clé est absente"
+      ],
+      "answer": 0,
+      "explanation": "setdefault renvoie la valeur existante, ou l'initialise puis la renvoie. C'est le motif classique pour grouper des éléments."
+    },
+    {
+      "id": "l1-tuple-01",
+      "topic": "Tuples et ensembles",
+      "difficulty": 1,
+      "question": "Quelle est la caractéristique principale d'un tuple ?",
+      "options": [
+        "Il est immuable : on ne peut ni modifier, ni ajouter, ni supprimer d'élément",
+        "Il ne peut contenir que des nombres",
+        "Il supprime automatiquement les doublons",
+        "Il n'est pas ordonné"
+      ],
+      "answer": 0,
+      "explanation": "C'est cette immuabilité qui lui permet de servir de clé de dictionnaire ou d'élément d'un set."
+    },
+    {
+      "id": "l1-tuple-02",
+      "topic": "Tuples et ensembles",
+      "difficulty": 2,
+      "question": "Quel est le type de la valeur renvoyée par cette fonction ?",
+      "code": "def min_max(lst):\n    return min(lst), max(lst)\n\nresultat = min_max([1, 2, 3])",
+      "options": ["tuple", "list", "set", "dict"],
+      "answer": 0,
+      "explanation": "Une fonction qui renvoie plusieurs valeurs séparées par des virgules renvoie en réalité un tuple, que l'on peut unpacker."
+    },
+    {
+      "id": "l1-tuple-03",
+      "topic": "Tuples et ensembles",
+      "difficulty": 2,
+      "question": "Que vaut len(set([1, 1, 2, 2, 3])) ?",
+      "options": ["3", "5", "2", "1"],
+      "answer": 0,
+      "explanation": "Un set est une collection non ordonnée sans doublon : il ne reste que 1, 2 et 3."
+    },
+    {
+      "id": "l1-tuple-04",
+      "topic": "Tuples et ensembles",
+      "difficulty": 3,
+      "question": "Pourquoi une liste ne peut-elle pas servir de clé de dictionnaire ?",
+      "options": [
+        "Parce qu'elle est mutable, donc non hachable",
+        "Parce qu'elle peut contenir plusieurs types",
+        "Parce qu'elle peut être vide",
+        "C'est faux, une liste peut servir de clé"
+      ],
+      "answer": 0,
+      "explanation": "Il faut la convertir en tuple avec tuple(ma_liste) pour la figer et pouvoir l'utiliser comme clé."
+    },
+    {
+      "id": "l1-conv-01",
+      "topic": "Tuples et ensembles",
+      "difficulty": 2,
+      "question": "Que vaut dict(zip([\"nom\", \"age\", \"ville\"], [\"Alice\", 30])) ?",
+      "options": [
+        "{'nom': 'Alice', 'age': 30}",
+        "{'nom': 'Alice', 'age': 30, 'ville': None}",
+        "Une ValueError, les longueurs diffèrent",
+        "{'nom': 'Alice', 'age': 30, 'ville': ''}"
+      ],
+      "answer": 0,
+      "explanation": "zip s'arrête à la séquence la plus courte : la clé \"ville\" n'a pas de valeur et disparaît silencieusement."
+    },
+    {
+      "id": "l1-conv-02",
+      "topic": "Tuples et ensembles",
+      "difficulty": 2,
+      "question": "Que contient list(mon_dict.items()) ?",
+      "options": [
+        "Une liste de tuples (clé, valeur)",
+        "Une liste des clés",
+        "Une liste des valeurs",
+        "Une liste de dictionnaires à une clé"
+      ],
+      "answer": 0,
+      "explanation": "L'opération inverse fonctionne aussi : dict([(\"nom\", \"Alice\"), (\"age\", 30)]) reconstruit le dictionnaire."
+    },
+    {
+      "id": "l1-mat-01",
+      "topic": "Matrices",
+      "difficulty": 1,
+      "question": "Pour une matrice représentée par une liste de listes, comment obtient-on le nombre de colonnes ?",
+      "options": [
+        "len(matrice[0])",
+        "len(matrice)",
+        "matrice.columns",
+        "len(matrice) * len(matrice[0])"
+      ],
+      "answer": 0,
+      "explanation": "len(matrice) donne le nombre de lignes. Attention : rien n'oblige les lignes à avoir toutes la même longueur."
+    },
+    {
+      "id": "l1-mat-02",
+      "topic": "Matrices",
+      "difficulty": 2,
+      "question": "Que vaut [ligne[1] for ligne in matrice] pour matrice = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] ?",
+      "options": [
+        "[2, 5, 8]",
+        "[4, 5, 6]",
+        "[1, 4, 7]",
+        "[[2], [5], [8]]"
+      ],
+      "answer": 0,
+      "explanation": "On extrait l'élément d'index 1 de chaque ligne, c'est-à-dire la deuxième colonne."
+    },
+    {
+      "id": "l1-mat-03",
+      "topic": "Matrices",
+      "difficulty": 3,
+      "question": "Que fait [list(colonne) for colonne in zip(*matrice)] ?",
+      "options": [
+        "Il transpose la matrice",
+        "Il aplatit la matrice en une seule liste",
+        "Il trie chaque ligne de la matrice",
+        "Il additionne les lignes entre elles"
+      ],
+      "answer": 0,
+      "explanation": "Le * décompresse les lignes en arguments de zip, qui les regroupe alors colonne par colonne."
+    },
+    {
+      "id": "l1-mat-04",
+      "topic": "Matrices",
+      "difficulty": 3,
+      "question": "Qu'affiche ce code ?",
+      "code": "matrice = [[0] * 3] * 3\nmatrice[0][0] = 1\nprint(matrice)",
+      "options": [
+        "[[1, 0, 0], [1, 0, 0], [1, 0, 0]]",
+        "[[1, 0, 0], [0, 0, 0], [0, 0, 0]]",
+        "[[1, 1, 1], [0, 0, 0], [0, 0, 0]]",
+        "Une IndexError"
+      ],
+      "answer": 0,
+      "explanation": "* 3 duplique la référence, pas la liste : les trois lignes sont le même objet. Il faut écrire [[0] * 3 for _ in range(3)]."
+    },
+    {
+      "id": "l1-func-01",
+      "topic": "Fonctions",
+      "difficulty": 1,
+      "question": "Que renvoie une fonction qui ne contient pas d'instruction return ?",
+      "options": ["None", "0", "False", "Une chaîne vide"],
+      "answer": 0,
+      "explanation": "C'est le cas de nombreuses méthodes qui modifient sur place, comme liste.sort() ou liste.append()."
+    },
+    {
+      "id": "l1-func-02",
+      "topic": "Fonctions",
+      "difficulty": 1,
+      "question": "Que permet d'écrire def saluer(nom, message=\"Bonjour\") ?",
+      "options": [
+        "Appeler saluer(\"Bob\") sans préciser message",
+        "Appeler saluer() sans aucun argument",
+        "Rendre message obligatoire",
+        "Forcer message à toujours valoir \"Bonjour\""
+      ],
+      "answer": 0,
+      "explanation": "Un paramètre avec valeur par défaut devient optionnel. Les paramètres par défaut doivent être placés après ceux sans défaut."
+    },
+    {
+      "id": "l1-func-03",
+      "topic": "Fonctions",
+      "difficulty": 2,
+      "question": "Dans def total(*nombres), quel est le type de nombres à l'intérieur de la fonction ?",
+      "options": ["tuple", "list", "dict", "set"],
+      "answer": 0,
+      "explanation": "*args regroupe les arguments positionnels dans un tuple. **kwargs, lui, regroupe les arguments nommés dans un dictionnaire."
+    },
+    {
+      "id": "l1-func-04",
+      "topic": "Fonctions",
+      "difficulty": 2,
+      "question": "Dans def info(**donnees), quel est le type de donnees ?",
+      "options": ["dict", "tuple", "list", "set"],
+      "answer": 0,
+      "explanation": "Les arguments nommés deviennent des couples clé / valeur, parcourus avec donnees.items()."
+    },
+    {
+      "id": "l1-func-05",
+      "topic": "Fonctions",
+      "difficulty": 2,
+      "question": "Qu'affiche ce code ?",
+      "code": "x = 10\n\ndef modifier():\n    x = 20\n\nmodifier()\nprint(x)",
+      "options": ["10", "20", "None", "Une UnboundLocalError"],
+      "answer": 0,
+      "explanation": "L'affectation dans la fonction crée une variable locale qui masque la globale. Il faudrait le mot-clé global pour modifier x."
+    },
+    {
+      "id": "l1-func-06",
+      "topic": "Fonctions",
+      "difficulty": 2,
+      "question": "Que se passe-t-il si une fonction annotée -> int renvoie en réalité un float ?",
+      "options": [
+        "Rien, les annotations ne sont pas vérifiées à l'exécution",
+        "Une TypeError est levée",
+        "La valeur est automatiquement convertie en int",
+        "Un avertissement est affiché"
+      ],
+      "answer": 0,
+      "explanation": "Les annotations sont purement indicatives. Seul un outil externe comme mypy peut les faire respecter."
+    },
+    {
+      "id": "l1-lambda-01",
+      "topic": "Lambda, map, filter",
+      "difficulty": 1,
+      "question": "Quelle est la syntaxe correcte d'une lambda qui met un nombre au carré ?",
+      "options": [
+        "lambda x: x * x",
+        "lambda x -> x * x",
+        "lambda(x) { return x * x }",
+        "lambda x: return x * x"
+      ],
+      "answer": 0,
+      "explanation": "Une lambda est une fonction anonyme d'une seule expression : la valeur de l'expression est renvoyée implicitement."
+    },
+    {
+      "id": "l1-lambda-02",
+      "topic": "Lambda, map, filter",
+      "difficulty": 2,
+      "question": "Qu'affiche print(map(lambda x: x ** 2, [1, 2, 3])) ?",
+      "options": [
+        "Un objet map, pas la liste des résultats",
+        "[1, 4, 9]",
+        "(1, 4, 9)",
+        "Une TypeError"
+      ],
+      "answer": 0,
+      "explanation": "map() renvoie un itérateur paresseux. Il faut l'entourer de list() pour obtenir les valeurs."
+    },
+    {
+      "id": "l1-lambda-03",
+      "topic": "Lambda, map, filter",
+      "difficulty": 2,
+      "question": "Que fait list(filter(lambda x: x % 2 == 0, nombres)) ?",
+      "options": [
+        "Garde uniquement les nombres pairs",
+        "Remplace les nombres impairs par 0",
+        "Renvoie True si tous les nombres sont pairs",
+        "Compte les nombres pairs"
+      ],
+      "answer": 0,
+      "explanation": "filter garde les éléments pour lesquels la fonction renvoie True. En pratique, la compréhension de liste est souvent plus lisible."
+    },
+    {
+      "id": "l1-lambda-04",
+      "topic": "Lambda, map, filter",
+      "difficulty": 3,
+      "question": "Comment trier une liste de dictionnaires par la clé \"note\", du plus grand au plus petit ?",
+      "options": [
+        "sorted(eleves, key=lambda e: e[\"note\"], reverse=True)",
+        "sorted(eleves, \"note\", reverse=True)",
+        "sorted(eleves, key=\"note\", desc=True)",
+        "eleves.sort(lambda e: e[\"note\"])"
+      ],
+      "answer": 0,
+      "explanation": "key reçoit une fonction appliquée à chaque élément pour produire la valeur de comparaison."
+    },
+    {
+      "id": "l1-err-01",
+      "topic": "Exceptions",
+      "difficulty": 1,
+      "question": "Quel bloc s'exécute systématiquement, qu'une exception soit levée ou non ?",
+      "options": ["finally", "else", "except", "try"],
+      "answer": 0,
+      "explanation": "finally sert à libérer les ressources. else, lui, ne s'exécute que si aucune exception n'a été levée."
+    },
+    {
+      "id": "l1-err-02",
+      "topic": "Exceptions",
+      "difficulty": 2,
+      "question": "Qu'affiche ce code ?",
+      "code": "try:\n    resultat = 10 / 0\nexcept ZeroDivisionError:\n    print(\"A\")\nelse:\n    print(\"B\")\nfinally:\n    print(\"C\")",
+      "options": [
+        "A puis C",
+        "A puis B puis C",
+        "A seulement",
+        "B puis C"
+      ],
+      "answer": 0,
+      "explanation": "L'exception est attrapée (A), donc le bloc else est ignoré, et finally s'exécute toujours (C)."
+    },
+    {
+      "id": "l1-err-03",
+      "topic": "Exceptions",
+      "difficulty": 1,
+      "question": "Comment récupérer le message d'une exception attrapée ?",
+      "options": [
+        "except Exception as e: print(e)",
+        "except Exception: print(Exception.message)",
+        "except Exception -> e: print(e)",
+        "catch (Exception e) { print(e) }"
+      ],
+      "answer": 0,
+      "explanation": "as lie l'objet exception à une variable. Attraper Exception se place en dernier, après les cas spécifiques."
+    },
+    {
+      "id": "l1-err-04",
+      "topic": "Exceptions",
+      "difficulty": 2,
+      "question": "Que fait raise ValueError(\"L'âge ne peut pas être négatif\") ?",
+      "options": [
+        "Lève volontairement une exception avec ce message",
+        "Affiche le message sans interrompre le programme",
+        "Attrape une ValueError existante",
+        "Définit un nouveau type d'exception"
+      ],
+      "answer": 0,
+      "explanation": "raise interrompt l'exécution et remonte l'exception jusqu'au premier bloc except capable de la traiter."
+    },
+    {
+      "id": "l1-print-01",
+      "topic": "Affichage et fichiers",
+      "difficulty": 1,
+      "question": "Qu'affiche print(1, 2, 3, sep=\"---\") ?",
+      "options": [
+        "1---2---3",
+        "1 2 3---",
+        "123",
+        "1 --- 2 --- 3"
+      ],
+      "answer": 0,
+      "explanation": "sep remplace le séparateur entre les valeurs (espace par défaut). end, lui, remplace le saut de ligne final."
+    },
+    {
+      "id": "l1-print-02",
+      "topic": "Affichage et fichiers",
+      "difficulty": 2,
+      "question": "Qu'affiche ce code ?",
+      "code": "age = 25\nprint(f\"{age:03d}\")",
+      "options": ["025", "25", "250", "03d"],
+      "answer": 0,
+      "explanation": "Le format 03d complète avec des zéros jusqu'à une largeur de 3 caractères."
+    },
+    {
+      "id": "l1-print-03",
+      "topic": "Affichage et fichiers",
+      "difficulty": 2,
+      "question": "Que fait f\"{nom:>10}\" ?",
+      "options": [
+        "Aligne nom à droite sur une largeur de 10 caractères",
+        "Aligne nom à gauche sur une largeur de 10 caractères",
+        "Tronque nom à 10 caractères",
+        "Compare nom à 10"
+      ],
+      "answer": 0,
+      "explanation": "> aligne à droite, < à gauche et ^ centre. Le nombre indique la largeur totale du champ."
+    },
+    {
+      "id": "l1-file-01",
+      "topic": "Affichage et fichiers",
+      "difficulty": 1,
+      "question": "Pourquoi ouvre-t-on un fichier avec with open(...) as f: ?",
+      "options": [
+        "Le fichier est fermé automatiquement, même en cas d'erreur",
+        "C'est la seule syntaxe qui permet d'écrire dans un fichier",
+        "Cela rend la lecture plus rapide",
+        "Cela crée le fichier s'il n'existe pas"
+      ],
+      "answer": 0,
+      "explanation": "with est le gestionnaire de contexte : il garantit la libération de la ressource (fichier, socket, connexion) à la sortie du bloc."
+    },
+    {
+      "id": "l1-file-02",
+      "topic": "Affichage et fichiers",
+      "difficulty": 2,
+      "question": "Que fait le mode \"w\" de open() sur un fichier qui existe déjà ?",
+      "options": [
+        "Il écrase entièrement son contenu",
+        "Il ajoute à la fin du fichier",
+        "Il lève une FileExistsError",
+        "Il ouvre le fichier en lecture seule"
+      ],
+      "answer": 0,
+      "explanation": "Pour ajouter à la suite sans effacer, il faut le mode \"a\". Le mode \"r\" ouvre en lecture."
+    },
+    {
+      "id": "l1-file-03",
+      "topic": "Affichage et fichiers",
+      "difficulty": 2,
+      "question": "Pourquoi préfère-t-on for ligne in f: à f.readlines() sur un gros fichier ?",
+      "options": [
+        "Parce qu'on lit une ligne à la fois sans charger tout le fichier en mémoire",
+        "Parce que readlines() ne fonctionne pas avec with",
+        "Parce que readlines() ne gère pas l'encodage",
+        "Parce que readlines() supprime les retours à la ligne"
+      ],
+      "answer": 0,
+      "explanation": "readlines() construit une liste contenant tout le fichier. L'itération directe est paresseuse et économise la mémoire."
+    },
+    {
+      "id": "l1-main-01",
+      "topic": "Affichage et fichiers",
+      "difficulty": 2,
+      "question": "À quoi sert if __name__ == \"__main__\": ?",
+      "options": [
+        "À n'exécuter du code que si le fichier est lancé directement, pas s'il est importé",
+        "À déclarer la fonction principale obligatoire de tout programme Python",
+        "À vérifier que le fichier s'appelle main.py",
+        "À rendre le script exécutable"
+      ],
+      "answer": 0,
+      "explanation": "__name__ vaut \"__main__\" dans le script lancé, et le nom du module quand il est importé."
+    },
+    {
+      "id": "l1-ex-01",
+      "topic": "Exercices",
+      "difficulty": 2,
+      "question": "Quel est l'inconvénient de list(set(nombres)) pour supprimer les doublons ?",
+      "options": [
+        "L'ordre d'apparition d'origine n'est pas conservé",
+        "Les doublons ne sont pas tous supprimés",
+        "Cela lève une erreur sur les listes de chaînes",
+        "Le résultat est un set, pas une liste"
+      ],
+      "answer": 0,
+      "explanation": "Pour dédoublonner en conservant l'ordre : list(dict.fromkeys(nombres)), les dictionnaires étant ordonnés depuis Python 3.7."
+    },
+    {
+      "id": "l1-ex-02",
+      "topic": "Exercices",
+      "difficulty": 3,
+      "question": "Que vérifie all(a < b for a, b in zip(items, items[1:])) ?",
+      "options": [
+        "Que la liste est strictement croissante",
+        "Que la liste est triée dans l'ordre décroissant",
+        "Que la liste ne contient aucun doublon",
+        "Que la liste contient au moins deux éléments"
+      ],
+      "answer": 0,
+      "explanation": "zip(items, items[1:]) forme les couples d'éléments consécutifs. Avec <= au lieu de <, on testerait la croissance au sens large."
+    },
+    {
+      "id": "l1-ex-03",
+      "topic": "Exercices",
+      "difficulty": 3,
+      "question": "Pourquoi écrit-on len(mot) > 5 and mot[0] in VOYELLES plutôt que l'inverse ?",
+      "options": [
+        "Le court-circuit du and évite d'évaluer mot[0], ce qui protège des chaînes vides",
+        "Parce que l'ordre des tests d'un and est imposé par Python",
+        "Parce que in ne fonctionne pas sur un set",
+        "Aucune raison, les deux écritures sont strictement équivalentes"
+      ],
+      "answer": 0,
+      "explanation": "and n'évalue le membre de droite que si celui de gauche est vrai. Sur une chaîne vide, mot[0] lèverait une IndexError."
+    },
+    {
+      "id": "l1-ex-04",
+      "topic": "Exercices",
+      "difficulty": 2,
+      "question": "Que renvoie count_words(\"hello world hello\") ?",
+      "options": [
+        "{'hello': 2, 'world': 1}",
+        "{'hello': 1, 'world': 1}",
+        "['hello', 'world', 'hello']",
+        "{'hello', 'world'}"
+      ],
+      "answer": 0,
+      "explanation": "On compte les occurrences de chaque mot. Sans nettoyage préalable, \"Hello\" et \"hello,\" compteraient pour des mots différents."
+    },
+    {
+      "id": "l1-ex-05",
+      "topic": "Exercices",
+      "difficulty": 2,
+      "question": "Quelle compréhension inverse un dictionnaire dont les valeurs sont uniques ?",
+      "options": [
+        "{valeur: cle for cle, valeur in d.items()}",
+        "{cle: valeur for valeur, cle in d.items()}",
+        "{cle: valeur for cle, valeur in d.items()}",
+        "[valeur for cle, valeur in d.items()]"
+      ],
+      "answer": 0,
+      "explanation": "Si les valeurs ne sont pas uniques, la dernière paire rencontrée écrase les précédentes et de l'information est perdue."
+    },
+    {
+      "id": "l1-ex-06",
+      "topic": "Exercices",
+      "difficulty": 3,
+      "question": "Dans la version récursive de Fibonacci, à quoi sert le dictionnaire cache ?",
+      "options": [
+        "À mémoriser les valeurs déjà calculées pour ne les calculer qu'une fois",
+        "À stocker le résultat final uniquement",
+        "À limiter la profondeur de récursion autorisée",
+        "À convertir le résultat en liste"
+      ],
+      "answer": 0,
+      "explanation": "C'est la mémoïsation : elle fait passer le nombre d'appels d'exponentiel à linéaire."
+    },
+    {
+      "id": "l1-ex-07",
+      "topic": "Exercices",
+      "difficulty": 3,
+      "question": "Pourquoi la moyenne d'une classe n'est-elle pas la moyenne des moyennes de ses élèves ?",
+      "options": [
+        "Parce que les élèves n'ont pas forcément le même nombre de notes",
+        "Parce que la division entière fausse le calcul",
+        "Parce que les moyennes des élèves sont arrondies",
+        "C'est faux, les deux calculs donnent toujours le même résultat"
+      ],
+      "answer": 0,
+      "explanation": "Il faut mettre toutes les notes de la classe à plat avant de calculer. Les deux calculs coïncident seulement si chacun a autant de notes."
+    },
+    {
+      "id": "l1-ex-08",
+      "topic": "Exercices",
+      "difficulty": 2,
+      "question": "Comment protéger une fonction moyenne(notes) d'une division par zéro ?",
+      "options": [
+        "En renvoyant None si la liste est vide, avant de diviser",
+        "En utilisant // au lieu de /",
+        "En ajoutant 1 au dénominateur",
+        "Ce n'est pas nécessaire, Python renvoie 0 automatiquement"
+      ],
+      "answer": 0,
+      "explanation": "sum([]) / len([]) lève une ZeroDivisionError. Un test if not notes: return None traite le cas limite explicitement."
+    }
+  ]
+}
