@@ -1,0 +1,1019 @@
+{
+  "lesson": "Lesson 2",
+  "title": "Object Oriented Programming",
+  "exam_style": true,
+  "max_answers": 2,
+  "options_per_question": 6,
+  "questions": [
+    {
+      "id": "l2-cls-01",
+      "topic": "Classes and objects",
+      "difficulty": 1,
+      "question": "Which of these statements about classes and objects are true?",
+      "options": [
+        "A class is a template; an object is a concrete instance of it",
+        "Several objects can be created from a single class",
+        "A class is an instance of an object",
+        "A class can only be instantiated once",
+        "Defining a class automatically creates one object",
+        "A class and an object are two words for the same thing"
+      ],
+      "answer": [0, 1],
+      "explanation": "The class describes attributes and behaviour; each object is a separate concrete entity built from that template."
+    },
+    {
+      "id": "l2-cls-02",
+      "topic": "Classes and objects",
+      "difficulty": 1,
+      "question": "What does type(dog).__name__ return?",
+      "code": "class Dog:\n    def __init__(self, name):\n        self.name = name\n\ndog = Dog(\"Rex\")",
+      "options": [
+        "'Dog'",
+        "'dog'",
+        "'Rex'",
+        "'<class Dog>'",
+        "'type'",
+        "'object'"
+      ],
+      "answer": 0,
+      "explanation": "type(obj) gives the class, and __name__ gives its name as a string. Useful inside a generic __repr__."
+    },
+    {
+      "id": "l2-cls-03",
+      "topic": "Classes and objects",
+      "difficulty": 2,
+      "question": "Which statements about class attributes and instance attributes are true?",
+      "options": [
+        "A class attribute is shared by every instance of the class",
+        "An attribute assigned in __init__ belongs to that instance only",
+        "Instance attributes are shared by every instance",
+        "A class attribute is copied into each new instance",
+        "A class cannot define attributes outside __init__",
+        "Class attributes may only hold integers"
+      ],
+      "answer": [0, 1],
+      "explanation": "A mutable class attribute is a classic trap: appending to it from one instance is visible from all the others."
+    },
+    {
+      "id": "l2-cls-04",
+      "topic": "Classes and objects",
+      "difficulty": 2,
+      "question": "What is the value of b.total?",
+      "code": "class Counter:\n    total = 0\n\n    def __init__(self):\n        self.count = 0\n\na = Counter()\nb = Counter()\nCounter.total = 5",
+      "options": ["5", "0", "2", "10", "None", "An AttributeError is raised"],
+      "answer": 0,
+      "explanation": "total is a class attribute: changing it on the class is immediately visible from every instance that has not shadowed it."
+    },
+    {
+      "id": "l2-cls-05",
+      "topic": "Classes and objects",
+      "difficulty": 1,
+      "question": "Person.__init__ takes name and age. Which expression creates an instance?",
+      "options": [
+        "Person(\"Alice\", 30)",
+        "new Person(\"Alice\", 30)",
+        "Person.new(\"Alice\", 30)",
+        "Person(self, \"Alice\", 30)",
+        "Person.__init__(\"Alice\", 30)",
+        "create Person(\"Alice\", 30)"
+      ],
+      "answer": 0,
+      "explanation": "Python has no new keyword: calling the class runs __init__, and self is passed automatically."
+    },
+    {
+      "id": "l2-cls-06",
+      "topic": "Classes and objects",
+      "difficulty": 2,
+      "question": "Given class Dog(Animal) and d = Dog(), which statements are true?",
+      "options": [
+        "isinstance(d, Animal) is True",
+        "issubclass(Dog, Animal) is True",
+        "type(d) == Animal is True",
+        "isinstance(d, Dog) is False",
+        "type(d) == Dog is False",
+        "issubclass(Animal, Dog) is True"
+      ],
+      "answer": [0, 1],
+      "explanation": "isinstance takes inheritance into account, type() does not: type(d) is exactly Dog, never Animal."
+    },
+    {
+      "id": "l2-cls-07",
+      "topic": "Classes and objects",
+      "difficulty": 1,
+      "question": "Which statements about the OOP concepts seen in the course are true?",
+      "options": [
+        "Inheritance lets a class reuse the attributes and methods of another class",
+        "Polymorphism means the same method name can behave differently depending on the class",
+        "Encapsulation means a class can inherit from several parents",
+        "Abstraction means bundling data and methods together",
+        "Composition means overriding a method of the parent",
+        "Inheritance means hiding implementation details"
+      ],
+      "answer": [0, 1],
+      "explanation": "Encapsulation bundles data and code, abstraction hides details, composition stores an object inside another."
+    },
+    {
+      "id": "l2-cls-08",
+      "topic": "Classes and objects",
+      "difficulty": 1,
+      "question": "What is encapsulation?",
+      "options": [
+        "Bundling data and the methods that operate on it inside a single class",
+        "Creating a new class from an existing one",
+        "Using the same method name with different behaviours",
+        "Hiding details and exposing only the essentials",
+        "Storing an object as an attribute of another object",
+        "Redefining an operator such as +"
+      ],
+      "answer": 0,
+      "explanation": "The other options describe inheritance, polymorphism, abstraction, composition and operator overloading."
+    },
+    {
+      "id": "l2-init-01",
+      "topic": "Constructor and self",
+      "difficulty": 1,
+      "question": "When is __init__ called?",
+      "options": [
+        "Automatically, every time the class is instantiated",
+        "Only when you call it explicitly",
+        "Once per class, when the class is defined",
+        "Every time a method of the object is called",
+        "Only if the class declares attributes",
+        "When the object is destroyed"
+      ],
+      "answer": 0,
+      "explanation": "__init__ initialises the object that has just been created; it can take parameters to set different attributes."
+    },
+    {
+      "id": "l2-init-02",
+      "topic": "Constructor and self",
+      "difficulty": 3,
+      "question": "What must __init__ return?",
+      "options": [
+        "Nothing: returning anything other than None raises a TypeError",
+        "The newly created object",
+        "self",
+        "The class itself",
+        "True when the initialisation succeeded",
+        "A dictionary of the attributes"
+      ],
+      "answer": 0,
+      "explanation": "The object is built before __init__ runs. __init__ only initialises it, which is why it must not return a value."
+    },
+    {
+      "id": "l2-init-03",
+      "topic": "Constructor and self",
+      "difficulty": 2,
+      "question": "Which statements about self are true?",
+      "options": [
+        "It refers to the instance on which the method is called",
+        "The first parameter of an instance method receives the instance, whatever its name",
+        "It is a reserved Python keyword",
+        "You must pass it explicitly when calling the method",
+        "It refers to the class, not to the instance",
+        "It may be omitted from any method"
+      ],
+      "answer": [0, 1],
+      "explanation": "self is a convention, not a keyword: only its position matters. Python passes the instance automatically."
+    },
+    {
+      "id": "l2-init-04",
+      "topic": "Constructor and self",
+      "difficulty": 1,
+      "question": "What does print(cat.voice) display?",
+      "code": "class Animal:\n    def __init__(self, voice):\n        self.voice = voice\n\ncat = Animal('Meow')",
+      "options": ["Meow", "voice", "Animal", "None", "self.voice", "An AttributeError is raised"],
+      "answer": 0,
+      "explanation": "The constructor stored the argument in the attribute self.voice, which is then read on the instance."
+    },
+    {
+      "id": "l2-init-05",
+      "topic": "Constructor and self",
+      "difficulty": 2,
+      "question": "Person defines def greet(self). For p = Person(\"Alice\", 30), which calls work?",
+      "options": [
+        "p.greet()",
+        "Person.greet(p)",
+        "greet(p)",
+        "p.greet(p)",
+        "Person.greet()",
+        "p.self.greet()"
+      ],
+      "answer": [0, 1],
+      "explanation": "p.greet() is shorthand for Person.greet(p): the instance is passed as the first argument either way."
+    },
+    {
+      "id": "l2-init-06",
+      "topic": "Constructor and self",
+      "difficulty": 1,
+      "question": "Which calls are valid?",
+      "code": "class Counter:\n    def __init__(self, start=0):\n        self.count = start",
+      "options": [
+        "Counter()",
+        "Counter(10)",
+        "Counter(0, 1)",
+        "Counter(self, 10)",
+        "Counter.start(10)",
+        "new Counter(10)"
+      ],
+      "answer": [0, 1],
+      "explanation": "start has a default value, so it becomes optional. self is never passed by hand."
+    },
+    {
+      "id": "l2-init-07",
+      "topic": "Constructor and self",
+      "difficulty": 2,
+      "question": "A child class defines __init__ but never calls super().__init__(). What happens?",
+      "options": [
+        "The attributes created by the parent constructor are missing from the instance",
+        "Python calls the parent constructor automatically anyway",
+        "A TypeError is raised at instantiation",
+        "The child class can no longer define attributes",
+        "The methods inherited from the parent become unavailable",
+        "Nothing changes: super() is purely cosmetic"
+      ],
+      "answer": 0,
+      "explanation": "Defining __init__ in the child completely replaces the parent's. The failure shows up later, as an AttributeError."
+    },
+    {
+      "id": "l2-enc-01",
+      "topic": "Encapsulation",
+      "difficulty": 1,
+      "question": "By default, member variables and methods of a Python class are:",
+      "options": ["Public", "Private", "Protected", "Read-only", "Static", "Abstract"],
+      "answer": 0,
+      "explanation": "Python has no access keywords: everything is public, and underscores only express an intention."
+    },
+    {
+      "id": "l2-enc-02",
+      "topic": "Encapsulation",
+      "difficulty": 1,
+      "question": "How do you mark a member as protected?",
+      "options": [
+        "Prefix its name with a single underscore: _value",
+        "Prefix its name with two underscores: __value",
+        "Use the protected keyword",
+        "Add a trailing underscore: value_",
+        "Define it outside __init__",
+        "Write its name in uppercase"
+      ],
+      "answer": 0,
+      "explanation": "A single underscore says \"internal use\". Two underscores mean private and trigger name mangling."
+    },
+    {
+      "id": "l2-enc-03",
+      "topic": "Encapsulation",
+      "difficulty": 1,
+      "question": "How do you mark a member as private?",
+      "options": [
+        "Prefix its name with at least two underscores: __value",
+        "Prefix its name with a single underscore: _value",
+        "Use the private keyword",
+        "Declare it as a class attribute",
+        "Write its name in uppercase",
+        "Define it after all the methods"
+      ],
+      "answer": 0,
+      "explanation": "Two leading underscores make Python rename the attribute, which hides it from ordinary outside access."
+    },
+    {
+      "id": "l2-enc-04",
+      "topic": "Encapsulation",
+      "difficulty": 3,
+      "question": "Which statements are true?",
+      "code": "class Test:\n    __varPrivate = 30\n\nt = Test()",
+      "options": [
+        "t.__varPrivate raises an AttributeError",
+        "t._Test__varPrivate returns 30",
+        "t.__varPrivate returns 30",
+        "The attribute no longer exists on the object",
+        "Python forbids any access to the value",
+        "A private attribute cannot be read even from inside the class"
+      ],
+      "answer": [0, 1],
+      "explanation": "Name mangling renames __varPrivate into _Test__varPrivate. The value is hidden, not protected."
+    },
+    {
+      "id": "l2-enc-05",
+      "topic": "Encapsulation",
+      "difficulty": 2,
+      "question": "What does the single underscore in _balance actually enforce?",
+      "options": [
+        "Nothing technically: it is a convention telling other developers not to touch it",
+        "Python blocks any access from outside the class",
+        "It makes the attribute read-only",
+        "It renames the attribute internally",
+        "It makes the attribute shared by all instances",
+        "It prints a warning at runtime"
+      ],
+      "answer": 0,
+      "explanation": "Encapsulation in Python rests on discipline, not on the language. _balance stays perfectly reachable."
+    },
+    {
+      "id": "l2-enc-06",
+      "topic": "Encapsulation",
+      "difficulty": 3,
+      "question": "Which statements about name mangling are true?",
+      "options": [
+        "Python rewrites __value into _ClassName__value",
+        "It makes accidental access from outside unlikely, but not impossible",
+        "It encrypts the value of the attribute",
+        "It applies to names with a single leading underscore",
+        "It deletes the attribute once __init__ returns",
+        "It turns the attribute into a class attribute"
+      ],
+      "answer": [0, 1],
+      "explanation": "Mangling is a renaming, nothing more. Its real purpose is to avoid name clashes between a class and its subclasses."
+    },
+    {
+      "id": "l2-inh-01",
+      "topic": "Inheritance",
+      "difficulty": 1,
+      "question": "In class Dog(Animal):, which statements are true?",
+      "options": [
+        "Dog is the subclass (child) and Animal the superclass (parent)",
+        "Dog inherits the attributes and methods of Animal",
+        "Animal inherits from Dog",
+        "Dog cannot add new methods",
+        "Dog must redefine every method of Animal",
+        "Animal is an instance of Dog"
+      ],
+      "answer": [0, 1],
+      "explanation": "The child reuses everything the parent offers, and is free to add to it or to override parts of it."
+    },
+    {
+      "id": "l2-inh-02",
+      "topic": "Inheritance",
+      "difficulty": 1,
+      "question": "What is method overriding?",
+      "options": [
+        "A subclass redefines a method that already exists in its parent",
+        "Two methods with the same name but different parameters in one class",
+        "Calling a parent method from the child",
+        "Defining an operator such as __add__",
+        "Creating several instances of the same class",
+        "Renaming a method at runtime"
+      ],
+      "answer": 0,
+      "explanation": "Overriding is what makes polymorphism possible: the same call, a different implementation per class."
+    },
+    {
+      "id": "l2-inh-03",
+      "topic": "Inheritance",
+      "difficulty": 1,
+      "question": "What does super().__init__(name) do inside a child constructor?",
+      "options": [
+        "It calls the constructor of the parent class",
+        "It creates a separate instance of the parent class",
+        "It copies the parent class into the child",
+        "It erases the attributes of the child",
+        "It returns the parent class object",
+        "It is only needed when the child defines no attribute"
+      ],
+      "answer": 0,
+      "explanation": "Without it, the initialisation written in the parent simply never runs."
+    },
+    {
+      "id": "l2-inh-04",
+      "topic": "Inheritance",
+      "difficulty": 2,
+      "question": "Which expressions are valid?",
+      "code": "class Animal:\n    def __init__(self, name):\n        self.name = name\n\nclass Dog(Animal):\n    def __init__(self, name, breed):\n        super().__init__(name)\n        self.breed = breed\n\nd = Dog(\"Rex\", \"Husky\")",
+      "options": ["d.name", "d.breed", "Dog.name", "Animal.breed", "d.super", "d.Animal.name"],
+      "answer": [0, 1],
+      "explanation": "name and breed are instance attributes: they live on d, not on the classes, so Dog.name raises an AttributeError."
+    },
+    {
+      "id": "l2-inh-05",
+      "topic": "Inheritance",
+      "difficulty": 2,
+      "question": "What does bird.speak(3) return?",
+      "code": "class Animal:\n    def __init__(self, name):\n        self.name = name\n\n    def speak(self):\n        pass\n\nclass Bird(Animal):\n    def speak(self, repeat=1):\n        return \"Tweet! \" * repeat\n\nbird = Bird(\"Tweety\")",
+      "options": [
+        "'Tweet! Tweet! Tweet! '",
+        "'Tweet! '",
+        "'Tweet!3'",
+        "'Tweet! Tweet! '",
+        "None",
+        "A TypeError is raised"
+      ],
+      "answer": 0,
+      "explanation": "Bird overrides speak and adds an optional parameter. Multiplying a string repeats it."
+    },
+    {
+      "id": "l2-inh-06",
+      "topic": "Inheritance",
+      "difficulty": 1,
+      "question": "A subclass can:",
+      "options": [
+        "Add new attributes and methods",
+        "Override a method of its parent",
+        "Delete the parent class",
+        "Prevent the parent from being instantiated",
+        "Only use the parent methods unchanged",
+        "Inherit attributes but never methods"
+      ],
+      "answer": [0, 1],
+      "explanation": "Inheritance is additive: the child starts from everything the parent has, then extends or replaces what it needs."
+    },
+    {
+      "id": "l2-inh-07",
+      "topic": "Inheritance",
+      "difficulty": 2,
+      "question": "In the course example, what does def speak(self): pass express in the parent class?",
+      "options": [
+        "A default behaviour that subclasses are expected to override",
+        "That the method cannot be overridden",
+        "That calling the method raises an error",
+        "That the method returns an empty string",
+        "That the class cannot be instantiated",
+        "That the method is private"
+      ],
+      "answer": 0,
+      "explanation": "pass silently returns None, so a forgotten override goes unnoticed. Raising NotImplementedError makes it explicit."
+    },
+    {
+      "id": "l2-inh-08",
+      "topic": "Inheritance",
+      "difficulty": 3,
+      "question": "From inside Dog.speak, which expressions call the parent implementation?",
+      "options": [
+        "super().speak()",
+        "Animal.speak(self)",
+        "parent().speak()",
+        "base.speak()",
+        "this.speak()",
+        "self.speak()"
+      ],
+      "answer": [0, 1],
+      "explanation": "self.speak() would call the child's own version again, which loops forever."
+    },
+    {
+      "id": "l2-poly-01",
+      "topic": "Polymorphism",
+      "difficulty": 1,
+      "question": "What does polymorphism allow?",
+      "options": [
+        "Calling the same method name on different classes and getting the behaviour of each",
+        "Defining several classes with the same name",
+        "Creating an object without a class",
+        "Having two attributes with the same name in one object",
+        "Hiding an attribute from outside the class",
+        "Converting one class into another automatically"
+      ],
+      "answer": 0,
+      "explanation": "The calling code manipulates objects that share a parent without needing to know their exact type."
+    },
+    {
+      "id": "l2-poly-02",
+      "topic": "Polymorphism",
+      "difficulty": 2,
+      "question": "What does this program print?",
+      "code": "class Animal:\n    def __init__(self, name):\n        self.name = name\n\n    def speak(self):\n        pass\n\nclass Dog(Animal):\n    def speak(self):\n        return \"Woof!\"\n\nclass Bird(Animal):\n    def speak(self, repeat=2):\n        return \"Tweet!\" * repeat\n\nfor animal in [Dog(\"Rex\"), Bird(\"Tweety\")]:\n    print(animal.speak())",
+      "options": [
+        "Woof! then Tweet!Tweet!",
+        "Woof! then Tweet!",
+        "Woof! then Tweet!Tweet!Tweet!",
+        "Woof!Woof! then Tweet!Tweet!",
+        "None then None",
+        "A TypeError is raised"
+      ],
+      "answer": 0,
+      "explanation": "Bird.speak uses its default repeat=2. Each object runs the version defined in its own class."
+    },
+    {
+      "id": "l2-poly-03",
+      "topic": "Polymorphism",
+      "difficulty": 2,
+      "question": "In for animal in animals: print(animal.speak()), how does Python choose which speak to run?",
+      "options": [
+        "From the actual class of the object, at runtime",
+        "From the type declared for the list",
+        "From the parent class, always",
+        "From the first class defined in the file",
+        "From the alphabetical order of the class names",
+        "At random"
+      ],
+      "answer": 0,
+      "explanation": "Attribute lookup starts on the object's own class, then walks up the inheritance chain."
+    },
+    {
+      "id": "l2-poly-04",
+      "topic": "Polymorphism",
+      "difficulty": 2,
+      "question": "Which of these are examples of polymorphism?",
+      "options": [
+        "Two subclasses overriding the same parent method differently",
+        "len() working on a string, a list and a dictionary",
+        "Two attributes holding the same value",
+        "A class defining a private attribute",
+        "Calling super() in a constructor",
+        "Storing an object as an attribute of another object"
+      ],
+      "answer": [0, 1],
+      "explanation": "len() delegates to each type's own __len__: one name, many implementations."
+    },
+    {
+      "id": "l2-poly-05",
+      "topic": "Polymorphism",
+      "difficulty": 2,
+      "question": "Why does sum(shape.computeArea() for shape in shapes) work on a list mixing rectangles, circles and squares?",
+      "options": [
+        "Because every shape class implements computeArea(), each in its own way",
+        "Because Python converts every shape into a Rectangle",
+        "Because sum() knows how to compute an area",
+        "Because all the shapes have the same area",
+        "Because the list is sorted by type",
+        "Because computeArea() is defined only in the parent class"
+      ],
+      "answer": 0,
+      "explanation": "This is the practical payoff of polymorphism: one line of calling code, one implementation per class."
+    },
+    {
+      "id": "l2-comp-01",
+      "topic": "Composition and abstraction",
+      "difficulty": 1,
+      "question": "What is composition?",
+      "options": [
+        "An attribute of an object is itself an object of another class",
+        "A class inherits from two parents",
+        "A method is redefined in a subclass",
+        "An operator is overloaded",
+        "Attributes are hidden behind underscores",
+        "Several objects share a class attribute"
+      ],
+      "answer": 0,
+      "explanation": "A BankAccount holding a list of Transaction objects is composition."
+    },
+    {
+      "id": "l2-comp-02",
+      "topic": "Composition and abstraction",
+      "difficulty": 2,
+      "question": "Which statements pair the relationship with the right name?",
+      "options": [
+        "Inheritance expresses an \"is-a\" relationship",
+        "Composition expresses a \"has-a\" relationship",
+        "Inheritance expresses a \"has-a\" relationship",
+        "Composition expresses an \"is-a\" relationship",
+        "Both express \"is-a\"",
+        "Both express \"has-a\""
+      ],
+      "answer": [0, 1],
+      "explanation": "A Square is a Rectangle (inheritance); an account has transactions (composition)."
+    },
+    {
+      "id": "l2-comp-03",
+      "topic": "Composition and abstraction",
+      "difficulty": 1,
+      "question": "What is abstraction?",
+      "options": [
+        "Hiding implementation details and exposing only what is essential",
+        "Bundling data and methods inside one class",
+        "Reusing the methods of another class",
+        "Using one method name for several behaviours",
+        "Storing an object inside another object",
+        "Renaming a private attribute"
+      ],
+      "answer": 0,
+      "explanation": "The user of a BankAccount calls deposit() without knowing how the history is stored."
+    },
+    {
+      "id": "l2-comp-04",
+      "topic": "Composition and abstraction",
+      "difficulty": 3,
+      "question": "How can you force a subclass to provide its own implementation of a method?",
+      "options": [
+        "Raise NotImplementedError in the parent implementation",
+        "Decorate it with @abstractmethod in a class inheriting from ABC",
+        "Write the abstract keyword before def",
+        "Leave the method out of the parent entirely",
+        "Prefix the method name with two underscores",
+        "Declare the parent class as private"
+      ],
+      "answer": [0, 1],
+      "explanation": "NotImplementedError fails when the method is called; @abstractmethod fails earlier, at instantiation."
+    },
+    {
+      "id": "l2-comp-05",
+      "topic": "Composition and abstraction",
+      "difficulty": 2,
+      "question": "In a UML class diagram, what does an italic class or method name mean?",
+      "options": [
+        "It is abstract",
+        "It is private",
+        "It is static",
+        "It is deprecated",
+        "It is inherited from another class",
+        "It is a constructor"
+      ],
+      "answer": 0,
+      "explanation": "In the exercise, BankAccount and its withdrawal method are italic: the class is not meant to be instantiated directly."
+    },
+    {
+      "id": "l2-arith-01",
+      "topic": "Arithmetic operators",
+      "difficulty": 1,
+      "question": "Which magic method overloads the + operator?",
+      "options": ["__add__", "__plus__", "__sum__", "__iadd__", "__radd__", "__concat__"],
+      "answer": 0,
+      "explanation": "__iadd__ handles +=, and __radd__ the case where the object is on the right-hand side."
+    },
+    {
+      "id": "l2-arith-02",
+      "topic": "Arithmetic operators",
+      "difficulty": 2,
+      "question": "Which magic method overloads the / operator?",
+      "options": ["__truediv__", "__div__", "__divide__", "__floordiv__", "__idiv__", "__quotient__"],
+      "answer": 0,
+      "explanation": "__floordiv__ is for //. The name __div__ belonged to Python 2 and no longer exists."
+    },
+    {
+      "id": "l2-arith-03",
+      "topic": "Arithmetic operators",
+      "difficulty": 2,
+      "question": "Which operator / magic method pairs are correct?",
+      "options": [
+        "% and __mod__",
+        "** and __pow__",
+        "* and __times__",
+        "- and __minus__",
+        "/ and __div__",
+        "// and __truediv__"
+      ],
+      "answer": [0, 1],
+      "explanation": "The right names are __mul__ for *, __sub__ for -, __truediv__ for / and __floordiv__ for //."
+    },
+    {
+      "id": "l2-arith-04",
+      "topic": "Arithmetic operators",
+      "difficulty": 2,
+      "question": "What does this program display?",
+      "code": "class Vector:\n    def __init__(self, x, y, z):\n        self.x, self.y, self.z = x, y, z\n\n    def __add__(self, other):\n        return Vector(self.x + other.x,\n                      self.y + other.y,\n                      self.z + other.z)\n\n    def __repr__(self):\n        return f'Vector({self.x}, {self.y}, {self.z})'\n\nprint(Vector(1, 2, 3) + Vector(4, 5, 6))",
+      "options": [
+        "Vector(5, 7, 9)",
+        "Vector(1, 2, 3)",
+        "Vector(4, 5, 6)",
+        "Vector(5.0, 7.0, 9.0)",
+        "A <Vector object at 0x...> line",
+        "A TypeError is raised"
+      ],
+      "answer": 0,
+      "explanation": "__add__ builds and returns a new Vector, and __repr__ controls how print displays it."
+    },
+    {
+      "id": "l2-arith-05",
+      "topic": "Arithmetic operators",
+      "difficulty": 3,
+      "question": "Vector defines __mul__(self, scalar) only. Which expressions work?",
+      "options": [
+        "v * 3",
+        "v.__mul__(3)",
+        "3 * v",
+        "v ** 3",
+        "v + 3",
+        "v / 3"
+      ],
+      "answer": [0, 1],
+      "explanation": "3 * v would need __rmul__, the reflected version used when the object is the right-hand operand."
+    },
+    {
+      "id": "l2-arith-06",
+      "topic": "Arithmetic operators",
+      "difficulty": 3,
+      "question": "A class defines no __add__ at all. What does obj1 + obj2 do?",
+      "options": [
+        "It raises a TypeError: unsupported operand type(s) for +",
+        "It returns None",
+        "It concatenates the two objects",
+        "It adds the objects attribute by attribute",
+        "It raises a NotImplementedError",
+        "It compares the memory addresses"
+      ],
+      "answer": 0,
+      "explanation": "Python never guesses what + should mean on your objects: without __add__ the operation is simply unsupported."
+    },
+    {
+      "id": "l2-arith-07",
+      "topic": "Arithmetic operators",
+      "difficulty": 2,
+      "question": "What does __add__ have to return to allow chained expressions such as v1 + v2 + v3?",
+      "options": [
+        "A new object of the same class",
+        "None",
+        "self, after modifying it",
+        "A tuple of the attributes",
+        "True when the addition succeeded",
+        "A string describing the result"
+      ],
+      "answer": 0,
+      "explanation": "Returning a new instance keeps the operands untouched and lets the result take part in another operation."
+    },
+    {
+      "id": "l2-cmp-01",
+      "topic": "Comparison operators",
+      "difficulty": 1,
+      "question": "Which magic method overloads the < operator?",
+      "options": ["__lt__", "__less__", "__le__", "__lower__", "__cmp__", "__gt__"],
+      "answer": 0,
+      "explanation": "__le__ is for <=, __gt__ for > and __ge__ for >=."
+    },
+    {
+      "id": "l2-cmp-02",
+      "topic": "Comparison operators",
+      "difficulty": 2,
+      "question": "Which operator / magic method pairs are correct?",
+      "options": [
+        "<= and __le__",
+        ">= and __ge__",
+        "== and __equals__",
+        "!= and __not__",
+        "> and __greater__",
+        "< and __lower__"
+      ],
+      "answer": [0, 1],
+      "explanation": "The remaining correct names are __eq__ for ==, __ne__ for != and __gt__ for >."
+    },
+    {
+      "id": "l2-cmp-03",
+      "topic": "Comparison operators",
+      "difficulty": 2,
+      "question": "A class defines __eq__ but not __ne__. What does a != b do?",
+      "options": [
+        "Python derives the result automatically from __eq__",
+        "It raises a TypeError",
+        "It always returns True",
+        "It compares the memory addresses",
+        "It returns NotImplemented",
+        "It raises an AttributeError"
+      ],
+      "answer": 0,
+      "explanation": "Since Python 3, != is the negation of == unless __ne__ is explicitly defined."
+    },
+    {
+      "id": "l2-cmp-04",
+      "topic": "Comparison operators",
+      "difficulty": 3,
+      "question": "A class defines __eq__ but no __hash__. Which statements are true?",
+      "options": [
+        "Its instances become unhashable",
+        "They can no longer be used as dictionary keys or set elements",
+        "Nothing changes",
+        "__hash__ is derived automatically from __eq__",
+        "The class can no longer be instantiated",
+        "The == operator stops working"
+      ],
+      "answer": [0, 1],
+      "explanation": "Defining __eq__ sets __hash__ to None. Two equal objects must have the same hash, so Python refuses to guess."
+    },
+    {
+      "id": "l2-cmp-05",
+      "topic": "Comparison operators",
+      "difficulty": 3,
+      "question": "A class defines __lt__ only. Which comparisons between two of its instances work?",
+      "options": [
+        "a < b",
+        "a > b",
+        "a <= b",
+        "a >= b",
+        "a - b < 0",
+        "abs(a) < abs(b)"
+      ],
+      "answer": [0, 1],
+      "explanation": "For a > b Python first tries a.__gt__(b); as it is missing, it falls back to the reflected call b.__lt__(a)."
+    },
+    {
+      "id": "l2-cmp-06",
+      "topic": "Comparison operators",
+      "difficulty": 2,
+      "question": "To compare two fractions a/b and c/d, why prefer a*d < c*b over a/b < c/d?",
+      "options": [
+        "It stays in integer arithmetic and avoids floating-point rounding",
+        "It is the only syntax Python accepts",
+        "Because / is not defined on integers",
+        "Because __lt__ cannot use a division",
+        "Because the cross product is always positive",
+        "Because it also works when a denominator is zero"
+      ],
+      "answer": 0,
+      "explanation": "This holds as long as the denominators are positive, which is why the constructor normalises the sign."
+    },
+    {
+      "id": "l2-aug-01",
+      "topic": "Augmented assignments",
+      "difficulty": 1,
+      "question": "Which magic method does the += operator use?",
+      "options": ["__iadd__", "__add__", "__plus__", "__addassign__", "__radd__", "__increment__"],
+      "answer": 0,
+      "explanation": "The i stands for in place: __iadd__, __isub__, __imul__, and so on."
+    },
+    {
+      "id": "l2-aug-02",
+      "topic": "Augmented assignments",
+      "difficulty": 3,
+      "question": "A class defines __add__ but not __iadd__. What does obj += other do?",
+      "options": [
+        "Python falls back to __add__ and rebinds the name to the new object",
+        "It raises a TypeError",
+        "It raises an AttributeError",
+        "It modifies obj in place",
+        "It returns None",
+        "It calls __radd__"
+      ],
+      "answer": 0,
+      "explanation": "obj += other becomes obj = obj + other, so obj ends up pointing at a brand new object."
+    },
+    {
+      "id": "l2-aug-03",
+      "topic": "Augmented assignments",
+      "difficulty": 2,
+      "question": "Which operator / magic method pairs are correct?",
+      "options": [
+        "*= and __imul__",
+        "//= and __ifloordiv__",
+        "-= and __iminus__",
+        "/= and __idiv__",
+        "%= and __imodulo__",
+        "**= and __ipower__"
+      ],
+      "answer": [0, 1],
+      "explanation": "The right names are __isub__, __itruediv__, __imod__ and __ipow__."
+    },
+    {
+      "id": "l2-aug-04",
+      "topic": "Augmented assignments",
+      "difficulty": 2,
+      "question": "What is the point of defining __iadd__ rather than relying on __add__?",
+      "options": [
+        "To modify the object in place instead of building a new one",
+        "To make += faster to type",
+        "To allow the object on the right-hand side",
+        "To make the class hashable",
+        "To enable comparison operators",
+        "To avoid having to define __repr__"
+      ],
+      "answer": 0,
+      "explanation": "This is what makes list += cheap: it extends the existing list instead of rebuilding one."
+    },
+    {
+      "id": "l2-repr-01",
+      "topic": "String representation",
+      "difficulty": 2,
+      "question": "What does print(obj) use?",
+      "options": [
+        "__str__, falling back to __repr__ when __str__ is not defined",
+        "__repr__, falling back to __str__",
+        "__print__",
+        "__format__ only",
+        "__display__",
+        "__toString__"
+      ],
+      "answer": 0,
+      "explanation": "Defining only __repr__ is therefore enough to control both print(obj) and repr(obj)."
+    },
+    {
+      "id": "l2-repr-02",
+      "topic": "String representation",
+      "difficulty": 2,
+      "question": "A class defines __repr__ but not __str__. Which statements are true?",
+      "options": [
+        "print(obj) uses __repr__",
+        "str(obj) uses __repr__",
+        "print(obj) raises an AttributeError",
+        "str(obj) returns the default <object at 0x...> form",
+        "repr(obj) raises a TypeError",
+        "Only repr(obj) is affected"
+      ],
+      "answer": [0, 1],
+      "explanation": "__str__ defaults to __repr__, which is why a single __repr__ covers every display path."
+    },
+    {
+      "id": "l2-repr-03",
+      "topic": "String representation",
+      "difficulty": 1,
+      "question": "What does this display?",
+      "code": "class Point:\n    def __init__(self, x):\n        self.x = x\n\nprint(Point(3))",
+      "options": [
+        "A line such as <__main__.Point object at 0x000...>",
+        "Point(3)",
+        "3",
+        "Point",
+        "None",
+        "A TypeError is raised"
+      ],
+      "answer": 0,
+      "explanation": "Without __repr__ or __str__, Python falls back to the default representation: class name and memory address."
+    },
+    {
+      "id": "l2-repr-04",
+      "topic": "String representation",
+      "difficulty": 2,
+      "question": "What should __repr__ ideally return?",
+      "options": [
+        "An unambiguous representation, ideally one that could recreate the object",
+        "An empty string",
+        "The memory address of the object",
+        "The list of the class methods",
+        "The name of the class only",
+        "A boolean telling whether the object is valid"
+      ],
+      "answer": 0,
+      "explanation": "Vector(5, 7, 9) is a good __repr__: read it and you know exactly how to rebuild the object."
+    },
+    {
+      "id": "l2-ex-01",
+      "topic": "Exercises",
+      "difficulty": 2,
+      "question": "In the exercise, CheckingAccount and SavingsAccount both define withdrawal(). This illustrates:",
+      "options": [
+        "Method overriding",
+        "Polymorphism",
+        "Composition",
+        "Name mangling",
+        "Operator overloading",
+        "Multiple inheritance"
+      ],
+      "answer": [0, 1],
+      "explanation": "Each account overrides withdrawal, and the same call then behaves differently depending on the account type."
+    },
+    {
+      "id": "l2-ex-02",
+      "topic": "Exercises",
+      "difficulty": 2,
+      "question": "Why store the balance as _balance and expose a get_balance() accessor?",
+      "options": [
+        "So that every change goes through deposit()/withdrawal() and lands in the transaction history",
+        "Because Python forbids public numeric attributes",
+        "To make the attribute read-only",
+        "To make the account hashable",
+        "To speed up the computation of the balance",
+        "Because the UML diagram requires an underscore"
+      ],
+      "answer": 0,
+      "explanation": "This is encapsulation in practice: control the writes and no operation can escape the history."
+    },
+    {
+      "id": "l2-ex-03",
+      "topic": "Exercises",
+      "difficulty": 2,
+      "question": "What should Fractional(42, 0) do?",
+      "options": [
+        "Raise an exception, because a zero denominator has no meaning",
+        "Return infinity",
+        "Return 0",
+        "Store the values as they are and fail later",
+        "Return None",
+        "Silently set the denominator to 1"
+      ],
+      "answer": 0,
+      "explanation": "Failing at construction reports the problem where it is caused, rather than far away from it."
+    },
+    {
+      "id": "l2-ex-04",
+      "topic": "Exercises",
+      "difficulty": 2,
+      "question": "Why reduce a fraction inside __init__?",
+      "options": [
+        "So that Fractional(2, 4) and Fractional(1, 2) compare as equal",
+        "So that the numerator is always positive",
+        "Because __add__ cannot handle large numbers",
+        "Because Python requires a denominator below 100",
+        "So that __repr__ can display a float",
+        "To make the division operator faster"
+      ],
+      "answer": 0,
+      "explanation": "Without reduction, an __eq__ comparing numerator and denominator would consider 2/4 and 1/2 different."
+    },
+    {
+      "id": "l2-ex-05",
+      "topic": "Exercises",
+      "difficulty": 2,
+      "question": "In the shapes exercise, why write class Square(Rectangle) rather than class Square(Shape)?",
+      "options": [
+        "Because a square is a rectangle, so it reuses width, height and computeArea()",
+        "Because Shape cannot have more than two subclasses",
+        "Because a square has no area",
+        "Because Python forbids inheriting directly from Shape",
+        "Because Rectangle is abstract",
+        "Because computeArea() is defined only in Rectangle"
+      ],
+      "answer": 0,
+      "explanation": "Square only has to pass the same value as width and height to super().__init__()."
+    },
+    {
+      "id": "l2-ex-06",
+      "topic": "Exercises",
+      "difficulty": 2,
+      "question": "In the bank exercise, which design choices does the transaction history rely on?",
+      "options": [
+        "Composition: the account holds a list of Transaction objects",
+        "Encapsulation: only deposit() and withdrawal() may change the balance",
+        "Inheritance: Transaction inherits from BankAccount",
+        "Polymorphism: Transaction overrides withdrawal()",
+        "Operator overloading: += appends a transaction",
+        "Name mangling: the history is stored as __history"
+      ],
+      "answer": [0, 1],
+      "explanation": "The history is an attribute made of objects of another class, and it stays reliable only because writes are funnelled."
+    }
+  ]
+}

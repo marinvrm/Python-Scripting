@@ -128,6 +128,9 @@ def _print_header(style: Style, bank, total: int) -> None:
     print(style.bold(header))
     plural = "s" if total > 1 else ""
     print(f" {total} question{plural}  |  q = quitter, s = passer la question")
+    if bank.exam_style:
+        print(f" Format controle : 1 a {bank.max_answers} bonnes reponses par question,"
+              " tout ou rien")
     print(style.cyan("=" * WIDTH))
 
 
@@ -153,7 +156,13 @@ def _print_question(style: Style, asked, number: int, total: int) -> None:
     for index, option in enumerate(asked.options):
         print("  " + style.bold(LETTERS[index]) + ") " + option)
 
-    if asked.is_multiple:
+    if asked.exam_style:
+        print()
+        print(style.yellow(
+            f"  1 a {asked.max_select} bonnes reponses"
+            " - une seule case fausse annule la question"
+        ))
+    elif asked.is_multiple:
         print()
         print(style.yellow(
             f"  Plusieurs bonnes reponses ({len(asked.answers)}) - exemple : a,c"
@@ -183,7 +192,13 @@ def _ask(style: Style, asked):
             print(style.red(f"  {error} Attendu : une lettre de a a {last_letter}."))
             continue
 
-        if not asked.is_multiple and len(selection) > 1:
+        if asked.exam_style:
+            if len(selection) > asked.max_select:
+                print(style.red(
+                    f"  Au maximum {asked.max_select} reponses pour cette question."
+                ))
+                continue
+        elif not asked.is_multiple and len(selection) > 1:
             print(style.red("  Cette question n'attend qu'une seule reponse."))
             continue
         return selection
@@ -269,7 +284,7 @@ def run_session(style: Style, bank, questions, rng, shuffle_options: bool):
     _print_header(style, bank, total)
 
     for number, question in enumerate(questions, start=1):
-        asked = prepare(question, rng=rng, shuffle=shuffle_options)
+        asked = prepare(question, rng=rng, shuffle=shuffle_options, bank=bank)
         _print_question(style, asked, number, total)
 
         answer = _ask(style, asked)

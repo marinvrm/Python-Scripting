@@ -40,11 +40,17 @@ class Question:
 
 @dataclass(frozen=True)
 class AskedQuestion:
-    """Une question prete a etre posee : options melangees, indices recalcules."""
+    """Une question prete a etre posee : options melangees, indices recalcules.
+
+    En mode examen, `max_select` borne le nombre de cases cochables et le
+    nombre exact de bonnes reponses n'est jamais devoile.
+    """
 
     question: Question
     options: tuple
     answers: frozenset
+    exam_style: bool = False
+    max_select: int = 0  # 0 = pas de limite
 
     @property
     def is_multiple(self) -> bool:
@@ -59,12 +65,20 @@ class AskedQuestion:
 
 @dataclass
 class Bank:
-    """L'ensemble des questions d'une lecon."""
+    """L'ensemble des questions d'une lecon.
+
+    `exam_style` reproduit les conditions du controle : toutes les questions
+    ont le meme nombre de propositions, de 1 a `max_answers` sont correctes,
+    et l'enonce ne dit jamais combien. Une seule case fausse annule la question.
+    """
 
     lesson: str
     title: str
     questions: list
     path: Path = None
+    exam_style: bool = False
+    max_answers: int = 2
+    options_per_question: int = 0  # 0 = pas de contrainte
 
     def topics(self) -> list:
         """Les themes presents, dans l'ordre de premiere apparition."""
@@ -101,12 +115,17 @@ def load_bank(path) -> Bank:
 
     _check_unique_ids(questions, path)
 
-    return Bank(
+    bank = Bank(
         lesson=raw.get("lesson", path.parent.name),
         title=raw.get("title", ""),
         questions=questions,
         path=path,
+        exam_style=bool(raw.get("exam_style", False)),
+        max_answers=int(raw.get("max_answers", 2)),
+        options_per_question=int(raw.get("options_per_question", 0)),
     )
+    _check_exam_format(bank, path)
+    return bank
 
 
 def _parse_question(item, index: int) -> Question:
@@ -153,6 +172,21 @@ def _check_unique_ids(questions, path) -> None:
         seen.add(question.id)
 
 
+def _check_exam_format(bank: Bank, path) -> None:
+    """Verifie que la banque respecte le format annonce (nb d'options, nb de reponses)."""
+    for question in bank.questions:
+        if bank.options_per_question and len(question.options) != bank.options_per_question:
+            raise QuizError(
+                f"{path.name} : {question.id} a {len(question.options)} propositions, "
+                f"{bank.options_per_question} attendues."
+            )
+        if bank.exam_style and len(question.answers) > bank.max_answers:
+            raise QuizError(
+                f"{path.name} : {question.id} a {len(question.answers)} bonnes reponses, "
+                f"maximum {bank.max_answers}."
+            )
+
+
 def select(bank: Bank, count: int, topics=None, difficulties=None, rng=None) -> list:
     """Tire `count` questions au hasard, filtrees par theme et/ou difficulte."""
     rng = rng or random.Random()
@@ -171,7 +205,7 @@ def select(bank: Bank, count: int, topics=None, difficulties=None, rng=None) -> 
     return pool[:count]
 
 
-def prepare(question: Question, rng=None, shuffle: bool = True) -> AskedQuestion:
+def prepare(question: Question, rng=None, shuffle: bool = True, bank: Bank = None) -> AskedQuestion:
     """Melange les options d'une question et recalcule les indices corrects."""
     order = list(range(len(question.options)))
     if shuffle:
@@ -182,7 +216,13 @@ def prepare(question: Question, rng=None, shuffle: bool = True) -> AskedQuestion
     answers = frozenset(
         new_index for new_index, old_index in enumerate(order) if old_index in question.answers
     )
-    return AskedQuestion(question=question, options=options, answers=answers)
+    return AskedQuestion(
+        question=question,
+        options=options,
+        answers=answers,
+        exam_style=bool(bank and bank.exam_style),
+        max_select=bank.max_answers if bank and bank.exam_style else 0,
+    )
 
 
 def parse_selection(text: str, option_count: int) -> frozenset:

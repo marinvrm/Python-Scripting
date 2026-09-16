@@ -107,8 +107,36 @@ L'ordre des propositions est mélangé à chaque tirage, donc l'ordre d'écritur
 dans le fichier n'a pas d'importance. Le fichier est validé au chargement : un
 index de réponse hors limites ou un `id` en double est signalé avec précision.
 
+### Reproduire le format du contrôle
+
+Le QCM hebdomadaire a un format fixe : énoncés en anglais, 6 propositions,
+**1 ou 2** bonnes réponses sans qu'on sache combien, et une seule case fausse
+annule la question. Trois champs en tête du fichier reproduisent ces conditions :
+
+```json
+{
+  "lesson": "Lesson 2",
+  "exam_style": true,
+  "max_answers": 2,
+  "options_per_question": 6,
+  "questions": [ ... ]
+}
+```
+
+- `exam_style` : le QCM ne révèle jamais le nombre de bonnes réponses et accepte
+  jusqu'à `max_answers` cases par question
+- `options_per_question` : vérifié au chargement, pour qu'aucune question
+  n'échappe au format
+
+Sans ces champs, le comportement reste celui de la Lesson 1 : le nombre de
+bonnes réponses attendues est affiché.
+
 ## Leçons
 
 | Leçon | Contenu | Questions |
 | :-- | :-- | --: |
 | [Lesson 1](Lesson%201/) | Variables, types, opérateurs, conditions, boucles, listes, slicing, chaînes, dictionnaires, tuples, sets, matrices, fonctions, lambda, exceptions, fichiers | 91 |
+| [Lesson 2](Lesson%202/) | Classes et objets, `__init__` et `self`, encapsulation, héritage, polymorphisme, composition, surcharge des opérateurs, `__repr__` | 66 |
+
+Chaque leçon contient aussi une fiche de révision (`revision_*.tex`, à compiler
+sur Overleaf) et, quand le cours en propose, un notebook d'exercices corrigés.

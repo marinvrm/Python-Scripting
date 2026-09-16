@@ -1,0 +1,589 @@
+% =====================================================================
+% Fiche de revision - Python Scripting - Lesson 1
+% Compilation : pdfLaTeX (Overleaf), aucune option particuliere requise.
+% =====================================================================
+
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage[a4paper,margin=1.3cm]{geometry}
+\usepackage{xcolor}
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+
+% ---------------------------------------------------------------- couleurs
+\definecolor{accent}{HTML}{1F5FA8}
+\definecolor{codefg}{HTML}{A03030}
+\definecolor{codebg}{HTML}{F4F6F8}
+\definecolor{kw}{HTML}{0B5FA5}
+\definecolor{cmt}{HTML}{6C8A54}
+\definecolor{strcol}{HTML}{2E7D32}
+\definecolor{danger}{HTML}{B3261E}
+
+% ---------------------------------------------------------------- titres
+\titleformat{\section}
+  {\normalfont\large\bfseries\color{accent}}{}{0pt}{}
+  [\vspace{-0.75em}{\color{accent}\rule{\linewidth}{0.7pt}}]
+\titlespacing*{\section}{0pt}{1.4ex}{0.7ex}
+
+\titleformat{\subsection}[runin]
+  {\normalfont\bfseries}{}{0pt}{}[\;---\;]
+\titlespacing*{\subsection}{0pt}{0.8ex}{0.4em}
+
+% ---------------------------------------------------------------- code
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{kw}\bfseries,
+  commentstyle=\color{cmt}\itshape,
+  stringstyle=\color{strcol},
+  showstringspaces=false,
+  columns=fullflexible,
+  keepspaces=true,
+  backgroundcolor=\color{codebg},
+  frame=none,
+  xleftmargin=0.3em,
+  aboveskip=0.55em,
+  belowskip=0.55em,
+  breaklines=true,
+}
+
+% code en ligne
+\newcommand{\co}[1]{\texttt{\textcolor{codefg}{#1}}}
+
+% ---------------------------------------------------------------- boites
+\newtcolorbox{piegebox}[1]{
+  colback=red!3, colframe=danger, boxrule=0.7pt,
+  left=5pt, right=5pt, top=4pt, bottom=4pt,
+  title=#1, fonttitle=\bfseries\small, coltitle=white
+}
+
+\newtcolorbox{astucebox}[1]{
+  colback=accent!5, colframe=accent, boxrule=0.7pt,
+  left=5pt, right=5pt, top=4pt, bottom=4pt,
+  title=#1, fonttitle=\bfseries\small, coltitle=white
+}
+
+\setlist[itemize]{leftmargin=1.1em, itemsep=0.15em, topsep=0.25em, parsep=0pt}
+\setlength{\columnsep}{1.1em}
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.15}
+
+\pagestyle{empty}
+
+% =====================================================================
+\begin{document}
+
+% Desactive les espaces automatiques du francais avant : ; ! ?
+% pour que le code en ligne (ex. "if a > 0:") ne soit pas deforme.
+\shorthandoff{;:!?}
+
+\small
+
+\begin{center}
+  {\LARGE\bfseries\color{accent} Python Scripting --- Lesson 1}\\[0.3em]
+  {\normalsize Fiche de révision QCM \quad$\cdot$\quad les points qui tombent}
+\end{center}
+\vspace{0.4em}
+
+% =====================================================================
+\begin{piegebox}{Les 16 réponses pièges à connaître par c\oe ur}
+\begin{minipage}[t]{0.485\linewidth}
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Expression} & \textbf{Résultat} \\
+\midrule
+\co{int(3.7)}      & \co{3} --- tronque, n'arrondit pas \\
+\co{int(-3.7)}     & \co{-3} --- tronque vers zéro \\
+\co{10 / 2}        & \co{5.0} --- \co{/} rend un \co{float} \\
+\co{10 // 3}       & \co{3} --- division entière \\
+\co{-7 // 2}       & \co{-4} --- arrondi vers le bas \\
+\co{10 \% 3}       & \co{1} --- le reste \\
+\co{2 ** 3 ** 2}   & \co{512} --- de droite à gauche \\
+\co{bool("False")} & \co{True} --- chaîne non vide \\
+\bottomrule
+\end{tabularx}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Expression} & \textbf{Résultat} \\
+\midrule
+\co{lst.sort()}        & \co{None} --- trie sur place \\
+\co{mot.replace(...)}  & nouvelle chaîne, \co{mot} intact \\
+\co{lst.append([4,5])} & ajoute \textbf{une} sous-liste \\
+\co{[[0]*3]*3}         & 3 fois \textbf{la même} ligne \\
+\co{zip} tailles $\neq$ & s'arrête à la plus courte \\
+\co{for...else} + \co{break} & le \co{else} est ignoré \\
+\co{d.get("z")}        & \co{None}, pas de \co{KeyError} \\
+\co{(1)} vs \co{(1,)}  & \co{int} vs \co{tuple} \\
+\bottomrule
+\end{tabularx}
+\end{minipage}
+\end{piegebox}
+
+\vspace{0.5em}
+\begin{multicols}{2}
+
+% =====================================================================
+\section{Types et conversions}
+
+Le typage est \textbf{dynamique} : une variable peut changer de type. Les
+annotations (\co{age: int = 25}) sont de simples indications, \textbf{jamais
+vérifiées} à l'exécution.
+
+\begin{lstlisting}
+int(3.7)        # 3    (tronque)
+int("42")       # 42
+int("1010", 2)  # 10   (lu en binaire)
+int(True)       # 1
+float(5)        # 5.0
+str([])         # "[]"
+\end{lstlisting}
+
+\subsection{Les deux erreurs de conversion}
+\co{ValueError} quand la conversion est impossible pour \emph{cette valeur}
+(\co{int("abc")}) ; \co{TypeError} quand le \emph{type} est incompatible
+(\co{int([1, 2])}).
+
+\subsection{Ce qui vaut \co{False}}
+\co{0}, \co{0.0}, \co{""}, \co{[]}, \co{\{\}}, \co{None}. Tout le reste est
+vrai --- y compris \co{"0"}, \co{"False"} et \co{" "}.
+
+% =====================================================================
+\section{Opérateurs}
+
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+\toprule
+\co{+ - *} & addition, soustraction, multiplication \\
+\co{/}     & division \textbf{réelle} : toujours un \co{float} \\
+\co{//}    & division entière, arrondie \textbf{vers le bas} \\
+\co{\%}    & modulo (le reste) \\
+\co{**}    & puissance, associative \textbf{à droite} \\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.4em}
+Affectations combinées : \co{+=}, \co{-=}, \co{*=}, \co{/=}, \co{//=},
+\co{\%=}, \co{**=}. \co{x += y} équivaut à \co{x = x + y}.
+
+% =====================================================================
+\section{Conditions}
+
+\begin{lstlisting}
+if a > 0:
+    ...
+elif a < 0:
+    ...
+else:
+    ...
+\end{lstlisting}
+
+Comparaisons \textbf{chaînables} : \co{if 0 < a < 10:} équivaut à
+\co{0 < a and a < 10}.
+
+\subsection{\co{==} contre \co{is}}
+\co{==} compare le \textbf{contenu}, \co{is} compare l'\textbf{identité} en
+mémoire.
+
+\begin{lstlisting}
+a = [1, 2, 3]
+b = [1, 2, 3]
+c = a
+a == b   # True
+a is b   # False  (deux objets)
+a is c   # True   (meme objet)
+\end{lstlisting}
+
+\subsection{Condition sur une ligne}
+\co{res = "pair" if a \% 2 == 0 else "impair"}. Python n'a pas d'opérateur
+ternaire \co{? :}.
+
+\subsection{\co{in}}
+Teste l'appartenance. Sur une chaîne, il cherche une \textbf{sous-chaîne} :
+\co{"and" in "cat and dog"} vaut \co{True}.
+
+% =====================================================================
+\section{Boucles}
+
+\begin{lstlisting}
+range(5)        # 0 1 2 3 4
+range(5, 10)    # 5 6 7 8 9
+range(5, 10, 2) # 5 7 9
+\end{lstlisting}
+
+La borne de fin est \textbf{toujours exclue}.
+
+\begin{itemize}
+  \item \co{break} : sort immédiatement de la boucle
+  \item \co{continue} : passe à l'itération suivante
+  \item \co{else} : s'exécute \textbf{seulement} si la boucle s'est terminée
+        \textbf{sans} \co{break}
+\end{itemize}
+
+\begin{lstlisting}
+for i in range(10):
+    if i == 5:
+        break
+else:
+    print("fin")   # jamais affiche
+\end{lstlisting}
+
+% =====================================================================
+\section{Listes}
+
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+\toprule
+\co{len(l)} & la taille \\
+\co{min/max/sum(l)} & agrégations \\
+\co{sorted(l)} & \textbf{nouvelle} liste triée \\
+\co{l.sort()} & trie \textbf{sur place}, renvoie \co{None} \\
+\co{l.sort(reverse=True)} & ordre décroissant \\
+\co{l.reverse()} & inverse l'ordre, ne trie pas \\
+\co{l.append(x)} & ajoute \textbf{un} élément \\
+\co{l.extend([x,y])} & ajoute \textbf{chaque} élément \\
+\co{l.remove(v)} & supprime la 1re occurrence \\
+\co{l.pop(i)} & supprime \textbf{et renvoie} l'index \co{i} \\
+\co{l.pop()} & le dernier élément \\
+\co{del l[i]} & supprime l'index \co{i} \\
+\co{l.index(v)} & 1er index de \co{v} \\
+\co{l.count(v)} & nombre d'occurrences \\
+\co{l.clear()} & vide la liste \\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.4em}
+Une liste est \textbf{hétérogène} : \co{[0, "test", 1.5, True]} est valide.
+
+\subsection{Compréhension}
+\co{[expression for e in iterable if condition]}
+
+\begin{lstlisting}
+[x ** 2 for x in range(10) if x % 2 != 0]
+# [1, 9, 25, 49, 81]
+\end{lstlisting}
+
+\subsection{\co{enumerate} et \co{zip}}
+\begin{lstlisting}
+for i, fruit in enumerate(fruits):
+    ...                  # index ET valeur
+
+for nom, age in zip(noms, ages):
+    ...                  # deux listes en parallele
+\end{lstlisting}
+\co{zip} s'arrête à la séquence la plus courte, sans erreur.
+
+\subsection{Unpacking}
+\co{prenom, nom = ['Homer', 'Simpson']} --- il faut autant de variables que
+d'éléments.
+
+% =====================================================================
+\section{Slicing}
+
+Syntaxe \co{[debut:fin\_exclue:pas]}. Produit une \textbf{copie}, jamais une
+référence.
+
+\begin{lstlisting}
+n = [0, 1, 2, 3, 4, 5]
+n[1:4]     # [1, 2, 3]
+n[::2]     # [0, 2, 4]
+n[::-1]    # [5, 4, 3, 2, 1, 0]  (copie inversee)
+n[::-2]    # [5, 3, 1]
+n[:]       # copie complete
+n[1:4] = [10, 20]  # remplace la tranche
+n[1:4] = []        # supprime la tranche
+\end{lstlisting}
+
+% =====================================================================
+\section{Chaînes de caractères}
+
+Les chaînes sont \textbf{immuables} : toute méthode renvoie une
+\textbf{nouvelle} chaîne, il faut réaffecter.
+
+\begin{lstlisting}
+mot = mot.replace("l", "x")   # sinon aucun effet
+\end{lstlisting}
+
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+\toprule
+\co{.lower() .upper()} & la casse \\
+\co{.split(sep)} & découpe, renvoie une \textbf{liste} \\
+\co{.split()} & sépare sur espaces, \co{\textbackslash t}, \co{\textbackslash n} \\
+\co{.split(" ", maxsplit=2)} & 2 découpages, donc 3 éléments \\
+\co{sep.join(liste)} & assemble, renvoie une \textbf{chaîne} \\
+\co{.strip()} & retire espaces et \co{\textbackslash n} aux \textbf{bords} \\
+\co{.replace(a, b)} & remplace \\
+\co{.find(s)} & l'index, ou \co{-1} si absent \\
+\bottomrule
+\end{tabularx}
+
+% =====================================================================
+\section{Dictionnaires}
+
+\begin{lstlisting}
+p = {"nom": "Alice", "age": 25}
+p["age"] = 26        # modification
+p["ville"] = "Paris" # ajout (meme syntaxe)
+
+p.keys()    # les cles
+p.values()  # les valeurs
+p.items()   # les couples (cle, valeur)
+
+for cle, valeur in p.items():
+    print(cle, "->", valeur)
+\end{lstlisting}
+
+\subsection{\co{get} plutôt que \co{[]}}
+\co{p["z"]} lève une \co{KeyError} ; \co{p.get("z")} renvoie \co{None} et
+\co{p.get("z", 0)} renvoie \co{0}. D'où le comptage d'occurrences :
+
+\begin{lstlisting}
+compteur[mot] = compteur.get(mot, 0) + 1
+\end{lstlisting}
+
+\subsection{\co{setdefault} pour grouper}
+\co{res.setdefault(cle, []).append(x)} crée la liste si besoin, puis ajoute.
+
+\subsection{Compréhension}
+\begin{lstlisting}
+{x: x**2 for x in range(5)}
+# {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+
+{c: v for c, v in d.items() if v % 2 == 0}
+\end{lstlisting}
+
+% =====================================================================
+\section{Tuples et ensembles}
+
+\textbf{Tuple} : séquence \textbf{immuable}. Modifier un élément lève une
+\co{TypeError}. Il sert de clé de dictionnaire et de retour multiple.
+
+\begin{lstlisting}
+def min_max(l):
+    return min(l), max(l)   # renvoie un TUPLE
+
+x, y = min_max([1, 2, 3])   # unpacking
+\end{lstlisting}
+
+\textbf{Set} : collection \textbf{non ordonnée}, \textbf{sans doublon}.
+\co{set([1, 1, 2, 2, 3])} donne \co{\{1, 2, 3\}}.
+
+\subsection{Conversions entre structures}
+\begin{lstlisting}
+tuple(liste)          # figer -> utilisable comme cle
+list(mon_tuple)       # pour modifier
+dict([("a", 1)])      # liste de couples -> dict
+dict(zip(cles, vals)) # deux listes -> dict
+list(d.items())       # dict -> liste de tuples
+\end{lstlisting}
+
+Une \textbf{liste ne peut pas} être une clé de dictionnaire : elle est mutable,
+donc non hachable, d'où une \co{TypeError}.
+
+% =====================================================================
+\section{Matrices}
+
+Une matrice est une \textbf{liste de listes}. \co{len(m)} donne le nombre de
+lignes, \co{len(m[0])} le nombre de colonnes. Les lignes peuvent avoir des
+tailles différentes.
+
+\begin{lstlisting}
+[ligne[1] for ligne in m]     # la colonne 1
+[list(c) for c in zip(*m)]    # la transposee
+[[0 for _ in range(3)] for _ in range(3)]
+\end{lstlisting}
+
+\begin{piegebox}{Le piège de la duplication}
+\co{[[0] * 3] * 3} duplique la \textbf{référence} : les trois lignes sont le
+\textbf{même objet}. Modifier \co{m[0][0]} modifie les trois lignes. Toujours
+passer par une compréhension.
+\end{piegebox}
+
+% =====================================================================
+\section{Fonctions}
+
+\begin{lstlisting}
+def saluer(nom, message="Bonjour"):
+    return f"{message}, {nom} !"
+
+saluer("Bob")                   # defaut utilise
+saluer("Bob", "Salut")          # positionnel
+saluer(message="Hey", nom="Bo") # nomme
+\end{lstlisting}
+
+Sans \co{return}, une fonction renvoie \co{None}.
+
+\subsection{Arguments variables}
+\co{*args} donne un \textbf{tuple} d'arguments positionnels.
+\co{**kwargs} donne un \textbf{dictionnaire} d'arguments nommés.
+
+\subsection{Portée}
+Une affectation dans une fonction crée une variable \textbf{locale} qui masque
+la globale :
+
+\begin{lstlisting}
+x = 10
+def f():
+    x = 20      # variable LOCALE
+f()
+print(x)        # 10
+\end{lstlisting}
+
+\subsection{Annotations}
+\co{def f(n: float) -> int:} n'impose rien. Aucune erreur si le type renvoyé
+diffère.
+
+% =====================================================================
+\section{Lambda, map, filter, sorted}
+
+\co{lambda arg1, arg2: expression} --- fonction anonyme d'une seule
+expression, dont la valeur est renvoyée implicitement.
+
+\begin{lstlisting}
+carre = lambda x: x * x
+
+list(map(lambda x: x**2, nombres))
+list(filter(lambda x: x % 2 == 0, nombres))
+
+sorted(eleves, key=lambda e: e["note"],
+       reverse=True)
+\end{lstlisting}
+
+\co{map} et \co{filter} renvoient un \textbf{objet paresseux} : sans
+\co{list(...)}, \co{print} affiche \co{<map object at ...>}. En pratique, la
+compréhension de liste est préférée pour la lisibilité.
+
+% =====================================================================
+\section{Exceptions}
+
+\begin{lstlisting}
+try:
+    ...
+except ValueError:
+    ...             # ce cas precis
+except Exception as e:
+    print(e)        # le fourre-tout, EN DERNIER
+else:
+    ...             # si AUCUNE exception
+finally:
+    ...             # TOUJOURS
+\end{lstlisting}
+
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Situation} & \textbf{Erreur} \\
+\midrule
+\co{int("abc")}            & \co{ValueError} \\
+\co{int([1, 2])}           & \co{TypeError} \\
+\co{l.remove(v)} absent    & \co{ValueError} \\
+\co{l.index(v)} absent     & \co{ValueError} \\
+\co{l.pop(i)} hors bornes  & \co{IndexError} \\
+\co{d["z"]} absent         & \co{KeyError} \\
+\co{10 / 0}                & \co{ZeroDivisionError} \\
+\co{t[0] = x} sur un tuple & \co{TypeError} \\
+liste comme clé de dict    & \co{TypeError} \\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.4em}
+\co{raise ValueError("message")} lève volontairement une exception et
+interrompt l'exécution.
+
+% =====================================================================
+\section{Affichage et fichiers}
+
+\begin{lstlisting}
+print(1, 2, 3)              # 1 2 3
+print(1, 2, 3, sep="---")   # 1---2---3
+
+print(f"Bonjour {nom}")
+print(f"{1 + 2}")           # 3
+print(f"{age:03d}")         # 025
+print(f"{nom:>10}")         # cale a droite sur 10
+\end{lstlisting}
+
+\co{>} aligne à droite, \co{<} à gauche, \co{\textasciicircum} centre ; le
+nombre est la largeur totale.
+
+\begin{lstlisting}
+with open("f.csv", mode="w",
+          encoding="utf-8") as f:
+    f.write(ligne + "\n")
+
+with open("f.csv", mode="r",
+          encoding="utf-8") as f:
+    for ligne in f:            # economise la RAM
+        nom, age = ligne.strip().split(",")
+\end{lstlisting}
+
+\co{with} \textbf{ferme automatiquement} le fichier, même en cas d'erreur.
+Modes : \co{"r"} lecture, \co{"w"} écriture (\textbf{écrase tout}), \co{"a"}
+ajout à la fin.
+
+\subsection{Point d'entrée}
+\co{if \_\_name\_\_ == "\_\_main\_\_":} n'exécute le bloc que si le fichier est
+\textbf{lancé directement}, pas s'il est importé.
+
+% =====================================================================
+\section{Réflexes des exercices}
+
+\begin{itemize}
+  \item \textbf{Dédoublonner} : \co{set(l)} perd l'ordre,
+        \co{list(dict.fromkeys(l))} le conserve.
+  \item \textbf{Croissance stricte} :
+        \co{all(a < b for a, b in zip(l, l[1:]))} compare chaque élément au
+        suivant.
+  \item \textbf{Court-circuit} : dans \co{len(m) > 5 and m[0] in VOYELLES}, le
+        test de droite n'est évalué que si celui de gauche est vrai, ce qui
+        évite une \co{IndexError} sur une chaîne vide.
+  \item \textbf{Compter} : \co{c[mot] = c.get(mot, 0) + 1}, ou
+        \co{Counter(mots).most\_common(2)}.
+  \item \textbf{Inverser un dict} : \co{\{v: k for k, v in d.items()\}} --- si
+        les valeurs ne sont pas uniques, la dernière écrase les précédentes.
+  \item \textbf{Mémoïsation} : un dictionnaire sert de cache, chaque valeur
+        n'est calculée qu'une seule fois (Fibonacci récursif).
+  \item \textbf{Moyennes} : la moyenne d'une classe se calcule sur
+        \textbf{toutes les notes} mises à plat, pas sur la moyenne des
+        moyennes (sauf si chacun a le même nombre de notes).
+  \item \textbf{Division par zéro} : tester \co{if not notes: return None}
+        avant \co{sum(notes) / len(notes)}.
+\end{itemize}
+
+\end{multicols}
+
+\vspace{0.3em}
+\begin{astucebox}{Checklist des 60 dernières secondes}
+\begin{minipage}[t]{0.485\linewidth}
+\begin{itemize}
+  \item \co{/} rend un \co{float}, \co{//} arrondit \textbf{vers le bas}.
+  \item \co{.sort()} renvoie \co{None}, \co{sorted()} renvoie la liste.
+  \item Chaînes et tuples sont \textbf{immuables} : il faut réaffecter.
+  \item La borne de fin est \textbf{exclue} : \co{range} comme slicing.
+\end{itemize}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}
+\begin{itemize}
+  \item \co{append} ajoute 1 élément, \co{extend} les ajoute tous.
+  \item Le \co{else} d'une boucle veut dire \textbf{pas} de \co{break}.
+  \item \co{*args} donne un tuple, \co{**kwargs} un dictionnaire.
+  \item \co{finally} s'exécute \textbf{toujours}, \co{else} seulement si tout
+        s'est bien passé.
+\end{itemize}
+\end{minipage}
+\end{astucebox}
+
+\vspace{0.4em}
+\begin{center}
+\footnotesize\itshape
+Pour s'entraîner : \texttt{cd "Lesson 1" \&\& python quiz.py}
+\end{center}
+
+\end{document}
