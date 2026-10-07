@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Questions</title>
+  </head>
+  <body>
+    <h1>Questions</h1>
+    <ul>
+      {% for question in questions %}
+        <li>
+          {{ question.question_text }}. Date: {{ question.pub_date }}
+          <ul>
+            {% for choice in question.choice_set.all %}
+              <li>{{ choice.choice_text }} - {{ choice.votes }} votes</li>
+            {% empty %}
+              <li>No choice yet</li>
+            {% endfor %}
+          </ul>
+        </li>
+      {% empty %}
+        <li>No question yet.</li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

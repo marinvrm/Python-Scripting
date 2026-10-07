@@ -1,0 +1,6 @@
+# Aucune dependance.
+#
+# Ce fichier est volontairement vide : CRYPTE n'utilise que la bibliotheque
+# standard de Python (math, random, zlib, struct, msvcrt/termios, argparse).
+# Un `pip install -r requirements.txt` n'installera donc rien, et le projet
+# tourne dans n'importe quel environnement virtuel Python 3.8+.

@@ -137,6 +137,24 @@ bonnes réponses attendues est affiché.
 | :-- | :-- | --: |
 | [Lesson 1](Lesson%201/) | Variables, types, opérateurs, conditions, boucles, listes, slicing, chaînes, dictionnaires, tuples, sets, matrices, fonctions, lambda, exceptions, fichiers | 91 |
 | [Lesson 2](Lesson%202/) | Classes et objets, `__init__` et `self`, encapsulation, héritage, polymorphisme, composition, surcharge des opérateurs, `__repr__` | 66 |
+| [Lesson 3](Lesson%203/) | pip, environnements virtuels, `venv`, conda, pipenv, poetry, reproductibilité | — |
+| [Lesson 4](Lesson%204/) | Django : projet et applications, vues, URLs, modèles, migrations, shell et ORM, templates, paramètres GET, formulaires, admin | 68 |
 
 Chaque leçon contient aussi une fiche de révision (`revision_*.tex`, à compiler
 sur Overleaf) et, quand le cours en propose, un notebook d'exercices corrigés.
+La [Lesson 3](Lesson%203/) contient en plus le compte-rendu des deux exercices
+du cours, avec les commandes et les sorties obtenues. La
+[Lesson 4](Lesson%204/) contient le projet Django complet (tutoriel et
+exercices) : voir son README pour l'installer et le lancer.
+
+## Bonus
+
+[bonus_moteur_3d/](bonus_moteur_3d/) — **CRYPTE**, un moteur 3D en lancer de
+rayons qui tourne en temps réel dans le terminal, en Python pur et sans aucune
+dépendance : labyrinthe, textures, sprites et export PNG sont tous générés par
+le code.
+
+```bash
+cd bonus_moteur_3d
+python crypte.py
+```

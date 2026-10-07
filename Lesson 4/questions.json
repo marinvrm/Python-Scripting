@@ -1,0 +1,1205 @@
+{
+  "lesson": "Lesson 4",
+  "title": "Django",
+  "exam_style": true,
+  "max_answers": 2,
+  "options_per_question": 6,
+  "questions": [
+    {
+      "id": "l4-set-01",
+      "topic": "Setup and project",
+      "difficulty": 1,
+      "question": "Which command creates a new Django project named mysite?",
+      "options": [
+        "django-admin startproject mysite",
+        "python manage.py startapp mysite",
+        "django-admin startapp mysite",
+        "pip install mysite",
+        "python -m django new mysite",
+        "python manage.py runserver mysite"
+      ],
+      "answer": 0,
+      "explanation": "startproject creates the project (manage.py + the settings package). startapp creates an application inside an existing project."
+    },
+    {
+      "id": "l4-set-02",
+      "topic": "Setup and project",
+      "difficulty": 1,
+      "question": "Which commands display the installed Django version?",
+      "options": [
+        "python -m django --version",
+        "django-admin --version",
+        "python manage.py version",
+        "pip django --version",
+        "python --django",
+        "django --info"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Both run the same django-admin program. 'pip show django' would also work, but none of the other spellings exist."
+    },
+    {
+      "id": "l4-set-03",
+      "topic": "Setup and project",
+      "difficulty": 1,
+      "question": "Which statements about python manage.py runserver are true?",
+      "options": [
+        "It starts a lightweight server meant for development only",
+        "By default it listens on http://127.0.0.1:8000/",
+        "It is the recommended server for production",
+        "It creates every database table on startup",
+        "It compiles the project into an executable",
+        "It installs missing packages from requirements.txt"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "runserver is a development tool. Tables are created by migrate, and production uses a WSGI/ASGI server."
+    },
+    {
+      "id": "l4-set-04",
+      "topic": "Setup and project",
+      "difficulty": 2,
+      "question": "Which statements about the files created by startproject are true?",
+      "options": [
+        "manage.py is a management script you run but do not edit",
+        "settings.py holds the project configuration",
+        "urls.py contains the database models",
+        "wsgi.py stores the HTML templates",
+        "__init__.py lists the installed applications",
+        "asgi.py is where views are written"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "urls.py holds routes, models live in each app's models.py, and __init__.py only marks the folder as a Python package."
+    },
+    {
+      "id": "l4-set-05",
+      "topic": "Setup and project",
+      "difficulty": 2,
+      "question": "What are wsgi.py and asgi.py used for?",
+      "options": [
+        "They are entry points for WSGI / ASGI compatible web servers",
+        "They list the project's routes",
+        "They are migration files",
+        "They contain the project's tests",
+        "They configure the admin interface",
+        "They define the template loaders"
+      ],
+      "answer": 0,
+      "explanation": "A production server (gunicorn, uvicorn, ...) imports the application object exposed by one of these files."
+    },
+    {
+      "id": "l4-set-06",
+      "topic": "Setup and project",
+      "difficulty": 1,
+      "question": "Why create a virtual environment before running pip install Django?",
+      "options": [
+        "To isolate the project's dependencies from the system Python",
+        "To pin a Django version per project without affecting other projects",
+        "Because Django refuses to install globally",
+        "To make the development server faster",
+        "Because manage.py only runs inside a venv",
+        "To get a database for free"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Same reasoning as Lesson 3: each project gets its own isolated, reproducible set of packages."
+    },
+    {
+      "id": "l4-app-01",
+      "topic": "Apps and views",
+      "difficulty": 1,
+      "question": "Which command adds an application named polls to an existing project?",
+      "options": [
+        "python manage.py startapp polls",
+        "django-admin startproject polls",
+        "python manage.py makemigrations polls",
+        "python manage.py addapp polls",
+        "pip install polls",
+        "python manage.py runserver polls"
+      ],
+      "answer": 0,
+      "explanation": "startapp creates the polls/ folder with models.py, views.py, admin.py, apps.py, tests.py and migrations/."
+    },
+    {
+      "id": "l4-app-02",
+      "topic": "Apps and views",
+      "difficulty": 2,
+      "question": "Which statements about Django projects and applications are true?",
+      "options": [
+        "A project can contain several applications",
+        "An application is meant to be reusable in other projects",
+        "An application can never be reused outside its project",
+        "A project contains exactly one application",
+        "An app is active as soon as its folder exists",
+        "django.contrib.admin is a project, not an app"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "An app must also be added to INSTALLED_APPS to be active. admin, auth, sessions... are themselves apps."
+    },
+    {
+      "id": "l4-app-03",
+      "topic": "Apps and views",
+      "difficulty": 2,
+      "question": "Which statements about this view are true?",
+      "code": "from django.http import HttpResponse\n\ndef index(request):\n    return HttpResponse(\"Hello, world. You're at the polls index.\")",
+      "options": [
+        "It receives an HttpRequest object as first argument",
+        "It must return an HttpResponse (or a subclass)",
+        "A view must always be a class",
+        "The view should print() the HTML",
+        "The request parameter can be omitted",
+        "Returning a plain str works: Django converts it"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Returning a plain string makes Django raise an error: a view must return an HttpResponse object."
+    },
+    {
+      "id": "l4-app-04",
+      "topic": "Apps and views",
+      "difficulty": 1,
+      "question": "Where can you see the applications already used by a new project?",
+      "options": [
+        "In the INSTALLED_APPS list of settings.py",
+        "In urls.py",
+        "In manage.py",
+        "In requirements.txt",
+        "In db.sqlite3",
+        "In wsgi.py"
+      ],
+      "answer": 0,
+      "explanation": "INSTALLED_APPS already contains admin, auth, contenttypes, sessions, messages and staticfiles."
+    },
+    {
+      "id": "l4-app-05",
+      "topic": "Apps and views",
+      "difficulty": 2,
+      "question": "Which INSTALLED_APPS entries correctly activate the polls application?",
+      "options": [
+        "'polls.apps.PollsConfig'",
+        "'polls'",
+        "'polls.urls'",
+        "'polls.views'",
+        "'polls.models.Question'",
+        "'manage.polls'"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Both work: 'polls' lets Django find the default AppConfig, 'polls.apps.PollsConfig' names it explicitly (the course's form)."
+    },
+    {
+      "id": "l4-url-01",
+      "topic": "URLs",
+      "difficulty": 1,
+      "question": "With these two files, which URL displays views.index?",
+      "code": "# mysite/urls.py\npath(\"polls/\", include(\"polls.urls\")),\n\n# polls/urls.py\npath(\"\", views.index, name=\"index\"),",
+      "options": [
+        "http://localhost:8000/polls/",
+        "http://localhost:8000/",
+        "http://localhost:8000/index",
+        "http://localhost:8000/polls/index",
+        "http://localhost:8000/polls/polls/",
+        "http://localhost:8000/admin/polls/"
+      ],
+      "answer": 0,
+      "explanation": "The project prefix 'polls/' is concatenated with the app route '' (the root of the application)."
+    },
+    {
+      "id": "l4-url-02",
+      "topic": "URLs",
+      "difficulty": 2,
+      "question": "Which statements about include() are true?",
+      "options": [
+        "It delegates every URL starting with a prefix to another URLconf",
+        "It lets each application keep its own urls.py",
+        "It loads a template",
+        "It installs an application",
+        "It copies the views' code into urls.py",
+        "It creates a database table"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "include('polls.urls') strips the matched prefix and passes the rest of the URL to polls/urls.py."
+    },
+    {
+      "id": "l4-url-03",
+      "topic": "URLs",
+      "difficulty": 2,
+      "question": "What does the name argument of path() allow?",
+      "options": [
+        "Referring to the URL by name, with {% url %} in templates or reverse() in Python",
+        "Setting the page <title>",
+        "Renaming the view function",
+        "Defining the URL itself",
+        "Making the page private",
+        "Nothing: it is required for the page to load"
+      ],
+      "answer": 0,
+      "explanation": "name is optional. With it, changing the URL later does not break links built with {% url 'name' %}."
+    },
+    {
+      "id": "l4-url-04",
+      "topic": "URLs",
+      "difficulty": 1,
+      "question": "Which URL displays views.hello?",
+      "code": "# mysite/urls.py\npath(\"polls/\", include(\"polls.urls\")),\n\n# polls/urls.py\npath(\"hello\", views.hello, name=\"hello\"),",
+      "options": [
+        "http://localhost:8000/polls/hello",
+        "http://localhost:8000/hello",
+        "http://localhost:8000/polls/hello/hello",
+        "http://localhost:8000/polls?hello",
+        "http://localhost:8000/hello/polls",
+        "http://localhost:8000/polls/views/hello"
+      ],
+      "answer": 0,
+      "explanation": "Project prefix + app route: 'polls/' + 'hello'."
+    },
+    {
+      "id": "l4-url-05",
+      "topic": "URLs",
+      "difficulty": 3,
+      "question": "The route is path(\"hello\", views.hello). What happens when you open /polls/hello/ (with a final slash)?",
+      "options": [
+        "A 404 error: the route has no final slash, so it does not match",
+        "The same page is displayed",
+        "Django redirects to /polls/hello",
+        "A 500 server error",
+        "The admin page opens",
+        "Django removes the slash automatically"
+      ],
+      "answer": 0,
+      "explanation": "APPEND_SLASH only adds a missing slash (it redirects /hello to /hello/ when that route exists). It never removes one."
+    },
+    {
+      "id": "l4-url-06",
+      "topic": "URLs",
+      "difficulty": 2,
+      "question": "Why should path(\"\", include(\"theme_material_kit.urls\")) be placed last in urlpatterns?",
+      "options": [
+        "Django tries patterns in order and keeps the first match, so a catch-all placed first would hide our routes",
+        "Because Django sorts patterns alphabetically",
+        "Because include() only works at the end",
+        "Because the admin must always be first",
+        "Because the order changes the speed of migrations",
+        "It makes no difference"
+      ],
+      "answer": 0,
+      "explanation": "Lowest priority = end of the list: only URLs not handled by our own apps fall through to the theme."
+    },
+    {
+      "id": "l4-mig-01",
+      "topic": "Models and migrations",
+      "difficulty": 1,
+      "question": "What is the correct order to create or update a table?",
+      "options": [
+        "Edit models.py, run makemigrations, run migrate",
+        "Run migrate, run makemigrations, edit models.py",
+        "Run makemigrations, edit models.py, run migrate",
+        "Edit models.py, run migrate, run makemigrations",
+        "Edit models.py and restart the server: tables update automatically",
+        "Run sqlmigrate, then edit models.py"
+      ],
+      "answer": 0,
+      "explanation": "1) define the models, 2) makemigrations records the change, 3) migrate applies it to the database."
+    },
+    {
+      "id": "l4-mig-02",
+      "topic": "Models and migrations",
+      "difficulty": 2,
+      "question": "Which statements about python manage.py makemigrations polls are true?",
+      "options": [
+        "It writes migration files describing the changes in the models",
+        "It does not modify the database",
+        "It applies the changes to the database",
+        "It deletes the database",
+        "It creates a superuser",
+        "It starts the development server"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "makemigrations creates polls/migrations/0001_initial.py. Only migrate touches the database."
+    },
+    {
+      "id": "l4-mig-03",
+      "topic": "Models and migrations",
+      "difficulty": 2,
+      "question": "What does python manage.py sqlmigrate polls 0001 do?",
+      "options": [
+        "It prints the SQL that migration 0001 would run, without executing it",
+        "It applies migration 0001",
+        "It rolls back migration 0001",
+        "It creates migration 0001",
+        "It deletes migration 0001",
+        "It lists every applied migration"
+      ],
+      "answer": 0,
+      "explanation": "Useful to check what will happen to the database. For the polls models it prints two CREATE TABLE and one CREATE INDEX."
+    },
+    {
+      "id": "l4-mig-04",
+      "topic": "Models and migrations",
+      "difficulty": 1,
+      "question": "Which statements about the default database are true?",
+      "options": [
+        "Data is stored in an SQLite file named db.sqlite3",
+        "It can be changed in the DATABASES setting of settings.py",
+        "Django only supports SQLite",
+        "The data is stored in models.py",
+        "Data is lost each time the server restarts",
+        "PostgreSQL must be installed before running migrate"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "SQLite needs no server, which suits development. PostgreSQL, MySQL, Oracle... can be configured in DATABASES."
+    },
+    {
+      "id": "l4-mig-05",
+      "topic": "Models and migrations",
+      "difficulty": 2,
+      "question": "Why is the migration mechanism useful?",
+      "options": [
+        "It upgrades the production database by replaying the changes made in development",
+        "It keeps a history of schema changes, like commits in Git",
+        "It copies development data to production",
+        "It backs up the database automatically",
+        "It makes queries faster",
+        "It removes the need to write models"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Migrations track the structure (tables, columns), not the data."
+    },
+    {
+      "id": "l4-mig-06",
+      "topic": "Models and migrations",
+      "difficulty": 2,
+      "question": "On a brand new project with no model written yet, why does python manage.py migrate already create tables?",
+      "options": [
+        "The pre-installed applications (auth, admin, sessions...) ship their own migrations",
+        "Django creates one table per URL",
+        "migrate fills the database with sample data",
+        "settings.py contains SQL statements",
+        "db.sqlite3 is copied from a template",
+        "wsgi.py defines default tables"
+      ],
+      "answer": 0,
+      "explanation": "Those apps already defined their models and migration files: we only need to apply them."
+    },
+    {
+      "id": "l4-mig-07",
+      "topic": "Models and migrations",
+      "difficulty": 3,
+      "question": "You add a field to a model but forget makemigrations and migrate. What happens?",
+      "options": [
+        "The table has no such column, so queries on that model fail with an error such as 'no such column'",
+        "Django adds the column when the server restarts",
+        "Nothing: models.py is the database",
+        "The field is silently ignored and everything works",
+        "migrate alone detects the change and alters the table",
+        "db.sqlite3 is deleted"
+      ],
+      "answer": 0,
+      "explanation": "migrate only applies existing migration files. Without makemigrations there is nothing new to apply."
+    },
+    {
+      "id": "l4-mod-01",
+      "topic": "Models",
+      "difficulty": 1,
+      "question": "Which statements about this relation are true?",
+      "code": "class Choice(models.Model):\n    question = models.ForeignKey(Question, on_delete=models.CASCADE)\n    choice_text = models.CharField(max_length=200)\n    votes = models.IntegerField(default=0)",
+      "options": [
+        "Each Choice is linked to one Question",
+        "A Question can have several Choices",
+        "Each Question has exactly one Choice",
+        "A Choice can belong to several Questions",
+        "ForeignKey creates a new table for questions",
+        "ForeignKey copies the question text into Choice"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "A ForeignKey is a many-to-one relation: it stores question_id in the choice table."
+    },
+    {
+      "id": "l4-mod-02",
+      "topic": "Models",
+      "difficulty": 2,
+      "question": "What does on_delete=models.CASCADE mean on Choice.question?",
+      "options": [
+        "Deleting a Question also deletes its Choices",
+        "Deleting a Choice also deletes its Question",
+        "A Question cannot be deleted while it has choices",
+        "The choices are kept with question set to NULL",
+        "The choices are moved to another question",
+        "It has no effect with SQLite"
+      ],
+      "answer": 0,
+      "explanation": "PROTECT would forbid the deletion and SET_NULL would keep the choices with an empty question."
+    },
+    {
+      "id": "l4-mod-03",
+      "topic": "Models",
+      "difficulty": 2,
+      "question": "Which statements about these fields are true?",
+      "code": "class Question(models.Model):\n    question_text = models.CharField(max_length=200)\n    pub_date = models.DateTimeField(\"date published\")\n\nclass Choice(models.Model):\n    votes = models.IntegerField(default=0)",
+      "options": [
+        "\"date published\" is a human readable name for the field",
+        "A DateTimeField stores a date and a time",
+        "\"date published\" is the default value of the field",
+        "pub_date is set to the current time automatically",
+        "question_text accepts any number of characters",
+        "default=0 makes votes mandatory with no default"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "The first positional argument of a field is its verbose name, used for example in the admin. max_length=200 limits question_text."
+    },
+    {
+      "id": "l4-mod-04",
+      "topic": "Models",
+      "difficulty": 1,
+      "question": "The Question model declares no primary key. What does Django do?",
+      "options": [
+        "It adds an auto incremented primary key named id",
+        "Nothing: every model must declare its own id",
+        "It uses question_text as primary key",
+        "It generates a random UUID",
+        "It creates the id only after the first query",
+        "It resets id to 1 on each save"
+      ],
+      "answer": 0,
+      "explanation": "That is why q.id displays 1 after the first q.save()."
+    },
+    {
+      "id": "l4-mod-05",
+      "topic": "Models",
+      "difficulty": 2,
+      "question": "Which statements about defining __str__ in a model are true?",
+      "options": [
+        "It changes how objects are displayed, for example in a QuerySet or in the admin",
+        "It does not require a new migration",
+        "It adds a column to the table",
+        "It changes the value of question_text",
+        "It is required for save() to work",
+        "It makes queries faster"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Without it the shell shows <Question: Question object (1)>; with it, <Question: What's up?>. It is pure Python, the schema is unchanged."
+    },
+    {
+      "id": "l4-mod-06",
+      "topic": "Models",
+      "difficulty": 3,
+      "question": "With USE_TZ = True (the default), how are datetimes such as pub_date handled?",
+      "options": [
+        "They are stored in UTC and converted to TIME_ZONE when displayed in templates",
+        "They are stored in the server's local time",
+        "They are stored as text",
+        "Time zones are ignored",
+        "They are converted to the browser's time zone by Django",
+        "They must be naive datetimes"
+      ],
+      "answer": 0,
+      "explanation": "timezone.now() returns an aware UTC datetime. A raw f-string in a view shows the UTC value, while a template displays the local TIME_ZONE time."
+    },
+    {
+      "id": "l4-orm-01",
+      "topic": "Shell and ORM",
+      "difficulty": 1,
+      "question": "What does python manage.py shell open?",
+      "options": [
+        "An interactive Python prompt connected to the project, where the models can be imported",
+        "A SQL prompt",
+        "The admin interface",
+        "A bash terminal inside the database",
+        "The development server",
+        "A Jupyter notebook"
+      ],
+      "answer": 0,
+      "explanation": "Each command is evaluated and its result displayed, which is ideal to experiment with the models."
+    },
+    {
+      "id": "l4-orm-02",
+      "topic": "Shell and ORM",
+      "difficulty": 1,
+      "question": "The question table is empty. What does Question.objects.all() display in the shell?",
+      "options": [
+        "<QuerySet []>",
+        "[]",
+        "None",
+        "An error: the table is empty",
+        "0",
+        "{}"
+      ],
+      "answer": 0,
+      "explanation": "objects.all() returns a QuerySet, not a list, even when it is empty."
+    },
+    {
+      "id": "l4-orm-03",
+      "topic": "Shell and ORM",
+      "difficulty": 2,
+      "question": "The table is empty. Which statements are true right after this line, before q.save()?",
+      "code": "q = Question(question_text=\"What's new?\", pub_date=timezone.now())",
+      "options": [
+        "The object only exists in memory: nothing is in the database yet",
+        "q.id is None",
+        "q.id is 1",
+        "Question.objects.count() returns 1",
+        "The row is inserted automatically",
+        "q.pub_date is None"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Instantiating a model does not touch the database. save() runs the INSERT and fills q.id."
+    },
+    {
+      "id": "l4-orm-04",
+      "topic": "Shell and ORM",
+      "difficulty": 2,
+      "question": "q is already saved with id 1. What does the second save() do?",
+      "code": "q.question_text = \"What's up?\"\nq.save()",
+      "options": [
+        "It updates the existing row, which keeps id 1",
+        "It inserts a new row with id 2",
+        "It raises an error",
+        "Nothing, the change is ignored",
+        "It deletes the row and recreates it with a new id",
+        "It requires migrate first"
+      ],
+      "answer": 0,
+      "explanation": "save() runs an UPDATE when the object already has a primary key, an INSERT otherwise."
+    },
+    {
+      "id": "l4-orm-05",
+      "topic": "Shell and ORM",
+      "difficulty": 2,
+      "question": "Which statements about q.choice_set are true?",
+      "code": "q.choice_set.create(choice_text=\"Choice 1\", votes=2)",
+      "options": [
+        "Django creates choice_set automatically because Choice has a ForeignKey to Question",
+        "q.choice_set.create(...) creates a Choice linked to q and saves it",
+        "choice_set must be declared in the Question class",
+        "q.choice_set.count() counts every choice in the database",
+        "choice_set is a Python list",
+        "The choice is only saved after a later q.save()"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "The reverse relation is named <model in lowercase>_set. count() only counts the choices of that question."
+    },
+    {
+      "id": "l4-orm-06",
+      "topic": "Shell and ORM",
+      "difficulty": 1,
+      "question": "What does Pakiman.objects.filter(level__gt=5) return?",
+      "options": [
+        "The Pakiman whose level is strictly greater than 5",
+        "The Pakiman whose level is greater than or equal to 5",
+        "The Pakiman whose level is lower than 5",
+        "The Pakiman whose level equals 5",
+        "The first 5 Pakiman",
+        "An error: gt is not a field"
+      ],
+      "answer": 0,
+      "explanation": "Lookups are written field__lookup: gt, gte, lt, lte, exact, contains, icontains..."
+    },
+    {
+      "id": "l4-orm-07",
+      "topic": "Shell and ORM",
+      "difficulty": 3,
+      "question": "Which expressions return every Pakiman with a level of at least 5?",
+      "options": [
+        "Pakiman.objects.filter(level__gte=5)",
+        "Pakiman.objects.exclude(level__lt=5)",
+        "Pakiman.objects.filter(level >= 5)",
+        "Pakiman.objects.get(level__gte=5)",
+        "Pakiman.objects.filter(level__gt=5)",
+        "Pakiman.objects.all(level__gte=5)"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "get() returns a single object and fails if there are several. level >= 5 is a Python comparison, not a lookup. gt excludes 5."
+    },
+    {
+      "id": "l4-orm-08",
+      "topic": "Shell and ORM",
+      "difficulty": 2,
+      "question": "No question has id 99. What does Question.objects.get(id=99) do?",
+      "options": [
+        "It raises Question.DoesNotExist",
+        "It returns None",
+        "It returns an empty QuerySet",
+        "It creates the question",
+        "It returns the last question",
+        "It returns a 404 page"
+      ],
+      "answer": 0,
+      "explanation": "filter() would return an empty QuerySet instead. In a view, get_object_or_404() turns this case into a 404 page."
+    },
+    {
+      "id": "l4-tpl-01",
+      "topic": "Templates",
+      "difficulty": 1,
+      "question": "Where does Django look for an application's templates by default?",
+      "options": [
+        "In a templates/ folder inside the application",
+        "In the static/ folder of the project",
+        "In the migrations/ folder",
+        "In settings.py",
+        "Next to manage.py only",
+        "In the virtual environment"
+      ],
+      "answer": 0,
+      "explanation": "APP_DIRS = True in TEMPLATES makes Django search each installed app's templates/ folder."
+    },
+    {
+      "id": "l4-tpl-02",
+      "topic": "Templates",
+      "difficulty": 1,
+      "question": "Which statements about render(request, \"questions.html\", context) are true?",
+      "options": [
+        "It fills the template with the context and returns an HttpResponse",
+        "Each key of the context dict becomes a variable in the template",
+        "context must be a list",
+        "render() returns a plain string",
+        "render() saves the template in the database",
+        "render() sends the page by email"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "context = {\"questions\": ...} lets the template use {{ questions }} and {% for question in questions %}."
+    },
+    {
+      "id": "l4-tpl-03",
+      "topic": "Templates",
+      "difficulty": 1,
+      "question": "In the Django template language, what are {{ ... }} and {% ... %} used for?",
+      "options": [
+        "{{ }} displays a value, {% %} runs a tag such as for or if",
+        "{{ }} runs a tag, {% %} displays a value",
+        "Both display values",
+        "Both run Python code freely",
+        "{{ }} is a comment, {% %} displays a value",
+        "{% %} is only used for comments"
+      ],
+      "answer": 0,
+      "explanation": "Comments are written {# ... #}."
+    },
+    {
+      "id": "l4-tpl-04",
+      "topic": "Templates",
+      "difficulty": 2,
+      "question": "Why is question.choice_set.all written without parentheses in the template?",
+      "code": "{% for choice in question.choice_set.all %}\n  <li>{{ choice.choice_text }} - {{ choice.votes }} votes</li>\n{% endfor %}",
+      "options": [
+        "The template language calls methods automatically and does not accept parentheses",
+        "It is a mistake: it should be .all()",
+        "all is an attribute, not a method",
+        "It displays the method object instead of calling it",
+        "Parentheses are only forbidden inside for loops",
+        "Templates cannot access related objects"
+      ],
+      "answer": 0,
+      "explanation": "Method calls with arguments are impossible in a template: prepare that data in the view."
+    },
+    {
+      "id": "l4-tpl-05",
+      "topic": "Templates",
+      "difficulty": 2,
+      "question": "Which statements about the {% for %} tag are true?",
+      "options": [
+        "A {% for %} block must be closed with {% endfor %}",
+        "{% empty %} inside the loop is rendered when the list is empty",
+        "The loop closes automatically at the end of the line",
+        "{% end %} closes any kind of block",
+        "Python's for ... else is used in templates",
+        "Indentation defines the body of the loop"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Indentation means nothing in a template: the end of each block is explicit."
+    },
+    {
+      "id": "l4-tpl-06",
+      "topic": "Templates",
+      "difficulty": 3,
+      "question": "The view receives p = \"<b>hi</b>\". Which statements are true?",
+      "options": [
+        "With {{ p }} in a template, the page shows the literal text <b>hi</b>, because variables are escaped",
+        "Concatenated into an f-string inside HttpResponse, the same value would be interpreted as HTML",
+        "With {{ p }} the page shows hi in bold",
+        "Django raises an error when a parameter contains HTML",
+        "The browser blocks the request",
+        "Escaping only happens in the admin"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Auto-escaping protects templates against HTML / JavaScript injection. Hand-built HTML must call django.utils.html.escape()."
+    },
+    {
+      "id": "l4-tpl-07",
+      "topic": "Templates",
+      "difficulty": 2,
+      "question": "Why use a template instead of building the HTML in the view?",
+      "options": [
+        "It separates the processing (view) from the display (template)",
+        "Variables are escaped automatically",
+        "Templates run faster than Python code",
+        "HttpResponse requires a template",
+        "Templates store the data in the database",
+        "Templates replace urls.py"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "This split is the MVC pattern, called MVT in Django: Model, View (the controller), Template."
+    },
+    {
+      "id": "l4-tpl-08",
+      "topic": "Templates",
+      "difficulty": 2,
+      "question": "What do {% extends \"ynav/base.html\" %} and {% block content %} do?",
+      "options": [
+        "The page reuses the layout of base.html and only fills in its content block",
+        "They import Python code into the template",
+        "They concatenate two HTML files one after the other",
+        "They redirect to base.html",
+        "They make base.html a view",
+        "They only work in the admin"
+      ],
+      "answer": 0,
+      "explanation": "Template inheritance avoids repeating the <head>, the navbar and the CSS links on every page."
+    },
+    {
+      "id": "l4-qry-01",
+      "topic": "Query parameters",
+      "difficulty": 1,
+      "question": "The URL is /ynav/query?p=hello. Which expressions give \"hello\" in the view?",
+      "options": [
+        "request.GET.get(\"p\")",
+        "request.GET[\"p\"]",
+        "request.POST.get(\"p\")",
+        "request.p",
+        "request.GET.p()",
+        "request.query(\"p\")"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "request.GET is a dictionary-like object holding the query string. request.POST holds the body of a submitted form."
+    },
+    {
+      "id": "l4-qry-02",
+      "topic": "Query parameters",
+      "difficulty": 2,
+      "question": "The URL is /ynav/query, without any parameter. Which statements are true?",
+      "options": [
+        "request.GET.get(\"p\") returns None",
+        "request.GET[\"p\"] raises an error (a KeyError subclass)",
+        "request.GET.get(\"p\") returns \"\"",
+        "request.GET[\"p\"] returns None",
+        "Both expressions raise an error",
+        "Django returns a 404 page automatically"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Prefer .get(), possibly with a default value: request.GET.get(\"p\", \"\")."
+    },
+    {
+      "id": "l4-qry-03",
+      "topic": "Query parameters",
+      "difficulty": 2,
+      "question": "The URL is /ynav/query/range?min=1&max=5. What does request.GET.get(\"min\") return?",
+      "options": [
+        "The string '1'",
+        "The integer 1",
+        "The float 1.0",
+        "None",
+        "The list ['1']",
+        "The tuple ('min', 1)"
+      ],
+      "answer": 0,
+      "explanation": "Query parameters are always strings: convert them with int() and handle the ValueError."
+    },
+    {
+      "id": "l4-qry-04",
+      "topic": "Query parameters",
+      "difficulty": 1,
+      "question": "Which URL passes first_name=John and last_name=Doe?",
+      "options": [
+        "/ynav/query/profile?first_name=John&last_name=Doe",
+        "/ynav/query/profile?first_name=John?last_name=Doe",
+        "/ynav/query/profile&first_name=John&last_name=Doe",
+        "/ynav/query/profile/first_name=John/last_name=Doe",
+        "/ynav/query/profile?first_name:John,last_name:Doe",
+        "/ynav/query/profile?first_name=John;last_name;Doe"
+      ],
+      "answer": 0,
+      "explanation": "? starts the query string, & separates the parameters."
+    },
+    {
+      "id": "l4-qry-05",
+      "topic": "Query parameters",
+      "difficulty": 2,
+      "question": "low = 1 and high = 5. Which expression gives the numbers 1 2 3 4 5?",
+      "options": [
+        "range(low, high + 1)",
+        "range(low, high)",
+        "range(low + 1, high)",
+        "range(high)",
+        "range(low - 1, high)",
+        "range(low, high, 2)"
+      ],
+      "answer": 0,
+      "explanation": "range() excludes its end bound."
+    },
+    {
+      "id": "l4-frm-01",
+      "topic": "Forms",
+      "difficulty": 1,
+      "question": "Which statements about NameForm are true?",
+      "code": "from django import forms\n\nclass NameForm(forms.Form):\n    name = forms.CharField(max_length=100)",
+      "options": [
+        "NameForm inherits from forms.Form",
+        "name is a form field, rendered as a text input",
+        "NameForm creates a table in the database",
+        "NameForm requires makemigrations",
+        "forms.CharField and models.CharField are the same class",
+        "The form must be added to INSTALLED_APPS"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "A forms.Form describes fields and their validation only: there is no table behind it."
+    },
+    {
+      "id": "l4-frm-02",
+      "topic": "Forms",
+      "difficulty": 2,
+      "question": "Which statements about this view are true?",
+      "code": "def name_form(request):\n    name = None\n    if request.method == \"POST\":\n        form = NameForm(request.POST)\n        if form.is_valid():\n            name = form.cleaned_data[\"name\"]\n    else:\n        form = NameForm()\n    return render(request, \"form.html\", {\"form\": form, \"name\": name})",
+      "options": [
+        "is_valid() runs the validation and fills cleaned_data",
+        "On a GET request, an empty form is displayed",
+        "cleaned_data can be read before calling is_valid()",
+        "request.POST contains the URL parameters",
+        "is_valid() saves the form in the database",
+        "The form should be sent with GET to avoid CSRF checks"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "request.POST holds the submitted fields. cleaned_data only exists after is_valid()."
+    },
+    {
+      "id": "l4-frm-03",
+      "topic": "Forms",
+      "difficulty": 2,
+      "question": "What happens when a POST form does not contain {% csrf_token %}?",
+      "options": [
+        "Django rejects the request with a 403 Forbidden error",
+        "The form works normally",
+        "The fields are sent empty",
+        "Django converts the request to GET",
+        "The server crashes with a 500 error",
+        "The user is logged out"
+      ],
+      "answer": 0,
+      "explanation": "The CSRF token proves the form was produced by our site and not by a malicious page."
+    },
+    {
+      "id": "l4-frm-04",
+      "topic": "Forms",
+      "difficulty": 3,
+      "question": "Why does pakiman_add redirect after a successful POST instead of rendering a page?",
+      "options": [
+        "So that refreshing the page does not submit the form a second time",
+        "Because render() cannot be used after a POST",
+        "To clear the database cache",
+        "Because a POST view cannot return status 200",
+        "To log the user out",
+        "To run the migrations"
+      ],
+      "answer": 0,
+      "explanation": "This is the Post/Redirect/Get pattern: the browser ends on a GET page, safe to reload."
+    },
+    {
+      "id": "l4-frm-05",
+      "topic": "Forms",
+      "difficulty": 2,
+      "question": "Which statements about a ModelForm such as PakimanForm are true?",
+      "code": "class PakimanForm(forms.ModelForm):\n    class Meta:\n        model = Pakiman\n        fields = [\"name\", \"type\", \"level\", \"attack\"]",
+      "options": [
+        "Its fields are generated from the model listed in Meta",
+        "form.save() inserts the object into the database",
+        "It needs its own migration",
+        "It cannot validate data",
+        "Its fields must be declared twice",
+        "It only works in the admin"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "is_valid() also checks the model validators, for example MinValueValidator(1) on level."
+    },
+    {
+      "id": "l4-adm-01",
+      "topic": "Admin",
+      "difficulty": 1,
+      "question": "Which command creates an account that can log into /admin?",
+      "options": [
+        "python manage.py createsuperuser",
+        "python manage.py startapp admin",
+        "python manage.py migrate admin",
+        "django-admin startproject admin",
+        "python manage.py runserver --admin",
+        "pip install django-admin"
+      ],
+      "answer": 0,
+      "explanation": "A superuser has every permission, like root on Linux."
+    },
+    {
+      "id": "l4-adm-02",
+      "topic": "Admin",
+      "difficulty": 1,
+      "question": "Which code makes both Question and Choice editable in the admin?",
+      "options": [
+        "admin.site.register([Question, Choice]) in polls/admin.py",
+        "admin.site.register(Question) then admin.site.register(Choice) in polls/admin.py",
+        "Adding Question and Choice to INSTALLED_APPS",
+        "path(\"admin/\", Question) in urls.py",
+        "python manage.py createsuperuser Question Choice",
+        "class Meta: admin = True in each model"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "register() accepts a single model or a list of models."
+    },
+    {
+      "id": "l4-adm-03",
+      "topic": "Admin",
+      "difficulty": 2,
+      "question": "Which statements about the admin application are true?",
+      "options": [
+        "It provides a CRUD web interface on the registered tables",
+        "The Users and Groups tables come from the auth application",
+        "It can be used without logging in",
+        "It replaces the migrations",
+        "It only works with PostgreSQL",
+        "It must be installed separately with pip"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "django.contrib.admin is installed by default, reachable at /admin/ and protected by a login page."
+    },
+    {
+      "id": "l4-lib-01",
+      "topic": "UI libraries and auth",
+      "difficulty": 2,
+      "question": "Which steps are needed to activate theme_material_kit?",
+      "options": [
+        "Add \"theme_material_kit\" to INSTALLED_APPS, before our own apps",
+        "Run python manage.py migrate, since a new app was added",
+        "Add it to MIDDLEWARE",
+        "Copy its files into our templates/ folder",
+        "Run python manage.py startapp theme_material_kit",
+        "Put its URLs first in urlpatterns"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "The package is installed with pip (via requirements.txt), and its URLs go last: path(\"\", include(\"theme_material_kit.urls\"))."
+    },
+    {
+      "id": "l4-aut-01",
+      "topic": "UI libraries and auth",
+      "difficulty": 2,
+      "question": "Which forms are provided by django.contrib.auth.forms?",
+      "options": [
+        "UserCreationForm",
+        "AuthenticationForm",
+        "LoginForm",
+        "RegisterForm",
+        "SignupForm",
+        "AccountForm"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "UserCreationForm is the registration form, AuthenticationForm the login form used by LoginView."
+    },
+    {
+      "id": "l4-aut-02",
+      "topic": "UI libraries and auth",
+      "difficulty": 3,
+      "question": "What is a custom filter such as {{ field|add_class:\"input\" }} useful for?",
+      "options": [
+        "Adding a CSS class (e.g. Bulma) to the widget Django generates for a form field",
+        "Validating the field",
+        "Saving the field in the database",
+        "Creating a new model field",
+        "Translating the label",
+        "Encrypting the value"
+      ],
+      "answer": 0,
+      "explanation": "Custom template tags and filters live in <app>/templatetags/ and are loaded with {% load <module> %}."
+    },
+    {
+      "id": "l4-exo-01",
+      "topic": "Exercises",
+      "difficulty": 1,
+      "question": "What does this list comprehension produce?",
+      "code": "[x + 1 for x in [1, 2, 3, 4]]",
+      "options": [
+        "[2, 3, 4, 5]",
+        "[1, 2, 3, 4, 5]",
+        "[1, 2, 3, 4]",
+        "10",
+        "[2, 4, 6, 8]",
+        "An error"
+      ],
+      "answer": 0,
+      "explanation": "Each element is incremented, the list keeps 4 elements. (The course text says [1, 2, 3, 4, 5]: that is a typo.)"
+    },
+    {
+      "id": "l4-exo-02",
+      "topic": "Exercises",
+      "difficulty": 1,
+      "question": "What does datetime.datetime.now().strftime('%H:%M') return at 9:05 am?",
+      "options": [
+        "The string '09:05'",
+        "A datetime object",
+        "The integer 905",
+        "The string '09:05:00'",
+        "The string '2026-10-07'",
+        "The string '10:05' (month:minutes)"
+      ],
+      "answer": 0,
+      "explanation": "%H = hour (24h), %M = minutes. Lowercase %m is the month."
+    },
+    {
+      "id": "l4-exo-03",
+      "topic": "Exercises",
+      "difficulty": 1,
+      "question": "Why use triple quotes in HttpResponse(\"\"\"<html> ... </html>\"\"\")?",
+      "options": [
+        "To write a string over several lines",
+        "To escape the HTML",
+        "To make the string a comment",
+        "To render a template",
+        "Because HttpResponse requires them",
+        "To make the string immutable"
+      ],
+      "answer": 0,
+      "explanation": "A triple-quoted string keeps its line breaks."
+    },
+    {
+      "id": "l4-exo-04",
+      "topic": "Exercises",
+      "difficulty": 2,
+      "question": "n = 5. What is the last element of this list?",
+      "code": "rows = [(i, n * i) for i in range(1, 11)]",
+      "options": [
+        "(10, 50)",
+        "(11, 55)",
+        "(9, 45)",
+        "(5, 50)",
+        "(10, 5)",
+        "(1, 5)"
+      ],
+      "answer": 0,
+      "explanation": "range(1, 11) goes from 1 to 10 included, the template then prints '5 x 10 = 50'."
+    },
+    {
+      "id": "l4-exo-05",
+      "topic": "Exercises",
+      "difficulty": 2,
+      "question": "What does this expression return?",
+      "code": "\"\".join([f\"<li>{c}</li>\" for c in [\"a\", \"b\"]])",
+      "options": [
+        "'<li>a</li><li>b</li>'",
+        "['<li>a</li>', '<li>b</li>']",
+        "'<li>a</li> <li>b</li>'",
+        "'<li>ab</li>'",
+        "'ab'",
+        "An error"
+      ],
+      "answer": 0,
+      "explanation": "\"\".join() concatenates the strings with an empty separator."
+    },
+    {
+      "id": "l4-dep-01",
+      "topic": "Settings and deployment",
+      "difficulty": 2,
+      "question": "Which settings are part of the deployment checklist?",
+      "options": [
+        "DEBUG = False",
+        "Keep SECRET_KEY out of the code, e.g. in an environment variable",
+        "ALLOWED_HOSTS = [] in production",
+        "Serve the site with runserver",
+        "Commit db.sqlite3 to Git",
+        "Keep DEBUG = True to see the errors"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "ALLOWED_HOSTS must list the site's domain names when DEBUG is False. django-environ helps read settings from a .env file."
+    }
+  ]
+}

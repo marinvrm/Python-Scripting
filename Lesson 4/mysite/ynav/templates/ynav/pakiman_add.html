@@ -1,0 +1,10 @@
+{% extends "ynav/base.html" %}
+{% block title %}Add a Pakiman{% endblock %}
+{% block content %}
+  <h1 class="title">Add a Pakiman</h1>
+  <form method="post" class="box" style="max-width: 24rem">
+    {% csrf_token %}
+    {% include "ynav/_form_fields.html" %}
+    <button class="button is-link" type="submit">Save</button>
+  </form>
+{% endblock %}

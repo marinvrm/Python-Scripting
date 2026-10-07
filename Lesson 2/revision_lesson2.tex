@@ -1,0 +1,527 @@
+% =====================================================================
+% Fiche de revision - Python Scripting - Lesson 2 : POO
+% Compilation : pdfLaTeX (Overleaf), aucune option particuliere requise.
+% =====================================================================
+
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage[a4paper,margin=1.3cm]{geometry}
+\usepackage{xcolor}
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+
+% ---------------------------------------------------------------- couleurs
+\definecolor{accent}{HTML}{1F5FA8}
+\definecolor{codefg}{HTML}{A03030}
+\definecolor{codebg}{HTML}{F4F6F8}
+\definecolor{kw}{HTML}{0B5FA5}
+\definecolor{cmt}{HTML}{6C8A54}
+\definecolor{strcol}{HTML}{2E7D32}
+\definecolor{danger}{HTML}{B3261E}
+
+% ---------------------------------------------------------------- titres
+\titleformat{\section}
+  {\normalfont\large\bfseries\color{accent}}{}{0pt}{}
+  [\vspace{-0.75em}{\color{accent}\rule{\linewidth}{0.7pt}}]
+\titlespacing*{\section}{0pt}{1.4ex}{0.7ex}
+
+\titleformat{\subsection}[runin]
+  {\normalfont\bfseries}{}{0pt}{}[\;---\;]
+\titlespacing*{\subsection}{0pt}{0.8ex}{0.4em}
+
+% ---------------------------------------------------------------- code
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{kw}\bfseries,
+  commentstyle=\color{cmt}\itshape,
+  stringstyle=\color{strcol},
+  showstringspaces=false,
+  columns=fullflexible,
+  keepspaces=true,
+  backgroundcolor=\color{codebg},
+  frame=none,
+  xleftmargin=0.3em,
+  aboveskip=0.55em,
+  belowskip=0.55em,
+  breaklines=true,
+}
+
+% code en ligne
+\newcommand{\co}[1]{\texttt{\textcolor{codefg}{#1}}}
+
+% ---------------------------------------------------------------- boites
+\newtcolorbox{piegebox}[1]{
+  colback=red!3, colframe=danger, boxrule=0.7pt,
+  left=5pt, right=5pt, top=4pt, bottom=4pt,
+  title=#1, fonttitle=\bfseries\small, coltitle=white
+}
+
+\newtcolorbox{astucebox}[1]{
+  colback=accent!5, colframe=accent, boxrule=0.7pt,
+  left=5pt, right=5pt, top=4pt, bottom=4pt,
+  title=#1, fonttitle=\bfseries\small, coltitle=white
+}
+
+\setlist[itemize]{leftmargin=1.1em, itemsep=0.15em, topsep=0.25em, parsep=0pt}
+\setlength{\columnsep}{1.1em}
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.15}
+
+\pagestyle{empty}
+
+\begin{document}
+
+% Desactive les espaces automatiques du francais avant : ; ! ?
+% pour que le code en ligne (ex. "def f(self):") ne soit pas deforme.
+\shorthandoff{;:!?}
+
+\small
+
+\begin{center}
+  {\LARGE\bfseries\color{accent} Python Scripting --- Lesson 2}\\[0.3em]
+  {\normalsize Programmation orientée objet \quad$\cdot$\quad fiche de révision QCM}
+\end{center}
+\vspace{0.4em}
+
+% =====================================================================
+\begin{piegebox}{Les 16 réponses pièges à connaître par c\oe ur}
+\begin{minipage}[t]{0.485\linewidth}
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Situation} & \textbf{Résultat} \\
+\midrule
+accès par défaut          & \textbf{public} --- aucun mot-clé en Python \\
+\co{\_x}                  & \textbf{convention} seule, rien n'est bloqué \\
+\co{t.\_\_x} (privé)      & \co{AttributeError} \\
+\co{t.\_C\_\_x}           & marche --- \emph{name mangling} \\
+\co{\_\_init\_\_} qui \co{return 5} & \co{TypeError} --- doit rendre \co{None} \\
+enfant sans \co{super()}  & attributs du parent \textbf{absents} \\
+\co{type(d) is Animal}    & \co{False} pour \co{d = Dog()} \\
+\co{isinstance(d, Animal)}& \co{True} --- suit l'héritage \\
+\bottomrule
+\end{tabularx}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Situation} & \textbf{Résultat} \\
+\midrule
+\co{a + b} sans \co{\_\_add\_\_}  & \co{TypeError} \\
+\co{3 * v} sans \co{\_\_rmul\_\_} & \co{TypeError} (\co{v * 3} passe) \\
+\co{+=} sans \co{\_\_iadd\_\_}    & retombe sur \co{\_\_add\_\_} \\
+\co{!=} sans \co{\_\_ne\_\_}      & déduit de \co{\_\_eq\_\_} (Python 3) \\
+\co{\_\_eq\_\_} sans \co{\_\_hash\_\_} & objet \textbf{non hachable} \\
+\co{print(obj)} sans \co{\_\_str\_\_} & utilise \co{\_\_repr\_\_} \\
+ni l'un ni l'autre        & \co{<\_\_main\_\_.P object at 0x...>} \\
+\co{\_\_div\_\_}          & n'existe pas : c'est \co{\_\_truediv\_\_} \\
+\bottomrule
+\end{tabularx}
+\end{minipage}
+\end{piegebox}
+
+\vspace{0.5em}
+\begin{multicols}{2}
+
+% =====================================================================
+\section{Les concepts et leur nom exact}
+
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Class}         & le modèle : attributs (données) et méthodes (comportement) \\
+\textbf{Object}        & une \emph{instance} concrète de la classe \\
+\textbf{Encapsulation} & regrouper données \textbf{et} méthodes dans une seule entité \\
+\textbf{Abstraction}   & cacher les détails, n'exposer que l'essentiel \\
+\textbf{Inheritance}   & une classe reprend attributs et méthodes d'une autre \\
+\textbf{Polymorphism}  & même nom de méthode, comportement différent selon la classe \\
+\textbf{Composition}   & un attribut est lui-même l'objet d'une autre classe \\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.4em}
+\textbf{Le piège classique du QCM} : une question donne six définitions et
+mélange les sept mots. Encapsulation $\neq$ abstraction : la première
+\emph{regroupe}, la seconde \emph{cache}.
+
+% =====================================================================
+\section{Classe, objet, instanciation}
+
+\begin{lstlisting}
+class Person:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+    def greet(self):
+        print(f"Hello, {self.name}")
+
+p = Person("Alice", 30)   # pas de "new"
+p.greet()
+\end{lstlisting}
+
+Appeler la classe suffit : Python crée l'objet puis exécute
+\co{\_\_init\_\_}. Il n'y a \textbf{pas} de mot-clé \co{new}.
+
+\subsection{Connaître la classe d'un objet}
+\co{type(p)} donne la classe, \co{type(p).\_\_name\_\_} son nom en
+\textbf{chaîne} (\co{'Person'}) --- pratique dans un \co{\_\_repr\_\_}
+générique.
+
+\subsection{Attribut de classe contre attribut d'instance}
+\begin{lstlisting}
+class Counter:
+    total = 0          # de CLASSE : partage
+    def __init__(self):
+        self.count = 0 # d'INSTANCE : propre
+
+Counter.total = 5      # vu par a.total ET b.total
+\end{lstlisting}
+Un attribut défini dans \co{\_\_init\_\_} n'appartient qu'à cette instance ;
+un attribut de classe est \textbf{partagé} par toutes. Conséquence :
+\co{Dog.name} lève une \co{AttributeError} si \co{name} est posé dans
+\co{\_\_init\_\_} --- il vit sur l'objet, pas sur la classe.
+
+% =====================================================================
+\section{\co{\_\_init\_\_} et \co{self}}
+
+\begin{itemize}
+  \item \co{\_\_init\_\_} est appelé \textbf{automatiquement} à chaque
+        instanciation ; il \emph{initialise} l'objet, il ne le crée pas.
+  \item Il doit renvoyer \co{None} : tout autre \co{return} lève une
+        \co{TypeError}.
+  \item \co{self} n'est \textbf{pas} un mot-clé, c'est une convention :
+        seule sa \textbf{position} (premier paramètre) compte.
+  \item On ne passe \textbf{jamais} \co{self} à la main.
+\end{itemize}
+
+\begin{lstlisting}
+p.greet()          # les deux sont
+Person.greet(p)    # equivalents
+\end{lstlisting}
+
+Un paramètre avec valeur par défaut rend l'argument optionnel :
+\co{def \_\_init\_\_(self, start=0)} accepte \co{Counter()} comme
+\co{Counter(10)}.
+
+% =====================================================================
+\section{Encapsulation}
+
+\begin{lstlisting}
+class Test:
+    varPublic     = 10  # public
+    _varProtected = 20  # protege : 1 underscore
+    __varPrivate  = 30  # prive   : 2 underscores
+\end{lstlisting}
+
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+\toprule
+\co{x}      & public --- le \textbf{défaut} en Python \\
+\co{\_x}    & protégé : \textbf{simple convention}, rien n'est empêché \\
+\co{\_\_x}  & privé : Python \textbf{renomme} en \co{\_Classe\_\_x} \\
+\bottomrule
+\end{tabularx}
+
+\subsection{Name mangling}
+\co{\_\_varPrivate} devient \co{\_Test\_\_varPrivate}. Donc
+\co{t.\_\_varPrivate} lève une \co{AttributeError}, mais
+\co{t.\_Test\_\_varPrivate} renvoie \co{30} : la valeur est
+\textbf{cachée, pas protégée}. Son vrai but est d'éviter les collisions de
+noms entre une classe et ses filles.
+
+% =====================================================================
+\section{Héritage}
+
+\begin{lstlisting}
+class Dog(Animal):          # Dog = sous-classe
+    def __init__(self, name, breed):
+        super().__init__(name)  # INDISPENSABLE
+        self.breed = breed
+
+    def speak(self):        # method overriding
+        return "Woof!"
+\end{lstlisting}
+
+\begin{itemize}
+  \item \co{Dog} : \emph{subclass} / \emph{child} ; \co{Animal} :
+        \emph{superclass} / \emph{parent}.
+  \item L'enfant peut \textbf{ajouter} attributs et méthodes, et
+        \textbf{redéfinir} celles du parent (\emph{overriding}).
+  \item Définir \co{\_\_init\_\_} dans l'enfant \textbf{remplace} celui du
+        parent : sans \co{super().\_\_init\_\_()}, les attributs du parent
+        n'existent pas et l'\co{AttributeError} tombe plus tard.
+\end{itemize}
+
+\subsection{Appeler la version du parent}
+\co{super().speak()} ou \co{Animal.speak(self)}. \textbf{Jamais}
+\co{self.speak()} : cela rappellerait la version de l'enfant --- récursion
+infinie.
+
+\subsection{Tester l'appartenance}
+\co{isinstance(d, Animal)} vaut \co{True} (l'héritage compte) et
+\co{issubclass(Dog, Animal)} aussi, mais \co{type(d)} vaut
+\textbf{exactement} \co{Dog}.
+
+% =====================================================================
+\section{Polymorphisme}
+
+\begin{lstlisting}
+class Dog(Animal):
+    def speak(self):
+        return "Woof!"
+
+class Bird(Animal):
+    def speak(self, repeat=2):
+        return "Tweet!" * repeat
+
+for a in [Dog("Rex"), Bird("Tweety")]:
+    print(a.speak())
+# Woof!
+# Tweet!Tweet!
+\end{lstlisting}
+
+Python choisit la méthode \textbf{à l'exécution}, d'après la classe réelle
+de l'objet : la recherche part de la classe de l'objet puis remonte la
+chaîne d'héritage. Le code appelant n'a pas besoin de connaître le type
+exact.
+
+\subsection{Autres exemples valables}
+\co{len()} sur une chaîne, une liste ou un dictionnaire : un seul nom, une
+implémentation par type (\co{\_\_len\_\_}). De même
+\co{sum(s.computeArea() for s in shapes)} sur une liste mélangeant
+rectangles, cercles et carrés.
+
+% =====================================================================
+\section{Composition et abstraction}
+
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Héritage}    & relation \textbf{\emph{is-a}} : un \co{Square} \emph{est un} \co{Rectangle} \\
+\textbf{Composition} & relation \textbf{\emph{has-a}} : un compte \emph{a} des transactions \\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.4em}
+\textbf{Abstraction} = cacher l'implémentation et n'exposer que
+l'essentiel : on appelle \co{deposit()} sans savoir comment l'historique est
+stocké.
+
+\subsection{Forcer une fille à implémenter une méthode}
+\begin{lstlisting}
+# 1. echoue a l'APPEL
+def withdrawal(self):
+    raise NotImplementedError
+
+# 2. echoue a l'INSTANCIATION
+from abc import ABC, abstractmethod
+
+class Account(ABC):
+    @abstractmethod
+    def withdrawal(self): ...
+\end{lstlisting}
+
+Dans le cours, le parent écrit \co{def speak(self): pass} : c'est un
+comportement par défaut à redéfinir, mais \co{pass} renvoie \co{None}
+silencieusement, donc un oubli passe inaperçu.
+
+\subsection{UML}
+Un nom de classe ou de méthode \textbf{en italique} signifie
+\textbf{abstrait} : la classe n'est pas faite pour être instanciée
+directement.
+
+% =====================================================================
+\section{Surcharge des opérateurs}
+
+\begin{lstlisting}
+class Vector:
+    def __init__(self, x, y, z):
+        self.x, self.y, self.z = x, y, z
+
+    def __add__(self, other):
+        return Vector(self.x + other.x,
+                      self.y + other.y,
+                      self.z + other.z)
+
+    def __mul__(self, scalar):
+        return Vector(self.x * scalar,
+                      self.y * scalar,
+                      self.z * scalar)
+
+    def __repr__(self):
+        return f'Vector({self.x}, {self.y}, {self.z})'
+
+print(Vector(1,2,3) + Vector(4,5,6))  # Vector(5, 7, 9)
+print(Vector(1,2,3) * 3)              # Vector(3, 6, 9)
+\end{lstlisting}
+
+\begin{minipage}[t]{0.48\linewidth}
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+\multicolumn{2}{@{}l}{\textbf{Arithmétiques}} \\
+\midrule
+\co{+}  & \co{\_\_add\_\_} \\
+\co{-}  & \co{\_\_sub\_\_} \\
+\co{*}  & \co{\_\_mul\_\_} \\
+\co{/}  & \co{\_\_truediv\_\_} \\
+\co{//} & \co{\_\_floordiv\_\_} \\
+\co{\%} & \co{\_\_mod\_\_} \\
+\co{**} & \co{\_\_pow\_\_} \\
+\bottomrule
+\end{tabularx}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+\multicolumn{2}{@{}l}{\textbf{Comparaison}} \\
+\midrule
+\co{<}  & \co{\_\_lt\_\_} \\
+\co{>}  & \co{\_\_gt\_\_} \\
+\co{<=} & \co{\_\_le\_\_} \\
+\co{>=} & \co{\_\_ge\_\_} \\
+\co{==} & \co{\_\_eq\_\_} \\
+\co{!=} & \co{\_\_ne\_\_} \\
+\bottomrule
+\end{tabularx}
+\end{minipage}
+
+\vspace{0.5em}
+\textbf{Affectations augmentées} : le \co{i} veut dire \emph{in place}.
+\co{-=} \co{\_\_isub\_\_}, \co{*=} \co{\_\_imul\_\_}, \co{/=}
+\co{\_\_itruediv\_\_}, \co{//=} \co{\_\_ifloordiv\_\_}, \co{\%=}
+\co{\_\_imod\_\_}, \co{**=} \co{\_\_ipow\_\_}.
+
+\subsection{Les quatre règles qui tombent}
+\begin{itemize}
+  \item Sans \co{\_\_add\_\_}, \co{obj1 + obj2} lève
+        \co{TypeError: unsupported operand type(s)}.
+  \item \co{\_\_add\_\_} doit renvoyer un \textbf{nouvel objet de la même
+        classe} pour enchaîner \co{v1 + v2 + v3}.
+  \item \co{v * 3} utilise \co{\_\_mul\_\_} ; \co{3 * v} exige la version
+        \emph{réfléchie} \co{\_\_rmul\_\_} (l'objet est à droite).
+  \item Sans \co{\_\_iadd\_\_}, \co{obj += other} devient
+        \co{obj = obj + other} : le nom pointe sur un objet \textbf{neuf}.
+        Définir \co{\_\_iadd\_\_} modifie \textbf{sur place} --- c'est ce
+        qui rend \co{list += } économique.
+\end{itemize}
+
+\subsection{Comparaisons : les cas dérivés}
+\begin{itemize}
+  \item \co{\_\_eq\_\_} défini seul : \co{!=} en est déduit automatiquement.
+  \item \co{\_\_eq\_\_} sans \co{\_\_hash\_\_} : les instances deviennent
+        \textbf{non hachables}, donc inutilisables comme clés de
+        dictionnaire ou éléments d'un \co{set}.
+  \item \co{\_\_lt\_\_} défini seul : \co{a < b} marche, et \co{a > b}
+        aussi --- Python tente \co{a.\_\_gt\_\_(b)}, échoue, puis bascule
+        sur l'appel réfléchi \co{b.\_\_lt\_\_(a)}.
+\end{itemize}
+
+% =====================================================================
+\section{\co{\_\_repr\_\_} et \co{\_\_str\_\_}}
+
+\begin{itemize}
+  \item \co{print(obj)} utilise \co{\_\_str\_\_} et \textbf{retombe sur}
+        \co{\_\_repr\_\_} s'il n'existe pas. Définir le seul
+        \co{\_\_repr\_\_} suffit donc pour \co{print()}, \co{str()} et
+        \co{repr()}.
+  \item Sans aucun des deux :
+        \co{<\_\_main\_\_.Point object at 0x000...>} --- nom de classe et
+        adresse mémoire.
+  \item Un bon \co{\_\_repr\_\_} est \textbf{non ambigu} et permettrait
+        idéalement de \textbf{recréer} l'objet : \co{Vector(5, 7, 9)}.
+\end{itemize}
+
+% =====================================================================
+\section{Réflexes des exercices}
+
+\begin{itemize}
+  \item \textbf{Banque} : \co{BankAccount} parent abstrait,
+        \co{CheckingAccount} et \co{SavingsAccount} redéfinissent
+        \co{withdrawal()} --- \emph{overriding} et polymorphisme.
+  \item \textbf{Historique} : le compte contient une \textbf{liste d'objets}
+        \co{Transaction} (composition) et ne reste fiable que parce que
+        seuls \co{deposit()} et \co{withdrawal()} modifient \co{\_balance}
+        (encapsulation).
+  \item \textbf{Accesseur} : \co{\_balance} plus \co{get\_balance()} force
+        tout changement à passer par les méthodes, donc à être journalisé.
+  \item \textbf{Formes} : \co{class Square(Rectangle)} plutôt que
+        \co{Shape} --- un carré \emph{est un} rectangle, il réutilise
+        largeur, hauteur et \co{computeArea()} en passant la même valeur
+        deux fois à \co{super().\_\_init\_\_()}.
+  \item \textbf{Fraction} : réduire par le \co{gcd} dans \co{\_\_init\_\_},
+        sinon \co{Fractional(2, 4)} et \co{Fractional(1, 2)} ne sont pas
+        égales pour un \co{\_\_eq\_\_} naïf.
+  \item \textbf{Dénominateur nul} : \co{Fractional(42, 0)} doit
+        \textbf{lever une exception} dès la construction, là où l'erreur est
+        commise.
+  \item \textbf{Comparer deux fractions} : \co{a*d < c*b} plutôt que
+        \co{a/b < c/d} --- on reste en entiers, sans arrondi flottant
+        (valable tant que les dénominateurs sont positifs, d'où la
+        normalisation du signe).
+\end{itemize}
+
+\end{multicols}
+
+\vspace{0.3em}
+\begin{astucebox}{Checklist des 60 dernières secondes}
+\begin{minipage}[t]{0.485\linewidth}
+\begin{itemize}
+  \item Tout est \textbf{public} par défaut ; \co{\_} = convention,
+        \co{\_\_} = renommage.
+  \item \co{\_\_init\_\_} ne renvoie \textbf{rien}, et \co{self} est une
+        convention de position.
+  \item Enfant avec \co{\_\_init\_\_} : \textbf{toujours}
+        \co{super().\_\_init\_\_(...)}.
+  \item \emph{is-a} $\to$ héritage ; \emph{has-a} $\to$ composition.
+\end{itemize}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}
+\begin{itemize}
+  \item \co{/} donne \co{\_\_truediv\_\_} (jamais \co{\_\_div\_\_}) ;
+        \co{i} veut dire \emph{in place}.
+  \item \co{\_\_add\_\_} renvoie un \textbf{nouvel} objet de la classe.
+  \item \co{\_\_eq\_\_} seul : \co{!=} suit, mais le \co{hash} disparaît.
+  \item \co{\_\_repr\_\_} seul suffit pour \co{print}, \co{str} et
+        \co{repr}.
+\end{itemize}
+\end{minipage}
+\end{astucebox}
+
+\vspace{0.4em}
+\begin{astucebox}{Vocabulaire des énoncés (le QCM est en anglais)}
+\begin{minipage}[t]{0.485\linewidth}
+\begin{itemize}
+  \item \emph{template} : modèle --- \emph{instance} : objet créé
+  \item \emph{to instantiate} : instancier
+  \item \emph{subclass / child} face à \emph{superclass / parent}
+  \item \emph{to override} : redéfinir (et non « surcharger »)
+  \item \emph{to overload an operator} : surcharger un opérateur
+\end{itemize}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}
+\begin{itemize}
+  \item \emph{magic} ou \emph{dunder method} : méthode \co{\_\_x\_\_}
+  \item \emph{name mangling} : renommage des membres privés
+  \item \emph{unhashable} : inutilisable comme clé
+  \item \emph{in place} : sur place, sans créer d'objet
+  \item \emph{reflected} : version droite (\co{\_\_radd\_\_})
+\end{itemize}
+\end{minipage}
+\end{astucebox}
+
+\vspace{0.4em}
+\begin{center}
+\footnotesize\itshape
+Format du contrôle : 6 propositions, 1 ou 2 bonnes réponses, une case fausse
+annule la question.\\
+Pour s'entraîner : \texttt{cd "Lesson 2" \&\& python quiz.py}
+\end{center}
+
+\end{document}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}ynav{% endblock %}</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css" />
+  </head>
+  <body>
+    <nav class="navbar is-dark" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item has-text-weight-bold" href="{% url 'ynav:home' %}">ynav</a>
+      </div>
+      <div class="navbar-menu is-active">
+        <div class="navbar-start">
+          <a class="navbar-item" href="{% url 'ynav:pakiman_list' %}">Pakiman</a>
+          <a class="navbar-item" href="{% url 'polls:questions' %}">Polls</a>
+          <a class="navbar-item" href="{% url 'admin:index' %}">Admin</a>
+        </div>
+        <div class="navbar-end">
+          {% if user.is_authenticated %}
+            <span class="navbar-item">{{ user.username }}</span>
+            <div class="navbar-item">
+              {# Depuis Django 5, la deconnexion se fait obligatoirement en POST #}
+              <form method="post" action="{% url 'ynav:logout' %}">
+                {% csrf_token %}
+                <button class="button is-small" type="submit">Log out</button>
+              </form>
+            </div>
+          {% else %}
+            <a class="navbar-item" href="{% url 'ynav:login' %}">Log in</a>
+            <a class="navbar-item" href="{% url 'ynav:signup' %}">Sign up</a>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+    <section class="section">
+      <div class="container">
+        {% block content %}{% endblock %}
+      </div>
+    </section>
+  </body>
+</html>

@@ -1,0 +1,9 @@
+{% extends "ynav/base.html" %}
+{% block title %}Query{% endblock %}
+{% block content %}
+  {% if p %}
+    <h1 class="title">{{ p }}</h1>
+  {% else %}
+    <p>No <code>p</code> parameter. Try <a href="?p=hello">?p=hello</a>.</p>
+  {% endif %}
+{% endblock %}

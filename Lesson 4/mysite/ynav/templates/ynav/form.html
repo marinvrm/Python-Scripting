@@ -1,0 +1,16 @@
+{% extends "ynav/base.html" %}
+{% block title %}Form{% endblock %}
+{% block content %}
+  {% if name %}
+    <h1 class="title">Hello {{ name }}</h1>
+    <a href="{% url 'ynav:form' %}">Start again</a>
+  {% else %}
+    <h1 class="title">What is your name?</h1>
+    <form method="post" class="box" style="max-width: 24rem">
+      {# Jeton anti-CSRF : sans lui, Django refuse le POST (erreur 403) #}
+      {% csrf_token %}
+      {% include "ynav/_form_fields.html" %}
+      <button class="button is-link" type="submit">Submit</button>
+    </form>
+  {% endif %}
+{% endblock %}

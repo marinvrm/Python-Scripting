@@ -1,0 +1,41 @@
+{% extends "ynav/base.html" %}
+{% block title %}Lesson 4 - Django{% endblock %}
+{% block content %}
+  <h1 class="title">Lesson 4 - Django</h1>
+  <p class="subtitle">One link per exercise.</p>
+  <div class="columns">
+    <div class="column">
+      <h2 class="title is-5">HttpResponse</h2>
+      <ul>
+        <li><a href="{% url 'ynav:hello' %}">/ynav/hello</a></li>
+        <li><a href="{% url 'ynav:profile' %}">/ynav/user/profile</a></li>
+        <li><a href="{% url 'ynav:time' %}">/ynav/time</a></li>
+      </ul>
+      <h2 class="title is-5 mt-5">Query parameters</h2>
+      <ul>
+        <li><a href="{% url 'ynav:query' %}?p=hello">/ynav/query?p=hello</a></li>
+        <li><a href="{% url 'ynav:query_profile' %}?first_name=John&amp;last_name=Doe">/ynav/query/profile?first_name=John&amp;last_name=Doe</a></li>
+        <li><a href="{% url 'ynav:query_range' %}?min=1&amp;max=5">/ynav/query/range?min=1&amp;max=5</a></li>
+        <li><a href="{% url 'ynav:multiplication' %}?n=5">/ynav/multiplication?n=5</a></li>
+      </ul>
+    </div>
+    <div class="column">
+      <h2 class="title is-5">Forms</h2>
+      <ul>
+        <li><a href="{% url 'ynav:form' %}">/ynav/form</a></li>
+      </ul>
+      <h2 class="title is-5 mt-5">Database</h2>
+      <ul>
+        <li><a href="{% url 'ynav:pakiman_add' %}">/ynav/pakiman/add</a></li>
+        <li><a href="{% url 'ynav:pakiman_list' %}">/ynav/pakiman</a></li>
+        <li><a href="{% url 'ynav:pakiman_list' %}?level=5">/ynav/pakiman?level=5</a></li>
+      </ul>
+      <h2 class="title is-5 mt-5">Polls tutorial</h2>
+      <ul>
+        <li><a href="{% url 'polls:index' %}">/polls/</a></li>
+        <li><a href="{% url 'polls:hello' %}">/polls/hello</a></li>
+        <li><a href="{% url 'polls:questions' %}">/polls/questions</a></li>
+      </ul>
+    </div>
+  </div>
+{% endblock %}

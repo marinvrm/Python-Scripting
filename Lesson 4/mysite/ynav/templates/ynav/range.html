@@ -1,0 +1,18 @@
+{% extends "ynav/base.html" %}
+{% block title %}Range{% endblock %}
+{% block content %}
+  <h1 class="title">Integers from {{ low|default_if_none:"?" }} to {{ high|default_if_none:"?" }}</h1>
+  {% if error %}
+    <div class="notification is-warning is-light">{{ error }}</div>
+  {% else %}
+    <div class="content">
+      <ul>
+        {% for number in numbers %}
+          <li>{{ number }}</li>
+        {% empty %}
+          <li>Empty range: min is greater than max.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+{% endblock %}

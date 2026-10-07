@@ -1,0 +1,10 @@
+{% extends "ynav/base.html" %}
+{% block title %}Sign up{% endblock %}
+{% block content %}
+  <h1 class="title">Sign up</h1>
+  <form method="post" class="box" style="max-width: 28rem">
+    {% csrf_token %}
+    {% include "ynav/_form_fields.html" %}
+    <button class="button is-link" type="submit">Create account</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "ynav/base.html" %}
+{% block title %}Pakiman{% endblock %}
+{% block content %}
+  <div class="level">
+    <div class="level-left">
+      <h1 class="title">
+        Pakiman{% if level is not None %} above level {{ level }}{% endif %}
+      </h1>
+    </div>
+    <div class="level-right">
+      <a class="button is-link" href="{% url 'ynav:pakiman_add' %}">Add a Pakiman</a>
+    </div>
+  </div>
+  <form method="get" class="field has-addons">
+    <div class="control">
+      <input class="input" type="number" name="level" value="{{ level|default_if_none:'' }}" placeholder="Minimum level" />
+    </div>
+    <div class="control"><button class="button" type="submit">Filter</button></div>
+    {% if level is not None %}
+      <div class="control"><a class="button is-light" href="{% url 'ynav:pakiman_list' %}">Show all</a></div>
+    {% endif %}
+  </form>
+  {% if invalid_level %}
+    <div class="notification is-warning is-light">level must be an integer: showing every Pakiman.</div>
+  {% endif %}
+  <table class="table is-fullwidth is-hoverable">
+    <thead>
+      <tr><th>Name</th><th>Type</th><th>Level</th><th>Attack</th></tr>
+    </thead>
+    <tbody>
+      {% for pakiman in pakimans %}
+        <tr>
+          <td>{{ pakiman.name }}</td>
+          <td>{{ pakiman.type }}</td>
+          <td>{{ pakiman.level }}</td>
+          <td>{{ pakiman.attack }}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="4">No Pakiman found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

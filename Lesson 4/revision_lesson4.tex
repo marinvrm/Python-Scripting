@@ -1,0 +1,504 @@
+% =====================================================================
+% Fiche de revision - Python Scripting - Lesson 4 : Django
+% Compilation : pdfLaTeX (Overleaf), aucune option particuliere requise.
+% =====================================================================
+
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage[a4paper,margin=1.3cm]{geometry}
+\usepackage{xcolor}
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+
+% ---------------------------------------------------------------- couleurs
+\definecolor{accent}{HTML}{1F5FA8}
+\definecolor{codefg}{HTML}{A03030}
+\definecolor{codebg}{HTML}{F4F6F8}
+\definecolor{kw}{HTML}{0B5FA5}
+\definecolor{cmt}{HTML}{6C8A54}
+\definecolor{strcol}{HTML}{2E7D32}
+\definecolor{danger}{HTML}{B3261E}
+
+% ---------------------------------------------------------------- titres
+\titleformat{\section}
+  {\normalfont\large\bfseries\color{accent}}{}{0pt}{}
+  [\vspace{-0.75em}{\color{accent}\rule{\linewidth}{0.7pt}}]
+\titlespacing*{\section}{0pt}{1.4ex}{0.7ex}
+
+\titleformat{\subsection}[runin]
+  {\normalfont\bfseries}{}{0pt}{}[\;---\;]
+\titlespacing*{\subsection}{0pt}{0.8ex}{0.4em}
+
+% ---------------------------------------------------------------- code
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{kw}\bfseries,
+  commentstyle=\color{cmt}\itshape,
+  stringstyle=\color{strcol},
+  showstringspaces=false,
+  columns=fullflexible,
+  keepspaces=true,
+  backgroundcolor=\color{codebg},
+  frame=none,
+  xleftmargin=0.3em,
+  aboveskip=0.55em,
+  belowskip=0.55em,
+  breaklines=true,
+}
+
+% code en ligne
+\newcommand{\co}[1]{\texttt{\textcolor{codefg}{#1}}}
+
+% ---------------------------------------------------------------- boites
+\newtcolorbox{piegebox}[1]{
+  colback=red!3, colframe=danger, boxrule=0.7pt,
+  left=5pt, right=5pt, top=4pt, bottom=4pt,
+  title=#1, fonttitle=\bfseries\small, coltitle=white
+}
+
+\newtcolorbox{astucebox}[1]{
+  colback=accent!5, colframe=accent, boxrule=0.7pt,
+  left=5pt, right=5pt, top=4pt, bottom=4pt,
+  title=#1, fonttitle=\bfseries\small, coltitle=white
+}
+
+\setlist[itemize]{leftmargin=1.1em, itemsep=0.15em, topsep=0.25em, parsep=0pt}
+\setlength{\columnsep}{1.1em}
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.15}
+
+
+\begin{document}
+
+% Desactive les espaces automatiques du francais avant : ; ! ?
+% pour que le code en ligne (ex. "def f(request):") ne soit pas deforme.
+\shorthandoff{;:!?}
+
+\small
+
+\begin{center}
+  {\LARGE\bfseries\color{accent} Python Scripting --- Lesson 4}\\[0.3em]
+  {\normalsize Django \quad$\cdot$\quad fiche de révision QCM}
+\end{center}
+\vspace{0.4em}
+
+% =====================================================================
+\begin{piegebox}{Les 16 réponses pièges à connaître par c\oe ur}
+\begin{minipage}[t]{0.485\linewidth}
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Situation} & \textbf{Résultat} \\
+\midrule
+\co{startproject} / \co{startapp} & \textbf{projet} / \textbf{application} \\
+\co{makemigrations}       & écrit des fichiers, \textbf{ne touche pas} la base \\
+\co{migrate}              & \textbf{seule} commande qui modifie la base \\
+\co{sqlmigrate polls 0001}& \textbf{affiche} le SQL, n'exécute rien \\
+app hors \co{INSTALLED\_APPS} & ses migrations sont \textbf{ignorées} \\
+\co{Question(...)} sans \co{save()} & rien en base, \co{q.id} vaut \co{None} \\
+2\textsuperscript{e} \co{save()}      & \co{UPDATE}, même \co{id} \\
+\co{objects.all()} vide   & \co{<QuerySet []>}, pas \co{[]} \\
+\bottomrule
+\end{tabularx}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Situation} & \textbf{Résultat} \\
+\midrule
+\co{get()} sans résultat  & \co{DoesNotExist} (\co{filter()} : vide) \\
+\co{level\_\_gt=5}        & \textbf{strictement} supérieur \\
+\co{request.GET.get("p")} absent & \co{None} (\co{GET["p"]} : erreur) \\
+\co{GET.get("min")}       & toujours une \textbf{chaîne} \co{'1'} \\
+vue qui renvoie un \co{str} & erreur : il faut un \co{HttpResponse} \\
+POST sans \co{csrf\_token} & \textbf{403} Forbidden \\
+\co{\{\{ p \}\}} avec du HTML & \textbf{échappé} : affiché tel quel \\
+\co{.all()} dans un template & \textbf{sans} parenthèses : \co{.all} \\
+\bottomrule
+\end{tabularx}
+\end{minipage}
+\end{piegebox}
+
+\vspace{0.5em}
+\begin{multicols}{2}
+
+% =====================================================================
+\section{Les commandes}
+
+\begin{lstlisting}
+python -m venv venv                     # Lesson 3
+pip install Django==6.1.2
+python -m django --version
+django-admin startproject mysite        # projet
+python manage.py runserver              # dev, :8000
+python manage.py startapp polls         # application
+python manage.py makemigrations polls   # ecrit
+python manage.py sqlmigrate polls 0001  # montre le SQL
+python manage.py migrate                # applique
+python manage.py shell                  # console
+python manage.py createsuperuser        # compte admin
+\end{lstlisting}
+
+\vspace{0.3em}
+\co{runserver} est réservé au développement : en production, un serveur
+WSGI/ASGI importe \co{wsgi.py} ou \co{asgi.py}.
+
+% =====================================================================
+\section{Projet et applications}
+
+\begin{lstlisting}
+mysite/
+    manage.py        # script de gestion, on ne l'edite pas
+    mysite/
+        __init__.py  # fait du dossier un module
+        settings.py  # configuration du projet
+        urls.py      # routes du projet
+        asgi.py      # point d'entree ASGI
+        wsgi.py      # point d'entree WSGI
+\end{lstlisting}
+
+\begin{itemize}
+  \item Un \textbf{projet} contient \textbf{plusieurs} applications.
+  \item Une \textbf{application} est un paquet Python autonome et
+        \textbf{réutilisable} (pages, admin, API, middlewares\dots).
+  \item \co{admin}, \co{auth}, \co{sessions}\dots{} sont déjà des apps,
+        visibles dans \co{INSTALLED\_APPS}.
+  \item Activer la nôtre : \co{"polls.apps.PollsConfig"} (forme du cours)
+        ou simplement \co{"polls"}.
+\end{itemize}
+
+% =====================================================================
+\section{Vue et route}
+
+\begin{lstlisting}
+# polls/views.py
+from django.http import HttpResponse
+
+def index(request):
+    return HttpResponse("Hello, world.")
+
+# polls/urls.py
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path("", views.index, name="index"),
+    path("hello", views.hello, name="hello"),
+]
+
+# mysite/urls.py
+urlpatterns = [
+    path("polls/", include("polls.urls")),
+    path("admin/", admin.site.urls),
+]
+\end{lstlisting}
+
+\subsection{URL finale} préfixe du projet + route de l'app :
+\co{"polls/"} + \co{""} $\to$ \co{/polls/} ;
+\co{"polls/"} + \co{"hello"} $\to$ \co{/polls/hello}.
+
+\subsection{\co{include()}} délègue tout ce qui commence par le préfixe au
+\co{urls.py} de l'application.
+
+\subsection{\co{name=}} optionnel ; permet \co{\{\% url 'index' \%\}} et
+\co{reverse("index")} sans écrire l'URL en dur.
+
+\subsection{Ordre} Django teste les routes \textbf{dans l'ordre} et garde la
+première qui correspond : une route \co{""} attrape-tout va \textbf{en
+dernier} (cas de \co{theme\_material\_kit}).
+
+\subsection{Slash final} \co{"hello"} ne répond pas à \co{/polls/hello/}
+(404). \co{APPEND\_SLASH} ajoute un slash manquant, il n'en retire jamais.
+
+% =====================================================================
+\section{Migrations : les trois phases}
+
+\begin{enumerate}[leftmargin=1.3em, itemsep=0.1em, topsep=0.2em]
+  \item écrire ou modifier les modèles dans \co{models.py} ;
+  \item \co{makemigrations polls} : fichier \co{0001\_initial.py} ;
+  \item \co{migrate} : applique à la base (\co{db.sqlite3} par défaut).
+\end{enumerate}
+
+\begin{itemize}
+  \item Comme Git : un historique de changements que l'on \emph{rejoue}
+        pour reconstruire la base de production.
+  \item Les migrations suivent la \textbf{structure}, pas les données.
+  \item Premier \co{migrate} d'un projet vide : il crée déjà des tables,
+        celles des apps préinstallées (\co{auth}, \co{admin}\dots).
+  \item Changer de SGBD : dictionnaire \co{DATABASES} de \co{settings.py}.
+\end{itemize}
+
+% =====================================================================
+\section{Modèles}
+
+\begin{lstlisting}
+from django.db import models
+
+class Question(models.Model):
+    question_text = models.CharField(max_length=200)
+    pub_date = models.DateTimeField("date published")
+
+    def __str__(self):
+        return self.question_text
+
+class Choice(models.Model):
+    question = models.ForeignKey(Question,
+                   on_delete=models.CASCADE)
+    choice_text = models.CharField(max_length=200)
+    votes = models.IntegerField(default=0)
+\end{lstlisting}
+
+\begin{itemize}
+  \item Modèle = une \textbf{table} ; attribut = une \textbf{colonne}.
+  \item Clé primaire \co{id} auto-incrémentée ajoutée \textbf{automatiquement}.
+  \item \co{"date published"} : nom lisible (\emph{verbose name}), pas une
+        valeur par défaut.
+  \item \co{ForeignKey} : \emph{many-to-one}. Chaque \co{Choice} pointe vers
+        \textbf{une} \co{Question}, une \co{Question} a \textbf{plusieurs}
+        choix. En base : colonne \co{question\_id}.
+  \item \co{CASCADE} : supprimer la question supprime ses choix.
+        (\co{PROTECT} interdit, \co{SET\_NULL} met à vide.)
+  \item \co{\_\_str\_\_} : change l'affichage (shell, admin), \textbf{pas}
+        de migration. Sans lui : \co{Question object (1)}.
+\end{itemize}
+
+% =====================================================================
+\section{Shell et ORM}
+
+\begin{lstlisting}
+>>> from polls.models import Choice, Question
+>>> Question.objects.all()
+<QuerySet []>
+>>> from django.utils import timezone
+>>> q = Question(question_text="What's new?",
+...              pub_date=timezone.now())
+>>> q.save()                # INSERT
+>>> q.id
+1
+>>> q.question_text = "What's up?"
+>>> q.save()                # UPDATE, id inchange
+>>> Question.objects.all()
+<QuerySet [<Question: What's up?>]>
+>>> q.choice_set.create(choice_text="Choice 1", votes=2)
+<Choice: Choice 1 (2 votes)>
+\end{lstlisting}
+
+\subsection{\co{choice\_set}} relation inverse créée par Django :
+\co{<modèle en minuscules>\_set}. \co{create()} lie \textbf{et}
+enregistre ; \co{count()} ne compte que les choix de \co{q}.
+
+\subsection{Requêtes}
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+\toprule
+\co{objects.all()}             & toutes les lignes (\co{QuerySet}) \\
+\co{filter(level\_\_gt=5)}     & $>5$ ; \co{gte} $\geq$, \co{lt}, \co{lte} \\
+\co{exclude(level\_\_lt=5)}    & le complément : $\geq 5$ \\
+\co{get(id=1)}                 & \textbf{un} objet, sinon exception \\
+\co{count()}                   & nombre de lignes \\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.3em}
+\co{filter(level >= 5)} est une erreur : on écrit \co{champ\_\_lookup=valeur}.
+
+\subsection{Fuseau horaire} avec \co{USE\_TZ = True}, les dates sont
+stockées en \textbf{UTC} ; les templates les convertissent dans
+\co{TIME\_ZONE}.
+
+% =====================================================================
+\section{Templates (MVC / MVT)}
+
+Le traitement reste dans la vue, l'affichage passe dans un fichier HTML
+placé dans \co{<app>/templates/}.
+
+\begin{lstlisting}
+from django.shortcuts import render
+
+def showQuestionsWithTemplate(request):
+    context = {"questions": Question.objects.all()}
+    return render(request, "questions.html", context)
+\end{lstlisting}
+
+\begin{lstlisting}
+<ul>
+  {% for question in questions %}
+    <li>{{ question.question_text }}
+      <ul>
+        {% for choice in question.choice_set.all %}
+          <li>{{ choice.choice_text }} - {{ choice.votes }}</li>
+        {% empty %}
+          <li>No choice</li>
+        {% endfor %}
+      </ul>
+    </li>
+  {% endfor %}
+</ul>
+\end{lstlisting}
+
+\begin{itemize}
+  \item \co{\{\{ x \}\}} affiche ; \co{\{\% tag \%\}} exécute
+        (\co{for}, \co{if}, \co{url}, \co{csrf\_token}) ;
+        \co{\{\# \#\}} commente.
+  \item Chaque clé du \co{context} devient une variable du template.
+  \item Méthodes appelées \textbf{sans parenthèses} : \co{.all}, pas
+        \co{.all()}.
+  \item Blocs fermés explicitement (\co{endfor}, \co{endif}) :
+        l'indentation ne compte pas.
+  \item \textbf{Échappement automatique} : \co{<b>} s'affiche en texte. Un
+        f-string dans \co{HttpResponse} ne protège rien
+        $\to$ \co{django.utils.html.escape()}.
+  \item \co{\{\% extends "base.html" \%\}} + \co{\{\% block content \%\}} :
+        une mise en page commune pour toutes les pages.
+\end{itemize}
+
+% =====================================================================
+\section{Paramètres de requête}
+
+\co{?} ouvre la \emph{query string}, \co{\&} sépare les paramètres :
+\begin{lstlisting}
+/ynav/query/profile?first_name=John&last_name=Doe
+\end{lstlisting}
+
+\begin{lstlisting}
+def query(request):
+    p = request.GET.get("p")       # None si absent
+    return render(request, "query.html", {"p": p})
+
+low = int(request.GET.get("min"))  # str -> int
+numbers = list(range(low, high + 1))   # max inclus
+\end{lstlisting}
+
+\co{request.GET["p"]} lève une erreur (sous-classe de \co{KeyError}) si le
+paramètre manque : préférer \co{.get()}.
+
+% =====================================================================
+\section{Formulaires}
+
+\begin{lstlisting}
+from django import forms
+
+class NameForm(forms.Form):
+    name = forms.CharField(max_length=100)
+
+def name_form(request):
+    name = None
+    if request.method == "POST":
+        form = NameForm(request.POST)  # lie
+        if form.is_valid():            # valide
+            name = form.cleaned_data["name"]
+    else:
+        form = NameForm()              # vide
+    return render(request, "form.html",
+                  {"form": form, "name": name})
+\end{lstlisting}
+
+\begin{itemize}
+  \item \co{forms.Form} : \textbf{aucune} table, aucune migration.
+  \item \co{cleaned\_data} n'existe qu'\textbf{après} \co{is\_valid()}.
+  \item \co{\{\% csrf\_token \%\}} obligatoire dans un \co{<form
+        method="post">}, sinon \textbf{403}.
+  \item \co{ModelForm} : champs générés depuis le modèle,
+        \co{form.save()} insère la ligne, validateurs du modèle inclus.
+  \item Après un POST réussi : \co{redirect(...)}
+        (\emph{Post/Redirect/Get}), un F5 ne renvoie pas le formulaire.
+\end{itemize}
+
+% =====================================================================
+\section{Admin}
+
+\begin{itemize}
+  \item Interface \textbf{CRUD} sur \co{/admin}, protégée par un login.
+  \item Compte : \co{python manage.py createsuperuser} (le \emph{root}).
+  \item Tables \emph{Users} et \emph{Groups} : fournies par l'app
+        \co{auth}.
+  \item Nos tables, dans \co{polls/admin.py} :
+\end{itemize}
+\begin{lstlisting}
+admin.site.register([Question, Choice])
+\end{lstlisting}
+
+% =====================================================================
+\section{Bibliothèques et comptes}
+
+\subsection{Material Kit} \co{requirements.txt} + \co{pip install -r},
+\co{"theme\_material\_kit"} dans \co{INSTALLED\_APPS} \textbf{avant} nos apps,
+\co{migrate}, puis \co{path("", include("theme\_material\_kit.urls"))}
+\textbf{en dernier}.
+
+\subsection{Bulma} une feuille CSS ; \co{django-bulma-form-templates} pour
+styler les formulaires.
+
+\subsection{Auth} \co{django.contrib.auth.forms} fournit
+\co{UserCreationForm} (inscription) et \co{AuthenticationForm} (connexion).
+Un \emph{template tag} personnalisé (\co{<app>/templatetags/}) peut injecter
+des classes CSS dans le rendu d'un champ.
+
+% =====================================================================
+\section{Avant de déployer}
+
+\co{DEBUG = False}, \co{SECRET\_KEY} hors du code (variable d'environnement,
+\co{django-environ}), \co{ALLOWED\_HOSTS} = les domaines du site, un vrai
+serveur WSGI/ASGI à la place de \co{runserver}.
+
+\end{multicols}
+
+\vspace{0.3em}
+\begin{astucebox}{Checklist des 60 dernières secondes}
+\begin{minipage}[t]{0.485\linewidth}
+\begin{itemize}
+  \item \co{models.py} $\to$ \co{makemigrations} $\to$ \co{migrate}.
+  \item Nouvelle app : \co{INSTALLED\_APPS} \textbf{et} \co{include()}.
+  \item URL = préfixe projet + route app ; premier match gagnant.
+  \item Une vue prend \co{request}, rend un \co{HttpResponse}.
+\end{itemize}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}
+\begin{itemize}
+  \item \co{save()} : \co{INSERT} si pas d'\co{id}, sinon \co{UPDATE}.
+  \item \co{gt} strict, \co{gte} large ; \co{get()} = un seul objet.
+  \item Paramètres GET = chaînes ; \co{.get()} renvoie \co{None}.
+  \item POST : \co{csrf\_token}, \co{is\_valid()}, puis \co{redirect}.
+\end{itemize}
+\end{minipage}
+\end{astucebox}
+
+\vspace{0.4em}
+\begin{astucebox}{Vocabulaire des énoncés (le QCM est en anglais)}
+\begin{minipage}[t]{0.485\linewidth}
+\begin{itemize}
+  \item \emph{view} : fonction qui reçoit la requête
+  \item \emph{route / URLconf} : table des URLs
+  \item \emph{query string / query parameter} : ce qui suit \co{?}
+  \item \emph{migration} : changement de schéma enregistré
+  \item \emph{QuerySet} : résultat paresseux d'une requête ORM
+\end{itemize}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}
+\begin{itemize}
+  \item \emph{bound / unbound form} : avec ou sans données
+  \item \emph{superuser} : administrateur total
+  \item \emph{CRUD} : Create, Read, Update, Delete
+  \item \emph{auto-escaping} : échappement automatique
+  \item \emph{lookup} : suffixe \co{\_\_gt}, \co{\_\_gte}\dots
+\end{itemize}
+\end{minipage}
+\end{astucebox}
+
+\vspace{0.4em}
+\begin{center}
+\footnotesize\itshape
+Format du contrôle : 6 propositions, 1 ou 2 bonnes réponses, une case fausse
+annule la question.\\
+Pour s'entraîner : \texttt{cd "Lesson 4" \&\& python quiz.py}
+\end{center}
+
+\end{document}

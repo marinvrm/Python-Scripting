@@ -1,0 +1,22 @@
+{% extends "ynav/base.html" %}
+{% block title %}Multiplication{% endblock %}
+{% block content %}
+  <h1 class="title">Multiplication table</h1>
+  <form method="get" class="field has-addons mb-5">
+    <div class="control">
+      <input class="input" type="number" name="n" value="{{ n|default_if_none:'' }}" placeholder="n" required />
+    </div>
+    <div class="control">
+      <button class="button is-link" type="submit">Show</button>
+    </div>
+  </form>
+  {% if rows %}
+    <table class="table is-striped">
+      <tbody>
+        {% for i, product in rows %}
+          <tr><td>{{ n }} x {{ i }} = {{ product }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% endif %}
+{% endblock %}
