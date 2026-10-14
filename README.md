@@ -139,13 +139,16 @@ bonnes réponses attendues est affiché.
 | [Lesson 2](Lesson%202/) | Classes et objets, `__init__` et `self`, encapsulation, héritage, polymorphisme, composition, surcharge des opérateurs, `__repr__` | 66 |
 | [Lesson 3](Lesson%203/) | pip, environnements virtuels, `venv`, conda, pipenv, poetry, reproductibilité | — |
 | [Lesson 4](Lesson%204/) | Django : projet et applications, vues, URLs, modèles, migrations, shell et ORM, templates, paramètres GET, formulaires, admin | 68 |
+| [Lesson 5](Lesson%205/) | FastAPI : routes, paramètres de chemin et de requête, Uvicorn, documentation `/docs`, REST et codes HTTP, SQLAlchemy, Pydantic, `Depends`, `response_model`, relation un-à-plusieurs | 75 |
 
 Chaque leçon contient aussi une fiche de révision (`revision_*.tex`, à compiler
 sur Overleaf) et, quand le cours en propose, un notebook d'exercices corrigés.
 La [Lesson 3](Lesson%203/) contient en plus le compte-rendu des deux exercices
 du cours, avec les commandes et les sorties obtenues. La
 [Lesson 4](Lesson%204/) contient le projet Django complet (tutoriel et
-exercices) : voir son README pour l'installer et le lancer.
+exercices) : voir son README pour l'installer et le lancer. La
+[Lesson 5](Lesson%205/) contient l'API FastAPI complète (tutoriel et
+exercice sur les posts) avec ses 28 tests.
 
 ## Bonus
 

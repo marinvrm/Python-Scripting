@@ -18,6 +18,9 @@ my_env/
 users.csv
 # Base de donnees Django (Lesson 4) : on versionne les migrations, pas la base
 db.sqlite3
+# Base SQLite de l'API FastAPI (Lesson 5), recreee au demarrage
+test.db
+.pytest_cache/
 
 # Editeurs / OS
 .vscode/

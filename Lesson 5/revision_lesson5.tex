@@ -1,0 +1,429 @@
+% =====================================================================
+% Fiche de revision - Python Scripting - Lesson 5 : FastAPI
+% Compilation : pdfLaTeX (Overleaf), aucune option particuliere requise.
+% =====================================================================
+
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage[a4paper,margin=1.3cm]{geometry}
+\usepackage{xcolor}
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{listings}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+
+% ---------------------------------------------------------------- couleurs
+\definecolor{accent}{HTML}{1F5FA8}
+\definecolor{codefg}{HTML}{A03030}
+\definecolor{codebg}{HTML}{F4F6F8}
+\definecolor{kw}{HTML}{0B5FA5}
+\definecolor{cmt}{HTML}{6C8A54}
+\definecolor{strcol}{HTML}{2E7D32}
+\definecolor{danger}{HTML}{B3261E}
+
+% ---------------------------------------------------------------- titres
+\titleformat{\section}
+  {\normalfont\large\bfseries\color{accent}}{}{0pt}{}
+  [\vspace{-0.75em}{\color{accent}\rule{\linewidth}{0.7pt}}]
+\titlespacing*{\section}{0pt}{1.4ex}{0.7ex}
+
+\titleformat{\subsection}[runin]
+  {\normalfont\bfseries}{}{0pt}{}[\;---\;]
+\titlespacing*{\subsection}{0pt}{0.8ex}{0.4em}
+
+% ---------------------------------------------------------------- code
+\lstset{
+  language=Python,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{kw}\bfseries,
+  commentstyle=\color{cmt}\itshape,
+  stringstyle=\color{strcol},
+  showstringspaces=false,
+  columns=fullflexible,
+  keepspaces=true,
+  backgroundcolor=\color{codebg},
+  frame=none,
+  xleftmargin=0.3em,
+  aboveskip=0.55em,
+  belowskip=0.55em,
+  breaklines=true,
+}
+
+% code en ligne
+\newcommand{\co}[1]{\texttt{\textcolor{codefg}{#1}}}
+
+% ---------------------------------------------------------------- boites
+\newtcolorbox{piegebox}[1]{
+  colback=red!3, colframe=danger, boxrule=0.7pt,
+  left=5pt, right=5pt, top=4pt, bottom=4pt,
+  title=#1, fonttitle=\bfseries\small, coltitle=white
+}
+
+\newtcolorbox{astucebox}[1]{
+  colback=accent!5, colframe=accent, boxrule=0.7pt,
+  left=5pt, right=5pt, top=4pt, bottom=4pt,
+  title=#1, fonttitle=\bfseries\small, coltitle=white
+}
+
+\setlist[itemize]{leftmargin=1.1em, itemsep=0.15em, topsep=0.25em, parsep=0pt}
+\setlength{\columnsep}{1.1em}
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.15}
+
+
+\begin{document}
+
+% Desactive les espaces automatiques du francais avant : ; ! ?
+% pour que le code en ligne (ex. "item_id: int") ne soit pas deforme.
+\shorthandoff{;:!?}
+
+\small
+
+\begin{center}
+  {\LARGE\bfseries\color{accent} Python Scripting --- Lesson 5}\\[0.3em]
+  {\normalsize FastAPI, SQLAlchemy, Pydantic \quad$\cdot$\quad fiche de révision QCM}
+\end{center}
+\vspace{0.4em}
+
+% =====================================================================
+\begin{piegebox}{Les 16 réponses pièges à connaître par c\oe ur}
+\begin{minipage}[t]{0.485\linewidth}
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Situation} & \textbf{Résultat} \\
+\midrule
+\co{main:app}                 & \textbf{module} \co{main}, \textbf{variable} \co{app} \\
+\co{/items/42}, sans type     & \co{"42"} : une \textbf{chaîne} \\
+\co{item\_id: int} et \co{abc}& \textbf{422}, la fonction n'est pas appelée \\
+champ JSON manquant           & \textbf{422} aussi (pas 400) \\
+\co{/users/\{id\}} avant \co{/users/me} & \co{me} part dans \co{id} : 422 \\
+POST sans \co{status\_code}   & \textbf{200}, pas 201 \\
+bonne URL, mauvaise méthode   & \textbf{405} (URL inconnue : 404) \\
+\co{.first()} sans résultat   & \co{None} $\to$ \co{null} avec \textbf{200} \\
+\bottomrule
+\end{tabularx}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Situation} & \textbf{Résultat} \\
+\midrule
+\co{return HTTPException(...)} & renvoyé en 200 : il faut \co{raise} \\
+\co{add()} sans \co{commit()}  & rien en base, \co{id} vaut \co{None} \\
+email en double (\co{unique}) & \co{IntegrityError} $\to$ \textbf{500} \\
+\co{Optional[str]} sans \co{= None} & \textbf{requis} (mais accepte \co{None}) \\
+\co{response\_model} sans \co{id} & l'\co{id} est \textbf{retiré} de la réponse \\
+\co{create\_all} + nouvelle colonne & table existante \textbf{inchangée} \\
+\co{Depends(get\_db())}       & \co{TypeError} : passer la \textbf{fonction} \\
+\co{Column(String)}           & \textbf{nullable} par défaut \\
+\bottomrule
+\end{tabularx}
+\end{minipage}
+\end{piegebox}
+
+\vspace{0.5em}
+\begin{multicols}{2}
+
+% =====================================================================
+\section{Installation et lancement}
+
+\begin{lstlisting}
+pip install fastapi uvicorn sqlalchemy
+uvicorn main:app --reload     # depuis le dossier de main.py
+\end{lstlisting}
+
+\begin{itemize}
+  \item \textbf{FastAPI} : le framework. \textbf{Uvicorn} : le serveur
+        \textbf{ASGI} qui l'exécute (ASGI = asynchrone, WSGI = synchrone).
+  \item Adresse par défaut : \co{http://127.0.0.1:8000}.
+  \item \co{--reload} : redémarre à chaque modification ; \textbf{développement}
+        uniquement.
+  \item \co{main:app} est un import : lancé depuis un autre dossier,
+        \co{Could not import module "main"}.
+\end{itemize}
+
+\subsection{Documentation automatique}
+\co{/docs} (Swagger UI, bouton \emph{Try it out}), \co{/redoc} (ReDoc), et
+le schéma brut \co{/openapi.json}. Tout est déduit des décorateurs, des
+annotations de type et des schémas Pydantic : rien à écrire à la main.
+
+% =====================================================================
+\section{Première route}
+
+\begin{lstlisting}
+from fastapi import FastAPI
+
+app = FastAPI()               # l'application
+
+@app.get("/")                 # GET sur /
+async def home():
+    return {"message": "Hello World"}   # dict -> JSON
+\end{lstlisting}
+
+\subsection{D'où vient chaque paramètre ?} FastAPI regarde le
+\textbf{type}, pas le nom :
+
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+\toprule
+nom entre \co{\{\}} dans le chemin & \textbf{path} \\
+type simple hors du chemin         & \textbf{query} (\co{?limit=5}) \\
+modèle Pydantic                    & \textbf{body} JSON \\
+annoté \co{Request}                & l'objet requête \\
+\co{Depends(f)}                    & résultat de \co{f} \\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.3em}
+\begin{lstlisting}
+@app.get("/items/{item_id}")
+async def read_item(item_id):        # "42" (str)
+@app.get("/items_type/{item_id}")
+async def read_item_typed(item_id: int):   # 42
+@app.get("/items")
+def list_items(limit: int = 10):     # ?limit=5, optionnel
+\end{lstlisting}
+
+\subsection{Ordre} les routes sont testées dans l'ordre de déclaration :
+les chemins fixes (\co{/users/me}) \textbf{avant} les chemins à paramètre.
+
+\subsection{\co{async def} ou \co{def}} les deux marchent. Les \co{def}
+tournent dans un thread à part : à préférer quand le code est bloquant
+(SQLAlchemy synchrone).
+
+% =====================================================================
+\section{REST et codes HTTP}
+
+\begin{tabularx}{\linewidth}{@{}lll>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{CRUD} & \textbf{Méthode} & \textbf{Cours} \\
+\midrule
+Create & POST   & \co{/adduser} \\
+Read   & GET    & \co{/users}, \co{/user/\{user\_name\}} \\
+Update & PUT    & \co{/user/\{user\_id\}} \\
+Delete & DELETE & \co{/user/\{user\_id\}} \\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.3em}
+\textbf{200} OK \quad \textbf{201} Created \quad \textbf{404} Not Found
+\quad \textbf{405} Method Not Allowed \quad \textbf{409} Conflict \quad
+\textbf{422} validation \quad \textbf{500} bug serveur.
+
+% =====================================================================
+\section{SQLAlchemy : \co{database.py}}
+
+\begin{lstlisting}
+from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
+
+SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False,
+                            autoflush=False, bind=engine)
+Base = declarative_base()
+\end{lstlisting}
+
+\begin{itemize}
+  \item \textbf{ORM} : une classe = une table, un objet = une ligne.
+  \item \co{engine} : connexions ; \co{SessionLocal()} : \textbf{une
+        nouvelle} session ; \co{Base} : classe mère des modèles.
+  \item \co{./test.db} : relatif au dossier \textbf{courant}.
+  \item \co{autocommit=False} : rien n'est écrit sans \co{commit()}.
+  \item Cours : \co{sqlalchemy.ext.declarative} $\to$ avertissement en 2.x,
+        importer depuis \co{sqlalchemy.orm}.
+\end{itemize}
+
+% =====================================================================
+\section{Modèle : \co{models.py}}
+
+\begin{lstlisting}
+class User(Base):
+    __tablename__ = "users"          # nom de la TABLE
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+    email = Column(String, unique=True)
+    nickname = Column(String)
+    url = Column(String, nullable=True)   # deja le defaut
+
+Base.metadata.create_all(bind=engine)    # dans main.py
+\end{lstlisting}
+
+\begin{itemize}
+  \item \co{primary\_key} Integer : rempli automatiquement (1, 2, 3\dots).
+  \item \co{unique=True} : vérifié par la \textbf{base}, au \co{commit}.
+  \item \co{create\_all} crée les tables \textbf{manquantes}, ne modifie
+        jamais une table existante (pas de migration : supprimer
+        \co{test.db} ou utiliser Alembic).
+\end{itemize}
+
+% =====================================================================
+\section{Pydantic : \co{schemas.py}}
+
+\begin{lstlisting}
+class UserSchema(BaseModel):
+    name: str                        # requis
+    email: str
+    nickname: str
+    url: Optional[str] = None        # optionnel (defaut)
+    model_config = ConfigDict(from_attributes=True)
+
+class UserOut(UserSchema):           # sortie, avec l'id
+    id: int
+\end{lstlisting}
+
+\begin{itemize}
+  \item Valide le \textbf{corps} reçu et décrit la \textbf{réponse}. Le
+        modèle SQLAlchemy, lui, décrit la \textbf{table}.
+  \item \co{orm\_mode = True} (Pydantic 1) = \co{from\_attributes=True}
+        (Pydantic 2) : lire \co{user.name} sur un objet, pas un dict.
+  \item Optionnel = a une \textbf{valeur par défaut}. \co{Optional[str]}
+        veut seulement dire \og \co{str} ou \co{None} \fg.
+  \item Conversion : \co{"42"} et \co{4.0} $\to$ \co{int} OK ;
+        \co{"4.5"}, \co{"abc"} refusés ; \co{123} pour un \co{str} refusé.
+\end{itemize}
+
+% =====================================================================
+\section{Session par requête : \co{Depends}}
+
+\begin{lstlisting}
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db          # donnee a la route
+    finally:
+        db.close()        # toujours, meme sur exception
+
+@app.post("/adduser", response_model=UserOut)
+def add_user(url: Request, request: UserSchema,
+             db: Session = Depends(get_db)):
+    user = User(name=request.name, email=request.email,
+                nickname=request.nickname,
+                url=f"{url.base_url}user/{request.name}")
+    db.add(user)          # dans la session
+    db.commit()           # INSERT
+    db.refresh(user)      # relit : user.id
+    return user
+\end{lstlisting}
+
+Dans le cours, \co{url} est la \co{Request} et \co{request} est le corps :
+seuls les \textbf{types} comptent. \co{base\_url} vaut
+\co{http://127.0.0.1:8000/}.
+
+% =====================================================================
+\section{Lire, modifier, supprimer}
+
+\begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+\toprule
+\co{db.query(User).all()} & une \textbf{liste} (vide si rien) \\
+\co{.filter(User.name == n)} & condition SQL : \co{==}, pas \co{=} \\
+\co{.first()} & un objet ou \co{None} \\
+modifier puis \co{commit()} & \co{UPDATE}, pas besoin d'\co{add} \\
+\co{db.delete(u)} + \co{commit()} & \co{DELETE} (\co{del u} : rien) \\
+\bottomrule
+\end{tabularx}
+
+\begin{lstlisting}
+user = db.query(User).filter(User.id == user_id).first()
+if not user:
+    raise HTTPException(status_code=404,
+                        detail="Utilisateur non trouve")
+\end{lstlisting}
+
+\subsection{\co{response\_model}} valide \textbf{et filtre} la réponse : un
+champ absent du schéma n'est pas envoyé. Dans le cours, \co{/users} avec
+\co{UserSchema} ne renvoie donc \textbf{pas} l'\co{id}. Utile aussi pour ne
+jamais exposer un mot de passe.
+
+% =====================================================================
+\section{Exercice : un-à-plusieurs}
+
+\begin{lstlisting}
+class User(Base):
+    ...
+    posts = relationship("Post", back_populates="author",
+                         cascade="all, delete-orphan")
+
+class Post(Base):
+    __tablename__ = "posts"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String)
+    content = Column(Text)
+    user_id = Column(Integer, ForeignKey("users.id"),
+                     nullable=False)
+    author = relationship("User", back_populates="posts")
+\end{lstlisting}
+
+\begin{itemize}
+  \item La \co{ForeignKey} va du côté \textbf{plusieurs} (le post).
+  \item \co{ForeignKey("users.id")} : la \textbf{table} ;
+        \co{relationship("Post")} : la \textbf{classe}.
+  \item \co{relationship} n'ajoute \textbf{aucune colonne} : il donne
+        \co{user.posts} et \co{post.author}.
+  \item \co{cascade} : supprimer l'auteur supprime ses posts.
+  \item SQLite n'applique les clés étrangères qu'avec
+        \co{PRAGMA foreign\_keys=ON}.
+  \item Routes : \co{POST /addpost}, \co{GET /posts},
+        \co{GET /post/\{id\}}, \co{GET /user/\{id\}/posts},
+        \co{PUT /post/\{id\}}, \co{DELETE /post/\{id\}}.
+\end{itemize}
+
+\end{multicols}
+
+\vspace{0.3em}
+\begin{astucebox}{Checklist des 60 dernières secondes}
+\begin{minipage}[t]{0.485\linewidth}
+\begin{itemize}
+  \item \co{uvicorn main:app --reload}, port \textbf{8000}, \co{/docs}.
+  \item Sans type : chaîne. Avec \co{int} invalide : \textbf{422}.
+  \item Path = \co{\{\}}, query = type simple, body = Pydantic.
+  \item \co{add} $\to$ \co{commit} $\to$ \co{refresh}.
+\end{itemize}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}
+\begin{itemize}
+  \item \co{raise HTTPException(404)}, jamais \co{return}.
+  \item \co{Depends(get\_db)} sans parenthèses ; \co{yield} + \co{finally}.
+  \item \co{response\_model} filtre les champs.
+  \item \co{ForeignKey} côté \og plusieurs \fg, nom de \textbf{table}.
+\end{itemize}
+\end{minipage}
+\end{astucebox}
+
+\vspace{0.4em}
+\begin{astucebox}{Vocabulaire des énoncés (le QCM est en anglais)}
+\begin{minipage}[t]{0.485\linewidth}
+\begin{itemize}
+  \item \emph{endpoint / route} : méthode + chemin
+  \item \emph{path parameter} : partie variable de l'URL
+  \item \emph{query parameter} : ce qui suit \co{?}
+  \item \emph{request body} : le JSON envoyé
+  \item \emph{dependency injection} : \co{Depends}
+\end{itemize}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.485\linewidth}
+\begin{itemize}
+  \item \emph{ORM} : Object-Relational Mapper
+  \item \emph{session} : unité de travail SQLAlchemy
+  \item \emph{schema} : modèle Pydantic
+  \item \emph{one-to-many} : un-à-plusieurs
+  \item \emph{foreign key} : clé étrangère
+\end{itemize}
+\end{minipage}
+\end{astucebox}
+
+\vspace{0.4em}
+\begin{center}
+\footnotesize\itshape
+Format du contrôle : 6 propositions, 1 ou 2 bonnes réponses, une case fausse
+annule la question.\\
+Pour s'entraîner : \texttt{cd "Lesson 5" \&\& python quiz.py}
+\end{center}
+
+\end{document}

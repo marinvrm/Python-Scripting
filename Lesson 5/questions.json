@@ -1,0 +1,1356 @@
+{
+  "lesson": "Lesson 5",
+  "title": "FastAPI",
+  "exam_style": true,
+  "max_answers": 2,
+  "options_per_question": 6,
+  "questions": [
+    {
+      "id": "l5-set-01",
+      "topic": "Setup and Uvicorn",
+      "difficulty": 1,
+      "question": "Which command installs what the course needs to build and run a FastAPI application?",
+      "options": [
+        "pip install fastapi uvicorn",
+        "pip install fastapi",
+        "pip install uvicorn-fastapi",
+        "pip install django fastapi",
+        "python -m fastapi install",
+        "pip install flask uvicorn"
+      ],
+      "answer": 0,
+      "explanation": "FastAPI is the framework, Uvicorn is the server that runs it: both are needed. SQLAlchemy is added later for the database."
+    },
+    {
+      "id": "l5-set-02",
+      "topic": "Setup and Uvicorn",
+      "difficulty": 1,
+      "question": "What is Uvicorn?",
+      "options": [
+        "An ASGI server that runs the FastAPI application",
+        "A package that must be imported in main.py to declare routes",
+        "An ORM for relational databases",
+        "A data validation library",
+        "A template engine",
+        "The tool that generates the Swagger documentation"
+      ],
+      "answer": 0,
+      "explanation": "Uvicorn is an ASGI server (Asynchronous Server Gateway Interface). The ORM is SQLAlchemy, validation is Pydantic."
+    },
+    {
+      "id": "l5-set-03",
+      "topic": "Setup and Uvicorn",
+      "difficulty": 1,
+      "question": "In the command below, what does main:app mean?",
+      "code": "uvicorn main:app --reload",
+      "options": [
+        "Look for the variable app in the module main (main.py)",
+        "Run the function main, then the function app",
+        "Use the folder main and the file app.py",
+        "Start two applications, main and app",
+        "Load the class app from the package main",
+        "Use main as the host name and app as the port"
+      ],
+      "answer": 0,
+      "explanation": "The syntax is module:variable. Uvicorn imports main.py and uses the object stored in its variable app."
+    },
+    {
+      "id": "l5-set-04",
+      "topic": "Setup and Uvicorn",
+      "difficulty": 1,
+      "question": "What does the --reload option do?",
+      "options": [
+        "It restarts the server automatically when the code changes",
+        "It is the recommended option in production",
+        "It reloads the database on every request",
+        "It clears the browser cache",
+        "It reinstalls the packages",
+        "It recreates the tables on every request"
+      ],
+      "answer": 0,
+      "explanation": "--reload watches the source files and restarts the server on every save. It costs resources and is a development option."
+    },
+    {
+      "id": "l5-set-05",
+      "topic": "Setup and Uvicorn",
+      "difficulty": 1,
+      "question": "By default, at which address does uvicorn main:app serve the application?",
+      "options": [
+        "http://127.0.0.1:8000",
+        "http://localhost:8000",
+        "http://127.0.0.1:5000",
+        "http://0.0.0.0:80",
+        "http://localhost:3000",
+        "http://127.0.0.1:8080"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Uvicorn listens on 127.0.0.1, port 8000. localhost is the name of the same address."
+    },
+    {
+      "id": "l5-set-06",
+      "topic": "Setup and Uvicorn",
+      "difficulty": 2,
+      "question": "Uvicorn is launched from a folder that does not contain main.py. What happens?",
+      "options": [
+        "Uvicorn fails to import the module main",
+        "The server starts and every route returns 404",
+        "Uvicorn searches for main.py in all subfolders",
+        "FastAPI creates an empty main.py",
+        "The server starts on another port",
+        "The --reload option fixes it automatically"
+      ],
+      "answer": 0,
+      "explanation": "main:app is a Python import: the module must be importable from the current folder, otherwise Uvicorn stops with an import error."
+    },
+    {
+      "id": "l5-set-07",
+      "topic": "Setup and Uvicorn",
+      "difficulty": 2,
+      "question": "What is the difference between WSGI and ASGI?",
+      "options": [
+        "ASGI supports asynchronous code (async/await), WSGI is synchronous",
+        "FastAPI is an ASGI framework",
+        "WSGI is required to use FastAPI",
+        "ASGI is a database protocol",
+        "WSGI only works with SQLite",
+        "ASGI is a JavaScript library"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "WSGI is the classic synchronous interface (used by Django by default). ASGI is its asynchronous successor, which FastAPI is built on."
+    },
+    {
+      "id": "l5-rte-01",
+      "topic": "Routes and path parameters",
+      "difficulty": 1,
+      "question": "What does FastAPI() create?",
+      "options": [
+        "An instance of the application",
+        "A Uvicorn server already listening on port 8000",
+        "A database connection",
+        "A Pydantic schema",
+        "A running server",
+        "A virtual environment"
+      ],
+      "answer": 0,
+      "explanation": "app = FastAPI() creates the application. It does not start anything: Uvicorn runs it."
+    },
+    {
+      "id": "l5-rte-02",
+      "topic": "Routes and path parameters",
+      "difficulty": 1,
+      "question": "What does @app.get(\"/\") do?",
+      "options": [
+        "It declares a route that answers GET requests on /",
+        "It also answers POST requests on /",
+        "It sends a GET request to /",
+        "It reads a file named /",
+        "It answers every HTTP method on /",
+        "It starts the server"
+      ],
+      "answer": 0,
+      "explanation": "The decorator associates the path and the HTTP method with the function. A POST on / would get 405 Method Not Allowed."
+    },
+    {
+      "id": "l5-rte-03",
+      "topic": "Routes and path parameters",
+      "difficulty": 1,
+      "question": "What does a browser display at http://127.0.0.1:8000/ with this code?",
+      "code": "@app.get(\"/\")\nasync def home():\n    return {\"message\": \"Hello World\"}",
+      "options": [
+        "{\"message\": \"Hello World\"}",
+        "Hello World",
+        "<h1>Hello World</h1>",
+        "message: Hello World",
+        "An empty page",
+        "A 404 error"
+      ],
+      "answer": 0,
+      "explanation": "A returned dict is automatically converted to JSON."
+    },
+    {
+      "id": "l5-rte-04",
+      "topic": "Routes and path parameters",
+      "difficulty": 1,
+      "question": "What is the response to GET /items/42 with this route?",
+      "code": "@app.get(\"/items/{item_id}\")\nasync def read_item(item_id):\n    return {\"item_id\": item_id}",
+      "options": [
+        "{\"item_id\": \"42\"}",
+        "{\"item_id\": 42}",
+        "A 422 validation error",
+        "{\"item_id\": null}",
+        "A 404 error",
+        "{\"42\": \"item_id\"}"
+      ],
+      "answer": 0,
+      "explanation": "Without a type annotation, a path parameter is received as a string, hence the quotes."
+    },
+    {
+      "id": "l5-rte-05",
+      "topic": "Routes and path parameters",
+      "difficulty": 1,
+      "question": "With the route below, what are the responses to GET /items_type/42 and GET /items_type/abc?",
+      "code": "@app.get(\"/items_type/{item_id}\")\nasync def read_item(item_id: int):\n    return {\"item_id\": item_id}",
+      "options": [
+        "/items_type/42 returns {\"item_id\": 42}",
+        "/items_type/abc returns a 422 validation error",
+        "/items_type/42 returns {\"item_id\": \"42\"}",
+        "/items_type/abc returns {\"item_id\": \"abc\"}",
+        "/items_type/abc returns 404",
+        "/items_type/abc crashes the server"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "The annotation int makes FastAPI convert the value and validate it. A value that is not an integer returns 422 with a detailed message."
+    },
+    {
+      "id": "l5-rte-06",
+      "topic": "Routes and path parameters",
+      "difficulty": 2,
+      "question": "Which HTTP status code does FastAPI return when a parameter fails validation?",
+      "options": [
+        "422 Unprocessable Entity",
+        "400 Bad Request",
+        "404 Not Found",
+        "500 Internal Server Error",
+        "401 Unauthorized",
+        "200 OK with an error field"
+      ],
+      "answer": 0,
+      "explanation": "FastAPI returns 422 with a detail list giving the location (path, query, body), the message and the received value."
+    },
+    {
+      "id": "l5-rte-07",
+      "topic": "Routes and path parameters",
+      "difficulty": 2,
+      "question": "A function parameter does not appear in the route path and is typed int. Where does FastAPI read it from?",
+      "code": "@app.get(\"/items\")\ndef list_items(limit: int = 10):\n    return {\"limit\": limit}",
+      "options": [
+        "The query string, for example /items?limit=5",
+        "The JSON body",
+        "The headers",
+        "A cookie",
+        "The database",
+        "Nowhere: it is always None"
+      ],
+      "answer": 0,
+      "explanation": "Parameters in {braces} come from the path, simple types not in the path come from the query string, Pydantic models from the body."
+    },
+    {
+      "id": "l5-rte-08",
+      "topic": "Routes and path parameters",
+      "difficulty": 2,
+      "question": "With the code below, what does GET /items return?",
+      "code": "@app.get(\"/items\")\ndef list_items(limit: int = 10):\n    return {\"limit\": limit}",
+      "options": [
+        "{\"limit\": 10}",
+        "A 422 error because limit is missing",
+        "{\"limit\": null}",
+        "{\"limit\": \"10\"}",
+        "A 404 error",
+        "{}"
+      ],
+      "answer": 0,
+      "explanation": "A default value makes the query parameter optional. Without = 10, it would be required and its absence would give 422."
+    },
+    {
+      "id": "l5-rte-09",
+      "topic": "Routes and path parameters",
+      "difficulty": 3,
+      "question": "Both routes below are declared in this order. What does GET /users/me return?",
+      "code": "@app.get(\"/users/{user_id}\")\ndef read_user(user_id: int): ...\n\n@app.get(\"/users/me\")\ndef read_me(): ...",
+      "options": [
+        "A 422 error: /users/{user_id} matches first and 'me' is not an int",
+        "{\"me\": true}",
+        "A 404 error",
+        "Both functions are called",
+        "FastAPI refuses to start",
+        "{\"user_id\": \"me\"}"
+      ],
+      "answer": 0,
+      "explanation": "Routes are tested in declaration order. The fixed route /users/me must be declared before /users/{user_id}."
+    },
+    {
+      "id": "l5-rte-10",
+      "topic": "Routes and path parameters",
+      "difficulty": 2,
+      "question": "Which statements about async def routes are true?",
+      "options": [
+        "The course routes are declared with async def",
+        "FastAPI also accepts plain def routes",
+        "async def is mandatory for every FastAPI route",
+        "async def makes SQLAlchemy queries asynchronous",
+        "A def route cannot return JSON",
+        "async def routes cannot take parameters"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Both are accepted. FastAPI runs plain def routes in a thread pool, which is why blocking code (such as synchronous SQLAlchemy) is better placed in def routes."
+    },
+    {
+      "id": "l5-rte-11",
+      "topic": "Routes and path parameters",
+      "difficulty": 3,
+      "question": "Two route functions are both named read_item. What happens?",
+      "code": "@app.get(\"/items/{item_id}\")\nasync def read_item(item_id): ...\n\n@app.get(\"/items_type/{item_id}\")\nasync def read_item(item_id: int): ...",
+      "options": [
+        "Both routes work: the decorator registered each function before the name was reused",
+        "Only the second route exists",
+        "FastAPI refuses to start",
+        "Both paths call the second function",
+        "Python raises a SyntaxError",
+        "The first route returns 404"
+      ],
+      "answer": 0,
+      "explanation": "The decorator stores the function when it runs, so the second definition only rebinds the Python name. It works, but it is confusing: give each function its own name."
+    },
+    {
+      "id": "l5-doc-01",
+      "topic": "Automatic documentation",
+      "difficulty": 1,
+      "question": "Which URLs show the documentation generated automatically by FastAPI?",
+      "options": [
+        "/docs (Swagger UI)",
+        "/redoc (ReDoc)",
+        "/admin",
+        "/help",
+        "/swagger.html",
+        "/api/doc.txt"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Both are generated from the code. /admin is Django's interface, not FastAPI's."
+    },
+    {
+      "id": "l5-doc-02",
+      "topic": "Automatic documentation",
+      "difficulty": 2,
+      "question": "Which statements about the /docs page are true?",
+      "options": [
+        "It lets you send real requests to the API with 'Try it out'",
+        "It is built from the OpenAPI schema available at /openapi.json",
+        "It must be written by hand in a YAML file",
+        "It only lists GET routes",
+        "It requires installing an extra package",
+        "It is only available when --reload is used"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "FastAPI describes every route, parameter and schema in /openapi.json; Swagger UI and ReDoc display it."
+    },
+    {
+      "id": "l5-doc-03",
+      "topic": "Automatic documentation",
+      "difficulty": 2,
+      "question": "Where does FastAPI get the information shown in the documentation?",
+      "options": [
+        "The decorators (method and path)",
+        "The type annotations and Pydantic schemas",
+        "Comments starting with #",
+        "The database content",
+        "The requirements.txt file",
+        "The browser history"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "The paths, methods, parameter types and body/response schemas all come from the code itself."
+    },
+    {
+      "id": "l5-rst-01",
+      "topic": "REST and HTTP",
+      "difficulty": 1,
+      "question": "Which HTTP methods match the CRUD operations Create and Delete?",
+      "options": [
+        "POST for Create",
+        "DELETE for Delete",
+        "GET for Create",
+        "PUT for Delete",
+        "PATCH for Delete",
+        "HEAD for Create"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Create = POST, Read = GET, Update = PUT (or PATCH), Delete = DELETE."
+    },
+    {
+      "id": "l5-rst-02",
+      "topic": "REST and HTTP",
+      "difficulty": 1,
+      "question": "Which statements about a REST API are true?",
+      "options": [
+        "Each resource is identified by a URL",
+        "The HTTP method expresses the action (GET, POST, PUT, DELETE)",
+        "It always returns HTML pages",
+        "It requires a template engine",
+        "It only works with SQLite",
+        "It can only be called from a browser"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "A REST API exposes resources at URLs and usually exchanges JSON. Any HTTP client can call it."
+    },
+    {
+      "id": "l5-rst-03",
+      "topic": "REST and HTTP",
+      "difficulty": 2,
+      "question": "Which method is used to update an existing user in the course?",
+      "options": [
+        "PUT",
+        "POST",
+        "GET",
+        "DELETE",
+        "UPDATE",
+        "SET"
+      ],
+      "answer": 0,
+      "explanation": "@app.put(\"/user/{user_id}\") replaces the user's fields. There is no UPDATE method in HTTP."
+    },
+    {
+      "id": "l5-rst-04",
+      "topic": "REST and HTTP",
+      "difficulty": 2,
+      "question": "Which status codes are used correctly?",
+      "options": [
+        "404 when the requested user does not exist",
+        "200 when a request succeeds",
+        "500 when the client sends an invalid email",
+        "422 when the server crashes",
+        "404 when the request succeeds but the list is empty",
+        "201 when a resource is deleted"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "An empty list is still a success (200). 500 means a server bug, 422 is a validation error, 201 means Created."
+    },
+    {
+      "id": "l5-rst-05",
+      "topic": "REST and HTTP",
+      "difficulty": 2,
+      "question": "A route answers GET only. What does a DELETE request on the same path return?",
+      "options": [
+        "405 Method Not Allowed",
+        "404 Not Found",
+        "422 Unprocessable Entity",
+        "200 OK",
+        "500 Internal Server Error",
+        "The GET response"
+      ],
+      "answer": 0,
+      "explanation": "The path exists but not for this method: 405. A path that does not exist at all gives 404."
+    },
+    {
+      "id": "l5-rst-06",
+      "topic": "REST and HTTP",
+      "difficulty": 3,
+      "question": "Which statements about the status code of a POST route are true?",
+      "options": [
+        "By default FastAPI returns 200, including for POST",
+        "status_code=201 in the decorator returns 201 Created",
+        "FastAPI always returns 201 for POST",
+        "A POST route cannot return a body",
+        "The status code depends on the function name",
+        "201 is only possible with PUT"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "The course routes return 200. @app.post(\"/adduser\", status_code=201) would follow the REST convention."
+    },
+    {
+      "id": "l5-sqa-01",
+      "topic": "SQLAlchemy setup",
+      "difficulty": 1,
+      "question": "What is SQLAlchemy?",
+      "options": [
+        "An ORM (Object-Relational Mapper)",
+        "An ASGI server",
+        "A web server",
+        "A data validation library",
+        "A database engine like SQLite",
+        "A FastAPI plugin that generates the docs"
+      ],
+      "answer": 0,
+      "explanation": "SQLAlchemy lets you manipulate rows as Python objects. SQLite is the database engine it talks to."
+    },
+    {
+      "id": "l5-sqa-02",
+      "topic": "SQLAlchemy setup",
+      "difficulty": 1,
+      "question": "What does create_engine(SQLALCHEMY_DATABASE_URL) create?",
+      "options": [
+        "The engine that manages connections to the database",
+        "The tables of every model",
+        "A table",
+        "A session already opened for a request",
+        "A Pydantic schema",
+        "A model class"
+      ],
+      "answer": 0,
+      "explanation": "The engine holds the connection pool. Sessions are created later from SessionLocal, which is bound to the engine."
+    },
+    {
+      "id": "l5-sqa-03",
+      "topic": "SQLAlchemy setup",
+      "difficulty": 2,
+      "question": "With the URL below, where is the database stored?",
+      "code": "SQLALCHEMY_DATABASE_URL = \"sqlite:///./test.db\"",
+      "options": [
+        "In a file test.db in the folder Uvicorn is launched from",
+        "In the folder that contains database.py, wherever Uvicorn is launched from",
+        "In memory only",
+        "On a remote PostgreSQL server",
+        "In the folder of the virtual environment",
+        "In the browser"
+      ],
+      "answer": 0,
+      "explanation": "sqlite:/// is followed by a relative path: ./test.db is relative to the current directory, not to the file database.py."
+    },
+    {
+      "id": "l5-sqa-04",
+      "topic": "SQLAlchemy setup",
+      "difficulty": 2,
+      "question": "What is SessionLocal?",
+      "code": "SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)",
+      "options": [
+        "A factory: SessionLocal() creates a new session",
+        "A function that closes the database",
+        "A single shared session for the whole application",
+        "A table of the database",
+        "A Pydantic model",
+        "The connection URL"
+      ],
+      "answer": 0,
+      "explanation": "sessionmaker returns a class. Each call to SessionLocal() gives a new session, one per request in get_db."
+    },
+    {
+      "id": "l5-sqa-05",
+      "topic": "SQLAlchemy setup",
+      "difficulty": 2,
+      "question": "With autocommit=False, what is needed for changes to be saved in the database?",
+      "options": [
+        "An explicit db.commit()",
+        "Nothing: every db.add() is saved immediately",
+        "Restarting the server",
+        "Calling db.refresh()",
+        "Calling Base.metadata.create_all()",
+        "Closing the browser"
+      ],
+      "answer": 0,
+      "explanation": "The changes stay in a transaction until commit(). Without it, they are lost when the session is closed."
+    },
+    {
+      "id": "l5-sqa-06",
+      "topic": "SQLAlchemy setup",
+      "difficulty": 1,
+      "question": "What is Base, created with declarative_base()?",
+      "options": [
+        "The base class that every model inherits from",
+        "An instance of the User model",
+        "The database file",
+        "The FastAPI application",
+        "A session",
+        "The base URL of the API"
+      ],
+      "answer": 0,
+      "explanation": "class User(Base) registers the table in Base.metadata, which create_all uses."
+    },
+    {
+      "id": "l5-sqa-07",
+      "topic": "SQLAlchemy setup",
+      "difficulty": 2,
+      "question": "The course imports declarative_base from sqlalchemy.ext.declarative. Which statements are true with SQLAlchemy 2.x?",
+      "options": [
+        "The import still works but emits a deprecation warning",
+        "The recommended import is from sqlalchemy.orm import declarative_base",
+        "The import raises an ImportError",
+        "declarative_base no longer exists at all",
+        "It must be imported from fastapi",
+        "It must be imported from pydantic"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Since SQLAlchemy 2.0 the function lives in sqlalchemy.orm. The old path emits MovedIn20Warning."
+    },
+    {
+      "id": "l5-mod-01",
+      "topic": "Models and tables",
+      "difficulty": 1,
+      "question": "What does __tablename__ = \"users\" define?",
+      "options": [
+        "The name of the table in the database",
+        "The URL prefix of the user routes",
+        "The URL of the route",
+        "The name of the Pydantic schema",
+        "The name of the Python class",
+        "The name of the database file"
+      ],
+      "answer": 0,
+      "explanation": "ForeignKey refers to the table name, while relationship refers to the class name."
+    },
+    {
+      "id": "l5-mod-02",
+      "topic": "Models and tables",
+      "difficulty": 1,
+      "question": "Which statements about this column are true?",
+      "code": "id = Column(Integer, primary_key=True, index=True)",
+      "options": [
+        "It is the primary key of the table",
+        "index=True creates an index on it",
+        "Its value must be given when creating a User",
+        "It is a string",
+        "It can contain duplicates",
+        "It is optional and usually NULL"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "An Integer primary key is filled automatically by SQLite (1, 2, 3...). The index speeds up lookups by id."
+    },
+    {
+      "id": "l5-mod-03",
+      "topic": "Models and tables",
+      "difficulty": 2,
+      "question": "What does unique=True on the email column imply?",
+      "code": "email = Column(String, unique=True)",
+      "options": [
+        "Two users cannot have the same email",
+        "Inserting a duplicate raises an IntegrityError at commit",
+        "Pydantic checks that the email is unique",
+        "The email becomes the primary key",
+        "The email is automatically lowercased",
+        "FastAPI returns 409 automatically on a duplicate"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "The database enforces the constraint. In the course code the exception is not caught, so the client gets a 500 error."
+    },
+    {
+      "id": "l5-mod-04",
+      "topic": "Models and tables",
+      "difficulty": 3,
+      "question": "Which statements about nullable are true in SQLAlchemy?",
+      "options": [
+        "A column that is not a primary key is nullable by default",
+        "nullable=True on url is therefore redundant",
+        "Columns are NOT NULL by default",
+        "nullable=False makes the field optional in Pydantic",
+        "nullable only applies to Integer columns",
+        "A primary key is nullable by default"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Column(String) already accepts NULL. nullable=False is what must be written explicitly, for example for a foreign key that is required."
+    },
+    {
+      "id": "l5-mod-05",
+      "topic": "Models and tables",
+      "difficulty": 2,
+      "question": "What does Base.metadata.create_all(bind=engine) do?",
+      "options": [
+        "It creates the tables of every model that inherits from Base",
+        "It leaves tables that already exist untouched",
+        "It deletes and recreates every table",
+        "It adds new columns to existing tables",
+        "It inserts sample rows",
+        "It generates migration files"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "create_all only creates missing tables. A column added to an existing model is not added to the table: delete test.db or use a migration tool (Alembic)."
+    },
+    {
+      "id": "l5-mod-06",
+      "topic": "Models and tables",
+      "difficulty": 3,
+      "question": "A column is added to the User model after test.db was created. The server is restarted. What happens?",
+      "options": [
+        "The column is not created: create_all skips the existing users table",
+        "The column is added automatically",
+        "The users table is recreated empty",
+        "Uvicorn refuses to start",
+        "A migration file is created",
+        "FastAPI adds the column at the first request"
+      ],
+      "answer": 0,
+      "explanation": "Unlike Django's migrate, create_all does not alter existing tables. Queries on the new column will then fail."
+    },
+    {
+      "id": "l5-pyd-01",
+      "topic": "Pydantic schemas",
+      "difficulty": 1,
+      "question": "What is a Pydantic schema such as UserSchema used for?",
+      "options": [
+        "Validating the data received in the request body",
+        "Describing the shape of the data returned by the API",
+        "Creating the table in the database",
+        "Running SQL queries",
+        "Starting the server",
+        "Storing the session"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Pydantic validates and converts the data. The table is described by the SQLAlchemy model, which is a different class."
+    },
+    {
+      "id": "l5-pyd-02",
+      "topic": "Pydantic schemas",
+      "difficulty": 2,
+      "question": "Which fields are required in this schema?",
+      "code": "class UserSchema(BaseModel):\n    name: str\n    email: str\n    nickname: str\n    url: Optional[str] = None",
+      "options": [
+        "name",
+        "email",
+        "url",
+        "id",
+        "None of them",
+        "All fields including url"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "name, email and nickname have no default value: they are required. url has the default None, so it can be omitted."
+    },
+    {
+      "id": "l5-pyd-03",
+      "topic": "Pydantic schemas",
+      "difficulty": 3,
+      "question": "In Pydantic 2, which statements about a field declared url: Optional[str] (without = None) are true?",
+      "options": [
+        "It accepts None as a value",
+        "It is still required: the key must be present",
+        "It can be omitted from the JSON",
+        "It only accepts None",
+        "It becomes an int",
+        "It is ignored by FastAPI"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Optional[str] means 'str or None'. What makes a field optional is the default value: url: Optional[str] = None."
+    },
+    {
+      "id": "l5-pyd-04",
+      "topic": "Pydantic schemas",
+      "difficulty": 2,
+      "question": "A client sends this JSON to POST /adduser. What happens?",
+      "code": "{\"name\": \"alice\", \"email\": \"alice@example.com\"}",
+      "options": [
+        "FastAPI returns 422 because nickname is missing",
+        "The detail of the error points to the missing field",
+        "The user is created with nickname = None",
+        "The user is created with nickname = \"\"",
+        "The server crashes with a 500 error",
+        "FastAPI returns 404"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Validation happens before the function runs: the route code is never executed."
+    },
+    {
+      "id": "l5-pyd-05",
+      "topic": "Pydantic schemas",
+      "difficulty": 3,
+      "question": "In Pydantic 2, which inputs pass validation for a field age: int?",
+      "options": [
+        "\"42\" (a string of digits)",
+        "4.0 (a float with no fractional part)",
+        "\"4.5\"",
+        "\"abc\"",
+        "4.5",
+        "[42]"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "In lax mode Pydantic converts \"42\" to 42 and 4.0 to 4, but refuses any value that would lose information or is not a number."
+    },
+    {
+      "id": "l5-pyd-06",
+      "topic": "Pydantic schemas",
+      "difficulty": 3,
+      "question": "In Pydantic 2, a client sends {\"name\": 123, ...} for a field name: str. What happens?",
+      "options": [
+        "Validation fails with 422: an int is not converted to str",
+        "The error type is string_type",
+        "name becomes \"123\"",
+        "name becomes None",
+        "The field is ignored",
+        "The server returns 500"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Pydantic 2 converts strings to numbers but not numbers to strings."
+    },
+    {
+      "id": "l5-pyd-07",
+      "topic": "Pydantic schemas",
+      "difficulty": 2,
+      "question": "What does orm_mode = True (from_attributes = True in Pydantic 2) allow?",
+      "options": [
+        "Building the schema from an object's attributes, such as a SQLAlchemy User",
+        "Reading user.name instead of user[\"name\"]",
+        "Creating the table in the database",
+        "Making every field optional",
+        "Connecting Pydantic to SQLite",
+        "Disabling validation"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Without it, Pydantic expects a dict. FastAPI can also convert ORM objects returned by a route with a response_model."
+    },
+    {
+      "id": "l5-pyd-08",
+      "topic": "Pydantic schemas",
+      "difficulty": 2,
+      "question": "The course schema uses class Config: orm_mode = True. Which statements are true with Pydantic 2?",
+      "options": [
+        "orm_mode has been renamed from_attributes",
+        "The modern spelling is model_config = ConfigDict(from_attributes=True)",
+        "orm_mode raises an ImportError",
+        "Pydantic 2 no longer supports ORM objects",
+        "Config must be renamed Settings",
+        "orm_mode is now mandatory on every schema"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "The old spelling still works but emits warnings: 'orm_mode' has been renamed to 'from_attributes', and class-based config is deprecated."
+    },
+    {
+      "id": "l5-pyd-09",
+      "topic": "Pydantic schemas",
+      "difficulty": 2,
+      "question": "Why is a Pydantic schema separate from the SQLAlchemy model?",
+      "options": [
+        "The model describes the table, the schema describes the data exchanged with the client",
+        "The client must not send fields such as id, which the database generates",
+        "Pydantic cannot use strings",
+        "SQLAlchemy models cannot be imported in main.py",
+        "FastAPI forbids SQLAlchemy objects",
+        "It is required by SQLite"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Separating them lets the API choose what is accepted (input) and what is exposed (output), independently from the storage."
+    },
+    {
+      "id": "l5-dep-01",
+      "topic": "Dependencies and sessions",
+      "difficulty": 1,
+      "question": "What does db: Session = Depends(get_db) do in a route?",
+      "options": [
+        "FastAPI calls get_db and passes the session it yields to the route",
+        "The session is created once when the server starts",
+        "The client must send the session in the body",
+        "It creates the tables",
+        "It opens a single session at startup",
+        "It imports the database file"
+      ],
+      "answer": 0,
+      "explanation": "Depends is dependency injection: FastAPI resolves the dependency for each request."
+    },
+    {
+      "id": "l5-dep-02",
+      "topic": "Dependencies and sessions",
+      "difficulty": 2,
+      "question": "In get_db, what is the role of yield?",
+      "code": "def get_db():\n    try:\n        db = SessionLocal()\n        yield db\n    finally:\n        db.close()",
+      "options": [
+        "It gives the session to the route",
+        "The code after yield (the finally) runs once the request is handled",
+        "It returns the session and ends the function immediately",
+        "It commits the transaction",
+        "It turns the function into a coroutine",
+        "It makes the function run in parallel"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "A dependency with yield works like a context manager: setup before yield, cleanup (db.close()) after."
+    },
+    {
+      "id": "l5-dep-03",
+      "topic": "Dependencies and sessions",
+      "difficulty": 2,
+      "question": "Why is db.close() inside a finally block?",
+      "options": [
+        "The session is closed even if the route raises an exception",
+        "It avoids leaving connections open",
+        "finally makes the commit automatic",
+        "It is required by Pydantic",
+        "It makes the route faster",
+        "Without finally, the route is never called"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "An HTTPException raised in the route still goes through finally, so the connection is always returned to the pool."
+    },
+    {
+      "id": "l5-dep-04",
+      "topic": "Dependencies and sessions",
+      "difficulty": 3,
+      "question": "What happens with Depends(get_db()) instead of Depends(get_db)?",
+      "options": [
+        "Depends expects the function itself, not the result of a call",
+        "FastAPI raises a TypeError as soon as the route is defined",
+        "Nothing, both are equivalent",
+        "The same session is shared by every request",
+        "The session is closed twice",
+        "Only the documentation changes"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "get_db() returns a generator object, which is not callable: 'is not a callable object'. FastAPI must call the dependency itself, once per request."
+    },
+    {
+      "id": "l5-dep-05",
+      "topic": "Dependencies and sessions",
+      "difficulty": 2,
+      "question": "In add_user(url: Request, request: UserSchema, ...), how does FastAPI know what to inject?",
+      "options": [
+        "From the type annotations, not the parameter names",
+        "url receives the Request object because it is annotated Request",
+        "From the parameter names: url must be a URL string",
+        "request receives the Request object because of its name",
+        "From the order of the parameters",
+        "From the route path"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "The names are confusing in the course (url is the Request, request is the body). FastAPI only looks at the types."
+    },
+    {
+      "id": "l5-dep-06",
+      "topic": "Dependencies and sessions",
+      "difficulty": 2,
+      "question": "What does request.base_url contain in the course routes?",
+      "options": [
+        "The root URL of the API, such as http://127.0.0.1:8000/",
+        "A value used to build each user's url field",
+        "The full URL including the path /adduser",
+        "The database URL",
+        "The email of the user",
+        "The IP address of the client only"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "f\"{url.base_url}user/{request.name}\" gives http://127.0.0.1:8000/user/alice."
+    },
+    {
+      "id": "l5-crd-01",
+      "topic": "CRUD with the session",
+      "difficulty": 1,
+      "question": "In which order are these calls made to save a new user and get its id?",
+      "options": [
+        "db.add(user), db.commit(), db.refresh(user)",
+        "db.commit(), db.add(user), db.refresh(user)",
+        "db.refresh(user), db.add(user), db.commit()",
+        "db.add(user), db.refresh(user), db.commit()",
+        "db.commit(user)",
+        "db.save(user)"
+      ],
+      "answer": 0,
+      "explanation": "add puts the object in the session, commit writes it, refresh reloads it from the database (with the generated id)."
+    },
+    {
+      "id": "l5-crd-02",
+      "topic": "CRUD with the session",
+      "difficulty": 2,
+      "question": "Which statements are true before db.commit() is called?",
+      "options": [
+        "After db.add(user), user.id is still None",
+        "Nothing has been saved in the database yet",
+        "user.id is already set by db.add()",
+        "The row is visible to other sessions",
+        "db.add() raises an error if the email already exists",
+        "db.refresh(user) is mandatory before commit"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "The id is generated by the database during the INSERT, which happens at flush/commit."
+    },
+    {
+      "id": "l5-crd-03",
+      "topic": "CRUD with the session",
+      "difficulty": 1,
+      "question": "What does db.query(User).all() return?",
+      "options": [
+        "A list of User objects",
+        "A Django-style QuerySet",
+        "A single User",
+        "None if the table is empty",
+        "A dict",
+        "A JSON string"
+      ],
+      "answer": 0,
+      "explanation": "all() always returns a list. FastAPI then converts it to JSON using the response_model."
+    },
+    {
+      "id": "l5-crd-04",
+      "topic": "CRUD with the session",
+      "difficulty": 2,
+      "question": "What does db.query(User).filter(User.name == \"bob\").first() return if no user is named bob?",
+      "options": [
+        "None",
+        "An empty list",
+        "It raises an exception",
+        "A User with empty fields",
+        "False",
+        "A 404 response automatically"
+      ],
+      "answer": 0,
+      "explanation": "first() returns None. In the course route GET /user/{user_name}, FastAPI then sends null with status 200: you have to raise HTTPException yourself."
+    },
+    {
+      "id": "l5-crd-05",
+      "topic": "CRUD with the session",
+      "difficulty": 2,
+      "question": "Why is filter written with == and not =?",
+      "options": [
+        "User.name == value builds a SQL condition",
+        "= is an assignment and would be a syntax error inside the call",
+        "filter only accepts strings",
+        "== compares the lengths",
+        "= deletes the column",
+        "It makes no difference"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "SQLAlchemy overloads == on columns to produce a WHERE clause instead of a boolean."
+    },
+    {
+      "id": "l5-crd-06",
+      "topic": "CRUD with the session",
+      "difficulty": 1,
+      "question": "Which calls delete a user from the database?",
+      "options": [
+        "db.delete(user) followed by db.commit()",
+        "db.delete(user) alone: commit is optional",
+        "del user",
+        "db.remove(user)",
+        "user.delete()",
+        "db.drop(user)"
+      ],
+      "answer": 0,
+      "explanation": "del only removes the Python variable. db.delete marks the row, commit executes the DELETE."
+    },
+    {
+      "id": "l5-crd-07",
+      "topic": "CRUD with the session",
+      "difficulty": 2,
+      "question": "In the PUT route, why is there no db.add(user) before db.commit()?",
+      "options": [
+        "The user was loaded by the session, which already tracks its changes",
+        "Modifying its attributes is enough for commit to issue an UPDATE",
+        "db.add would create a duplicate",
+        "PUT routes cannot use db.add",
+        "commit ignores modified objects",
+        "The modification is saved by refresh"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Objects loaded through db.query are attached to the session. db.add would not create a duplicate, it is simply unnecessary."
+    },
+    {
+      "id": "l5-crd-08",
+      "topic": "CRUD with the session",
+      "difficulty": 2,
+      "question": "How should a route signal that a user does not exist?",
+      "options": [
+        "raise HTTPException(status_code=404, detail=\"...\")",
+        "return {\"error\": 404}",
+        "return HTTPException(status_code=404)",
+        "return 404",
+        "print(\"404\")",
+        "return None"
+      ],
+      "answer": 0,
+      "explanation": "HTTPException must be raised, not returned. The client receives {\"detail\": \"...\"} with the given status."
+    },
+    {
+      "id": "l5-crd-09",
+      "topic": "CRUD with the session",
+      "difficulty": 3,
+      "question": "The course DELETE route declares user_id: str. What does DELETE /user/abc return?",
+      "options": [
+        "404: the query finds no user with that id",
+        "No 422 is returned because any string is a valid str",
+        "422 validation error",
+        "500 error",
+        "The first user is deleted",
+        "200 with a success message"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "With user_id: int (as in PUT), FastAPI would reject abc with 422 before querying the database."
+    },
+    {
+      "id": "l5-rsp-01",
+      "topic": "Response model",
+      "difficulty": 1,
+      "question": "What does response_model=list[UserSchema] do?",
+      "options": [
+        "It declares that the route returns a list of users",
+        "It converts the users to XML",
+        "It validates the request body",
+        "It creates the users table",
+        "It makes the route return HTML",
+        "It sorts the users by name"
+      ],
+      "answer": 0,
+      "explanation": "The response model also appears in the documentation as the response schema."
+    },
+    {
+      "id": "l5-rsp-02",
+      "topic": "Response model",
+      "difficulty": 3,
+      "question": "In the course, GET /users uses response_model=list[UserSchema]. Which statements are true?",
+      "options": [
+        "The id of each user is not in the response, because UserSchema has no id field",
+        "Fields not declared in the response model are removed",
+        "The id is always added automatically",
+        "The response contains every column of the table",
+        "response_model only changes the documentation",
+        "The users are returned without the url field"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "This is why a separate output schema with id (UserOut in the corrected code) is needed to call PUT /user/{id} or DELETE /user/{id}."
+    },
+    {
+      "id": "l5-rsp-03",
+      "topic": "Response model",
+      "difficulty": 2,
+      "question": "Why can response_model be useful for security?",
+      "options": [
+        "It prevents sensitive columns (a password hash, for example) from being returned",
+        "Only the fields of the schema are sent to the client",
+        "It encrypts the response",
+        "It checks the user's password",
+        "It blocks GET requests",
+        "It hides the route from /docs"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Even if the ORM object has more attributes, only those declared in the response model are serialized."
+    },
+    {
+      "id": "l5-rel-01",
+      "topic": "Relationships (exercise)",
+      "difficulty": 2,
+      "question": "A user can publish several posts, a post belongs to only one user. Where is the foreign key?",
+      "options": [
+        "In the posts table: user_id = Column(Integer, ForeignKey(\"users.id\"))",
+        "On the 'many' side of the relationship",
+        "In the users table: post_id",
+        "In both tables",
+        "In a separate association table",
+        "Nowhere: SQLAlchemy guesses it"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "One-to-many: each post stores the id of its author. An association table is needed only for many-to-many."
+    },
+    {
+      "id": "l5-rel-02",
+      "topic": "Relationships (exercise)",
+      "difficulty": 2,
+      "question": "What does relationship(\"Post\", back_populates=\"author\") add to the User model?",
+      "options": [
+        "An attribute user.posts that lists the user's Post objects",
+        "No new column in the users table",
+        "A new column posts in the users table",
+        "A foreign key in the users table",
+        "A new route /posts",
+        "A Pydantic schema for posts"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "relationship is Python-side only. The column is the ForeignKey in posts. back_populates links user.posts and post.author."
+    },
+    {
+      "id": "l5-rel-03",
+      "topic": "Relationships (exercise)",
+      "difficulty": 2,
+      "question": "In ForeignKey(\"users.id\") and relationship(\"Post\"), what do the strings refer to?",
+      "options": [
+        "\"users\" is the table name (__tablename__)",
+        "\"Post\" is the Python class name",
+        "\"users\" is the class name",
+        "\"Post\" is the table name",
+        "Both are route paths",
+        "Both are Pydantic schemas"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "A ForeignKey points to a table column, a relationship points to a mapped class."
+    },
+    {
+      "id": "l5-rel-04",
+      "topic": "Relationships (exercise)",
+      "difficulty": 3,
+      "question": "Why is user_id declared with nullable=False on Post?",
+      "options": [
+        "A post must always have an author",
+        "Inserting a post without user_id fails",
+        "It makes user_id the primary key",
+        "It is the default, so it changes nothing",
+        "It deletes the posts of a deleted user",
+        "It makes the column unique"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Columns are nullable by default, so the constraint has to be explicit. Deleting posts with their author is the job of cascade."
+    },
+    {
+      "id": "l5-rel-05",
+      "topic": "Relationships (exercise)",
+      "difficulty": 3,
+      "question": "With cascade=\"all, delete-orphan\" on User.posts, what happens when a user is deleted with db.delete(user)?",
+      "options": [
+        "The user's posts are deleted too",
+        "No post is left pointing to a deleted user",
+        "The posts are kept with user_id = None",
+        "The deletion is refused while posts exist",
+        "Only the first post is deleted",
+        "Nothing changes for the posts"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Without a cascade, SQLAlchemy would try to set user_id to NULL, which nullable=False forbids."
+    },
+    {
+      "id": "l5-rel-06",
+      "topic": "Relationships (exercise)",
+      "difficulty": 2,
+      "question": "Which routes are a sound design for the posts exercise?",
+      "options": [
+        "POST /addpost with title, content and user_id in the body",
+        "GET /user/{user_id}/posts to list the posts of a user",
+        "GET /addpost to create a post",
+        "DELETE /posts to update a post",
+        "PUT /post/{post_id} to delete a post",
+        "POST /post/{post_id} to read a post"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "The method gives the action: POST creates, GET reads, PUT updates, DELETE deletes."
+    },
+    {
+      "id": "l5-rel-07",
+      "topic": "Relationships (exercise)",
+      "difficulty": 3,
+      "question": "Which statements about foreign keys in SQLite are true?",
+      "options": [
+        "SQLite does not enforce foreign keys unless PRAGMA foreign_keys=ON is executed",
+        "Without it, a post could reference a user id that does not exist",
+        "SQLite always enforces foreign keys",
+        "SQLAlchemy refuses ForeignKey with SQLite",
+        "Foreign keys only work with Integer primary keys named pk",
+        "PRAGMA foreign_keys deletes the existing tables"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "The corrected code enables the PRAGMA on every connection, and POST /addpost also checks the user exists to return a clean 404."
+    },
+    {
+      "id": "l5-rel-08",
+      "topic": "Relationships (exercise)",
+      "difficulty": 2,
+      "question": "Why must the server check that the user exists before creating a post?",
+      "options": [
+        "To return a clear 404 instead of a database error",
+        "Because the client can send any user_id",
+        "Pydantic checks it automatically",
+        "SQLAlchemy creates the missing user",
+        "It is required by Uvicorn",
+        "It is only needed for GET routes"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "explanation": "Pydantic only checks that user_id is an int. Whether that user exists is a database question."
+    }
+  ]
+}
